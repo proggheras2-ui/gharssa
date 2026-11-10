@@ -385,7 +385,13 @@ function AC(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext
 addEventListener('pointerdown',()=>AC(),{capture:true});
 function tone(f,t0,d,type='sine',v=.16){if(!soundOn||!AC())return;try{const o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=f;o.connect(g);g.connect(ac.destination);const t=ac.currentTime+t0;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+d);o.start(t);o.stop(t+d+.05)}catch(e){}}
 const sfx={ok(){tone(660,0,.18,'triangle');tone(990,.1,.28,'triangle')},no(){tone(180,0,.25,'square',.07)},flip(){tone(520,0,.08,'sine',.1)},pop(){tone(900,0,.06,'square',.08);tone(300,.02,.12,'triangle',.12)},
- win(){[523,659,784,1047].forEach((f,i)=>tone(f,i*.12,.35,'triangle'))},toot(){tone(392,0,.25,'sawtooth',.06);tone(523,.28,.35,'sawtooth',.06)}};
+ win(){[523,659,784,1047].forEach((f,i)=>tone(f,i*.12,.35,'triangle'))},train(){if(!soundOn||!AC())return;try{const t0=ac.currentTime+.05;
+  const wh=(st,d,f1,f2)=>{[f1,f2].forEach(f=>{const o=ac.createOscillator(),g=ac.createGain(),v=ac.createOscillator(),vg2=ac.createGain();o.type='sine';o.frequency.value=f;v.frequency.value=6;vg2.gain.value=f*.012;v.connect(vg2);vg2.connect(o.frequency);o.connect(g);g.connect(ac.destination);
+    g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(.09,st+.08);g.gain.setValueAtTime(.09,st+d-.12);g.gain.linearRampToValueAtTime(0,st+d);o.start(st);v.start(st);o.stop(st+d+.05);v.stop(st+d+.05)})};
+  wh(t0,.55,587,740);wh(t0+.7,1.0,587,740);
+  const len=ac.sampleRate*.12,buf=ac.createBuffer(1,len,ac.sampleRate),dd=buf.getChannelData(0);for(let i=0;i<len;i++)dd[i]=(Math.random()*2-1)*Math.pow(1-i/len,2);
+  for(let i=0;i<14;i++){const st=t0+.3+i*(.3-i*.008);const n=ac.createBufferSource();n.buffer=buf;const f=ac.createBiquadFilter();f.type='bandpass';f.frequency.value=i%2?700:420;f.Q.value=1.2;const g=ac.createGain();g.gain.value=.5*(i<10?1:(14-i)/4);n.connect(f);f.connect(g);g.connect(ac.destination);n.start(st)}
+ }catch(e){}},toot(){tone(392,0,.25,'sawtooth',.06);tone(523,.28,.35,'sawtooth',.06)}};
 const bufs={};let vtok=0,curSrc=null,lastSay=[];
 function b64buf(s){const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u.buffer}
 function getBuf(k){if(!bufs[k])bufs[k]=new Promise((res,rej)=>{try{const p=ac.decodeAudioData(b64buf(AU[k]),res,rej);if(p&&p.then)p.then(res,rej)}catch(e){rej(e)}});return bufs[k]}
@@ -531,14 +537,17 @@ const RUN={
      else{later(()=>{b1.classList.remove('open');b2.classList.remove('open');open=[];lock=false},1300)}}};g.appendChild(b)});p.appendChild(g)},
 
  train(){const p=$('#play');const ROUNDS=3;let r=0,mist=0;
-  const round=()=>{setProg(r/ROUNDS);const s=Math.random()*(ALPHA.length-6)|0;const seq=ALPHA.slice(s,s+6);let k=0;p.innerHTML='';
-   p.append(el('p','ask',`رتّبِ الحروفَ ليسيرَ القطار<small>ابدأ بالحرف «${disp(seq[0])}»</small>`));if(r===0)say('train');
+  const round=()=>{setProg(r/ROUNDS);const s=Math.random()*(ALPHA.length-6)|0;const seq=ALPHA.slice(s,s+6);let k=1;p.innerHTML='';
+   p.append(el('p','ask',`أكمِلْ ترتيبَ الحروف ليسيرَ القطار<small>بعد الحرف «${disp(seq[0])}» يأتي…؟</small>`));if(r===0)say('train');
    const tr=el('div','track');tr.innerHTML=`<svg class="engine" viewBox="0 0 92 86" aria-hidden="true"><rect x="22" y="22" width="52" height="46" rx="10" fill="#DE4A52"/><rect x="56" y="6" width="16" height="22" rx="4" fill="#283370"/><rect x="30" y="30" width="22" height="18" rx="4" fill="#fff"/><rect x="10" y="50" width="20" height="18" rx="5" fill="#FDB515"/><circle cx="36" cy="72" r="11" fill="#283370" stroke="#fff" stroke-width="4"/><circle cx="64" cy="72" r="11" fill="#283370" stroke="#fff" stroke-width="4"/></svg>`;
-   const slots=seq.map(()=>{const s=el('div','slot');tr.appendChild(s);return s});p.appendChild(tr);
-   const lt=el('div','letters');shuffle(seq).forEach(L=>{const b=el('button','opt',disp(L));b.onclick=()=>{if(b.classList.contains('used'))return;
-     if(L===seq[k]){const w=el('div','wagon',disp(L));slots[k].replaceWith(w);b.classList.add('used');sfx.ok();say('n'+LI(L),false);k++;
-       if(k===seq.length){later(()=>{sfx.toot();tr.classList.add('go');toast(praise())},800);later(()=>{r++;r<ROUNDS?round():finish(mist===0?3:mist<=3?2:1,mist===0?'رتّبت كل الحروف بدون أخطاء!':`رتّبت القطارات مع ${arN(mist)} أخطاء.`)},3100)}}
-     else{b.classList.remove('no');void b.offsetWidth;b.classList.add('no');mist++;sfx.no();toast(k===0?'ابدأ بالحرف «'+disp(seq[0])+'»':'ما الحرف الذي يأتي بعد «'+disp(seq[k-1])+'»؟')}};lt.appendChild(b)});
+   const slots=seq.map((L,i)=>{const s=i===0?el('div','wagon',disp(L)):el('div','slot');tr.appendChild(s);return s});p.appendChild(tr);
+   const lt=el('div','letters');shuffle(seq.slice(1)).forEach(L=>{const b=el('button','opt',disp(L));b.onclick=()=>{if(b.classList.contains('used'))return;
+     if(L===seq[k]){const w=el('div','wagon',disp(L));slots[k].replaceWith(w);b.classList.add('used');sfx.ok();k++;
+       if(k===seq.length){lt.style.pointerEvents='none';toast(praise());
+         say('pr'+(Math.random()*6|0),false).then(()=>{if(!document.body.contains(tr))return;sfx.train();tr.classList.add('go');
+           later(()=>{r++;r<ROUNDS?round():finish(mist===0?3:mist<=3?2:1,mist===0?'رتّبت كل الحروف بدون أخطاء!':`رتّبت القطارات مع ${arN(mist)} أخطاء.`)},3200)})}
+       else say('n'+LI(L),false)}
+     else{b.classList.remove('no');void b.offsetWidth;b.classList.add('no');mist++;sfx.no();toast('ما الحرف الذي يأتي بعد «'+disp(seq[k-1])+'»؟')}};lt.appendChild(b)});
    p.appendChild(lt)};round()},
 
  odd(){const p=$('#play');const R=8;let r=0,mist=0;const sizes=[9,9,12,12,16,16,20,20];
