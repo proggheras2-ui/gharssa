@@ -390,9 +390,9 @@ const bufs={};let vtok=0,curSrc=null,lastSay=[];
 function b64buf(s){const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u.buffer}
 function getBuf(k){if(!bufs[k])bufs[k]=new Promise((res,rej)=>{try{const p=ac.decodeAudioData(b64buf(AU[k]),res,rej);if(p&&p.then)p.then(res,rej)}catch(e){rej(e)}});return bufs[k]}
 function stopVoice(){vtok++;if(curSrc){try{curSrc.stop()}catch(e){}curSrc=null}}
-async function say(keys,remember=true){keys=[].concat(keys).filter(k=>AU[k]);if(remember&&keys.length)lastSay=keys;stopVoice();if(!soundOn||!keys.length||!AC())return;const tok=vtok;
- for(const k of keys){let b;try{b=await getBuf(k)}catch(e){continue}if(tok!==vtok)return;
-  await new Promise(r=>{const s=ac.createBufferSource();s.buffer=b;s.connect(vg);s.onended=r;curSrc=s;s.start();setTimeout(r,(b.duration+.4)*1000)});if(tok!==vtok)return}}
+async function say(keys,remember=true){keys=[].concat(keys).filter(k=>AU[k]);if(remember&&keys.length)lastSay=keys;stopVoice();if(!soundOn||!keys.length||!AC())return false;const tok=vtok;
+ for(const k of keys){let b;try{b=await getBuf(k)}catch(e){continue}if(tok!==vtok)return false;
+  await new Promise(r=>{const s=ac.createBufferSource();s.buffer=b;s.connect(vg);s.onended=r;curSrc=s;s.start();setTimeout(r,(b.duration+.4)*1000)});if(tok!==vtok)return}return true}
 const cheer=()=>{if(Math.random()<.55)say('pr'+(Math.random()*6|0),false)};
 function drawSnd(){$('#sndIc').innerHTML=soundOn?'<path fill="#fff" d="M4 9v6h4l5 4V5L8 9z"/><path fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12"/>':'<path fill="#fff" d="M4 9v6h4l5 4V5L8 9z"/><path stroke="#fff" stroke-width="2.4" stroke-linecap="round" d="M16.5 9.5l5 5M21.5 9.5l-5 5"/>'}
 
@@ -463,7 +463,8 @@ function openNasheed(){stopVoice();const m=el('div','nmodal');m.setAttribute('ro
 /* ---------- games ---------- */
 const RUN={
  learn(){let i=0;const p=$('#play');const seen=new Set();
-  const voice=()=>{const k=LI(CARDS[i][0]);say(CARDS[i][1]?['n'+k,'w'+k]:['n'+k])};
+  const voice=()=>{const k=LI(CARDS[i][0]);const rb=p.querySelector('.rhyme');const seq=CARDS[i][1]?['n'+k,'w'+k]:['n'+k];const hasM=!!(rb&&AU['m'+k]);
+   say(seq).then(done=>{if(!done||!hasM||!document.body.contains(rb))return;rb.classList.add('playing');return say('m'+k,false).then(()=>rb.classList.remove('playing'))})};
   const draw=()=>{const [L,w,img,rh]=CARDS[i];const k=LI(L);seen.add(i);setProg(seen.size/CARDS.length);
    const wd=w?(w.startsWith(L)||(L==='ء'&&w.startsWith('أ'))?`<em>${w[0]}</em>${w.slice(1)}`:w):'';
    p.innerHTML='';const c=el('div','lcard');
