@@ -139,7 +139,7 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--yellow);outline-off
 .tile.done .front{background:#FFF5D9;box-shadow:inset 0 0 0 4px var(--yellow)}
 
 /* train */
-.track{width:min(100%,640px);display:flex;align-items:flex-end;gap:6px;min-height:120px;padding-bottom:14px;border-bottom:6px dashed rgba(255,255,255,.55);overflow-x:auto}
+.track{width:min(100%,640px);display:flex;justify-content:center;align-items:flex-end;gap:6px;min-height:120px;padding-bottom:14px;border-bottom:6px dashed rgba(255,255,255,.55);overflow-x:auto}
 .engine{flex:none;width:92px;height:86px}
 .wagon{flex:none;width:70px;height:72px;border-radius:14px 14px 8px 8px;background:var(--yellow);color:var(--navy);display:grid;place-items:center;font-size:42px;font-weight:700;position:relative;animation:roll .9s ease-out}
 .wagon:nth-child(odd){background:var(--white)}
@@ -540,7 +540,7 @@ const RUN={
   const round=()=>{setProg(r/ROUNDS);const s=Math.random()*(ALPHA.length-6)|0;const seq=ALPHA.slice(s,s+6);let k=1;p.innerHTML='';
    p.append(el('p','ask',`أكمِلْ ترتيبَ الحروف ليسيرَ القطار<small>بعد الحرف «${disp(seq[0])}» يأتي…؟</small>`));if(r===0)say('train');
    const tr=el('div','track');tr.innerHTML=`<svg class="engine" viewBox="0 0 92 86" aria-hidden="true"><rect x="22" y="22" width="52" height="46" rx="10" fill="#DE4A52"/><rect x="56" y="6" width="16" height="22" rx="4" fill="#283370"/><rect x="30" y="30" width="22" height="18" rx="4" fill="#fff"/><rect x="10" y="50" width="20" height="18" rx="5" fill="#FDB515"/><circle cx="36" cy="72" r="11" fill="#283370" stroke="#fff" stroke-width="4"/><circle cx="64" cy="72" r="11" fill="#283370" stroke="#fff" stroke-width="4"/></svg>`;
-   const slots=seq.map((L,i)=>{const s=i===0?el('div','wagon',disp(L)):el('div','slot');tr.appendChild(s);return s});p.appendChild(tr);
+   const eng=tr.querySelector('.engine');const slots=seq.map((L,i)=>{const s=i===0?el('div','wagon',disp(L)):el('div','slot');tr.insertBefore(s,eng);return s});p.appendChild(tr);
    const lt=el('div','letters');shuffle(seq.slice(1)).forEach(L=>{const b=el('button','opt',disp(L));b.onclick=()=>{if(b.classList.contains('used'))return;
      if(L===seq[k]){const w=el('div','wagon',disp(L));slots[k].replaceWith(w);b.classList.add('used');sfx.ok();k++;
        if(k===seq.length){lt.style.pointerEvents='none';toast(praise());
