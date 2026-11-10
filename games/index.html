@@ -227,6 +227,15 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--yellow);outline-off
 .end .pill.y{background:var(--yellow)}
 .end .unlock{display:flex;align-items:center;gap:10px;background:#FFF5D9;border-radius:18px;padding:8px 14px;font-weight:700}
 .end .unlock img{width:40px}
+
+/* nasheed player */
+.nasheed-btn{background:var(--red);color:var(--white)}
+.nmodal{position:fixed;inset:0;z-index:80;background:rgba(20,26,60,.88);display:grid;place-items:center;padding:16px}
+.nbox{width:min(100%,760px);background:var(--white);border-radius:26px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.nbox .nhead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;background:var(--grad);color:var(--white);font-weight:700;font-size:20px}
+.nbox .nhead button{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.18);color:var(--white);font-size:24px;line-height:1}
+.nbox .nv{position:relative;aspect-ratio:16/9;background:#000}
+.nbox iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:70}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -364,7 +373,7 @@ const save=()=>{try{localStorage.setItem('ghars_games_v1',JSON.stringify(store))
 let soundOn=true;try{soundOn=localStorage.getItem('ghars_snd')!=='0'}catch(e){}
 let timers=[];const later=(f,ms)=>{const t=setTimeout(f,ms);timers.push(t);return t};
 let cleanup=null;
-function reset(){timers.forEach(clearTimeout);timers=[];if(cleanup){try{cleanup()}catch(e){}cleanup=null}stopVoice()}
+function reset(){timers.forEach(clearTimeout);timers=[];document.querySelectorAll('.nmodal').forEach(x=>x.remove());if(cleanup){try{cleanup()}catch(e){}cleanup=null}stopVoice()}
 
 /* ---------- audio: one AudioContext for effects and the recorded voice ---------- */
 let ac=null,vg=null;
@@ -440,6 +449,13 @@ function finish(stars,msg){reset();stars=Math.max(1,Math.min(3,stars));const bef
  const row=el('div','row');const a=el('button','pill y','العب مرة أخرى');a.onclick=()=>start(current.id);const b=el('button','pill','ألعاب أخرى');b.onclick=exit;row.append(a,b);e.appendChild(row);p.appendChild(e);a.focus()}
 const by=(score,R,hi,mid)=>score>=hi?3:score>=mid?2:1;
 
+
+const NASHEED={id:'7sXwtphCH-o',list:'PLTL5_UZ8eXr8'};
+function openNasheed(){stopVoice();const m=el('div','nmodal');m.setAttribute('role','dialog');m.setAttribute('aria-label','أنشودة الحروف');
+ m.innerHTML=`<div class="nbox"><div class="nhead"><span>🎵 أنشودة الحروف</span><button aria-label="إغلاق">×</button></div><div class="nv"><iframe src="https://www.youtube-nocookie.com/embed/${NASHEED.id}?autoplay=1&rel=0&list=${NASHEED.list}" title="أنشودة الحروف" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div></div>`;
+ const close=()=>{m.remove();document.removeEventListener('keydown',esc)};const esc=e=>{if(e.key==='Escape')close()};
+ m.querySelector('.nhead button').onclick=close;m.addEventListener('click',e=>{if(e.target===m)close()});document.addEventListener('keydown',esc);document.body.appendChild(m);m.querySelector('.nhead button').focus()}
+
 /* ---------- games ---------- */
 const RUN={
  learn(){let i=0;const p=$('#play');const seen=new Set();
@@ -454,7 +470,8 @@ const RUN={
    const ct=el('span','count',`${arN(i+1)} / ${arN(CARDS.length)}`);
    pv.onclick=()=>{i=(i-1+CARDS.length)%CARDS.length;sfx.flip();draw()};
    nx.onclick=()=>{if(seen.size===CARDS.length&&i===CARDS.length-1){finish(3,'تعرّفت على كل الحروف! جرّب لعبة «أين الحرف؟».');return}i=(i+1)%CARDS.length;sfx.flip();draw()};
-   nav.append(pv,ct,nx);p.append(c,nav);voice()};draw()},
+   const ns=el('button','pill nasheed-btn','🎵 أنشودة الحروف');ns.onclick=openNasheed;const nrow=el('div','lnav');nrow.appendChild(ns);
+   nav.append(pv,ct,nx);p.append(c,nav,nrow);voice()};draw()},
 
  listen(){const R=10;let r=0,score=0;const qs=pick(LET.filter(x=>x!=='ء'),R);const p=$('#play');
   const q=()=>{setProg(r/R);const L=qs[r];const k=LI(L);
