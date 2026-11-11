@@ -318,3 +318,6 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--yellow);outline-off
 @media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none}.bubs{display:none}}
 .hero h1 .w{color:inherit}
 .hero .wave{left:-6%;width:112%}
+.brand .logos{padding-block:22px;gap:clamp(22px,6vw,64px)}
+.brand img{height:clamp(56px,10vw,88px)}
+.brand .sep{height:clamp(46px,8vw,72px)}
