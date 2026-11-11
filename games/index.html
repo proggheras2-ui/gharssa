@@ -249,6 +249,23 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--yellow);outline-off
 .nbox .nhead button{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.18);color:var(--white);font-size:24px;line-height:1}
 .nbox .nv{position:relative;aspect-ratio:16/9;background:#000}
 .nbox iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* letter of the day */
+.focusbar{margin:26px auto 0;max-width:760px;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.3);border-radius:26px;padding:14px 16px;display:flex;flex-direction:column;gap:12px;align-items:center}
+.focusbar .fhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;font-weight:700;font-size:20px}
+.focusbar .fcur{min-width:58px;height:58px;border-radius:18px;background:var(--white);color:var(--navy);display:grid;place-items:center;font-size:38px;font-weight:700;line-height:1;padding-bottom:6px}
+.focusbar .fcur.off{background:rgba(255,255,255,.2);color:var(--white);font-size:22px}
+.focusbar .fbtn{background:var(--yellow);color:var(--navy);border-radius:999px;padding:8px 18px;font-weight:700;font-size:17px}
+.focusbar .fbtn.ghost{background:rgba(255,255,255,.18);color:var(--white)}
+.fgrid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;width:100%}
+@media (max-width:620px){.fgrid{grid-template-columns:repeat(7,minmax(0,1fr))}}
+.fgrid[hidden]{display:none}
+.fgrid button{aspect-ratio:1;border-radius:12px;background:var(--white);color:var(--navy);font-size:24px;font-weight:700;line-height:1;padding-bottom:4px;transition:transform .15s}
+.fgrid button:hover{transform:scale(1.08)}
+.fgrid button[aria-pressed="true"]{background:var(--yellow);box-shadow:0 0 0 3px var(--white)}
+.card .fbadge{position:absolute;top:12px;left:12px;background:var(--yellow);color:var(--navy);font-weight:700;font-size:14px;border-radius:99px;padding:2px 12px;z-index:3}
+.card.has-f.new .art::after{display:none}
+.fchip{background:var(--yellow);color:var(--navy);border-radius:999px;padding:6px 14px;font-weight:700;font-size:17px;white-space:nowrap;flex:none}
 canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:70}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -272,6 +289,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:70}
       <p>نلعب ونتعلّم حروف القرآن الكريم وحركاته</p>
       <div class="tally" id="tally"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#FDB515" d="M12 2.6l2.9 6 6.5.8-4.8 4.5 1.2 6.5L12 17.3l-5.8 3.1 1.2-6.5L2.6 9.4l6.5-.8z"/></svg><span>نجومك</span><b id="tallyN">0</b><span id="tallyMax"></span></div>
       <div class="badges" id="badges" aria-label="أوسمتك"></div>
+      <div class="focusbar" id="focusbar"></div>
     </div>
   </section>
 
@@ -286,7 +304,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:70}
 <div class="stage" id="stage" hidden dir="rtl" lang="ar">
   <div class="bar">
     <button class="iconbtn" id="back" aria-label="الرجوع إلى قائمة الألعاب"><svg viewBox="0 0 24 24"><path fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></button>
-    <h2 id="gtitle"></h2>
+    <h2 id="gtitle"></h2><span class="fchip" id="fchip" hidden></span>
     <button class="iconbtn say" id="rep" aria-label="أعد السماع"><svg viewBox="0 0 24 24"><path fill="none" stroke="#283370" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M20 12a8 8 0 1 1-2.6-5.9M20 4v5h-5"/></svg></button>
     <button class="iconbtn" id="snd" aria-label="تشغيل الصوت أو إيقافه"><svg viewBox="0 0 24 24" id="sndIc"></svg></button>
   </div>
@@ -387,6 +405,9 @@ const STAR=(on)=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="${on?'
 const SPK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 9v6h4l5 4V5L8 9z"/><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12"/></svg>';
 let store={};try{store=JSON.parse(localStorage.getItem('ghars_games_v1')||'{}')}catch(e){store={}}
 const save=()=>{try{localStorage.setItem('ghars_games_v1',JSON.stringify(store))}catch(e){}};
+let FOCUS=null;try{const q=new URLSearchParams(location.search).get('letter');FOCUS=q||localStorage.getItem('ghars_focus')||null}catch(e){}
+const FOCUSABLE=['learn','listen','pick','balloons','memory','train','odd','dots','harakat','hear','sort','readpick','color','word3','word4'];
+const hasL=(w,F)=>w.includes(F)||(F==='ء'&&/[أإئؤ]/.test(w))||(F==='ا'&&/[أإآ]/.test(w));
 let soundOn=true;try{soundOn=localStorage.getItem('ghars_snd')!=='0'}catch(e){}
 let timers=[];const later=(f,ms)=>{const t=setTimeout(f,ms);timers.push(t);return t};
 let cleanup=null;
@@ -446,16 +467,21 @@ const SHN={circle:'دائرة',square:'مربع',tri:'مثلث',star:'نجمة',
 /* ---------- home ---------- */
 let filter='all';try{filter=localStorage.getItem('ghars_cat')||'all'}catch(e){}
 function totalStars(){return GAMES.reduce((a,G)=>a+(store[G.id]||0),0)}
-function home(){
+function renderFocus(){const fb=$('#focusbar');if(!fb)return;const F=FOCUS;
+ fb.innerHTML=`<div class="fhead"><span>🎯 حرف اليوم:</span><span class="fcur${F?'':' off'}">${F?disp(F):'—'}</span><button class="fbtn" id="fopen">${F?'تغيير الحرف':'اختر حرفًا'}</button>${F?'<button class="fbtn ghost" id="fclear">إلغاء التحديد</button>':''}</div>
+ <small style="opacity:.92">${F?'ألعاب الحروف الآن تدور حول حرف '+NAMES[F]':'اختر حرف الدرس ليتدرّب عليه الأطفال في كل الألعاب'}</small><div class="fgrid" id="fgrid" hidden></div>`;
+ const g=$('#fgrid');LET.forEach(L=>{const b=el('button','',disp(L));b.setAttribute('aria-label','حرف '+NAMES[L]);b.setAttribute('aria-pressed',L===F);b.onclick=()=>{FOCUS=L;try{localStorage.setItem('ghars_focus',L)}catch(e){}g.hidden=true;home();sfx.ok()};g.appendChild(b)});
+ $('#fopen').onclick=()=>{g.hidden=!g.hidden};const c=$('#fclear');if(c)c.onclick=()=>{FOCUS=null;try{localStorage.removeItem('ghars_focus')}catch(e){};home()}}
+function home(){renderFocus();
  const ch=$('#chips');ch.innerHTML='';CATS.forEach(([k,n])=>{const b=el('button','chip',n);b.setAttribute('aria-pressed',filter===k);b.onclick=()=>{filter=k;try{localStorage.setItem('ghars_cat',k)}catch(e){}home()};ch.appendChild(b)});
  const g=$('#grid');g.innerHTML='';
  GAMES.filter(G=>filter==='all'||G.cat===filter).forEach(G=>{const s=store[G.id]||0;
-  const c=el('button','card '+G.cls+(G.nw&&!s?' new':''));c.setAttribute('aria-label',G.t);
+  const isF=FOCUS&&FOCUSABLE.includes(G.id);const c=el('button','card '+G.cls+(G.nw&&!s?' new':'')+(isF?' has-f':''));c.setAttribute('aria-label',G.t);
   const big=G.big==='BAL'?`<svg class="big" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 8c20 0 32 16 32 34 0 20-16 36-32 38-16-2-32-18-32-38C18 24 30 8 50 8z" fill="#DE4A52"/><path d="M45 80h10l-5 7z" fill="#DE4A52"/><path d="M50 87c-6 6 6 8 0 13" stroke="#283370" stroke-width="2.5" fill="none"/><text x="50" y="56" text-anchor="middle" font-family="Ruqiaround" font-weight="700" font-size="40" fill="#fff">ب</text></svg>`
    :G.big==='PAINT'?`<svg class="big" viewBox="0 0 100 100" aria-hidden="true"><path d="${shapePath('star')}" fill="#FDB515"/><path d="M70 64l18-30 6 4-18 30z" fill="#fff"/><path d="M70 64l6 4-8 6z" fill="#DE4A52"/></svg>`
    :G.big==='PAT'?`<svg class="big" viewBox="0 0 136 50" style="width:170px;height:62px" aria-hidden="true"><circle cx="16" cy="25" r="13" fill="#FDB515"/><path d="M42 12h26v26H42z" fill="#fff"/><circle cx="94" cy="25" r="13" fill="#FDB515"/><text x="128" y="37" text-anchor="middle" font-size="32" font-weight="700" fill="#fff" font-family="Ruqiaround">؟</text></svg>`
    :`<span class="big">${G.big}</span>`;
-  c.innerHTML=`<div class="art"><img class="ic" src="${IMG[G.ic[0]]}" alt="" style="top:14px;right:16px;transform:rotate(-10deg)"><img class="ic" src="${IMG[G.ic[1]]}" alt="" style="bottom:12px;left:18px;width:40px">${big}</div>
+  c.innerHTML=`<div class="art">${isF?`<span class="fbadge">حرف ${disp(FOCUS)}</span>`:''}<img class="ic" src="${IMG[G.ic[0]]}" alt="" style="top:14px;right:16px;transform:rotate(-10deg)"><img class="ic" src="${IMG[G.ic[1]]}" alt="" style="bottom:12px;left:18px;width:40px">${big}</div>
   <div class="meta"><span class="tag">${G.tag}</span><h3>${G.t}</h3><p>${G.d}</p><div class="stars" aria-label="${s} من 3 نجوم">${STAR(s>0)+STAR(s>1)+STAR(s>2)}</div></div>`;
   c.onclick=()=>start(G.id);g.appendChild(c)});
  const tot=totalStars();$('#tallyN').textContent=arN(tot);$('#tallyMax').textContent='من '+arN(GAMES.length*3);
@@ -465,7 +491,7 @@ function home(){
 
 /* ---------- stage control ---------- */
 let current=null;
-function start(id){reset();$('#toast').classList.remove('show');const G=GAMES.find(x=>x.id===id);current=G;$('#gtitle').textContent=G.t;$('#stage').hidden=false;document.body.style.overflow='hidden';setProg(0);lastSay=[];
+function start(id){reset();$('#toast').classList.remove('show');const G=GAMES.find(x=>x.id===id);current=G;$('#gtitle').textContent=G.t;{const fc=$('#fchip');const on=FOCUS&&FOCUSABLE.includes(id);fc.hidden=!on;if(on)fc.textContent='حرف '+disp(FOCUS)}$('#stage').hidden=false;document.body.style.overflow='hidden';setProg(0);lastSay=[];
  try{if(location.hash.slice(1)!==id)location.hash=id}catch(e){} RUN[id]();}
 function exit(){reset();$('#toast').classList.remove('show');$('#stage').hidden=true;document.body.style.overflow='';current=null;try{history.replaceState(null,'',location.pathname+location.search)}catch(e){};home()}
 $('#back').onclick=exit;
@@ -486,7 +512,7 @@ function openNasheed(){stopVoice();const m=el('div','nmodal');m.setAttribute('ro
  m.querySelector('.nhead button').onclick=close;m.addEventListener('click',e=>{if(e.target===m)close()});document.addEventListener('keydown',esc);document.body.appendChild(m);m.querySelector('.nhead button').focus()}
 
 /* ---------- games ---------- */
-function wordTrain(LIST){const p=$('#play');const R=5;let r=0,mist=0;const qs=pick(LIST,R);
+function wordTrain(LIST){const p=$('#play');const R=5;let r=0,mist=0;const fw=FOCUS?shuffle(LIST.filter(w=>hasL(w[0],FOCUS))):[];const qs=fw.concat(pick(LIST.filter(w=>!fw.includes(w)),R)).slice(0,R);
  const DIST=['ب','ت','ن','ر','م','س','ل','ك','د','ع','ف','ي','و','ج','ق'];
  const round=()=>{setProg(r/R);const [w,L]=qs[r];const card=CARDS.find(c=>c[0]===L);const k=LI(L);const letters=[...w];let i=0;p.innerHTML='';
   p.append(el('p','ask',`ركّبْ حروفَ الكلمة بالترتيب<small>اسمع الكلمة وانظر إلى الصورة</small>`));
@@ -504,7 +530,7 @@ function wordTrain(LIST){const p=$('#play');const R=5;let r=0,mist=0;const qs=pi
   p.appendChild(lt);say('w'+k)};round()}
 
 const RUN={
- learn(){let i=0;const p=$('#play');const seen=new Set();
+ learn(){let i=FOCUS?Math.max(0,CARDS.findIndex(c=>c[0]===FOCUS)):0;const p=$('#play');const seen=new Set();
   const voice=()=>{const k=LI(CARDS[i][0]);const rb=p.querySelector('.rhyme');const seq=CARDS[i][1]?['n'+k,'w'+k]:['n'+k];const hasM=!!(rb&&AU['m'+k]);
    say(seq).then(done=>{if(!done||!hasM||!document.body.contains(rb))return;rb.classList.add('playing');return say('m'+k,false).then(()=>rb.classList.remove('playing'))})};
   const draw=()=>{const [L,w,img,rh]=CARDS[i];const k=LI(L);seen.add(i);setProg(seen.size/CARDS.length);
@@ -519,7 +545,7 @@ const RUN={
    nx.onclick=()=>{if(seen.size===CARDS.length&&i===CARDS.length-1){finish(3,'تعرّفت على كل الحروف! جرّب لعبة «أين الحرف؟».');return}i=(i+1)%CARDS.length;sfx.flip();draw()};
    nav.append(pv,ct,nx);p.append(c,nav);voice()};draw()},
 
- listen(){const R=10;let r=0,score=0;const qs=pick(LET.filter(x=>x!=='ء'),R);const p=$('#play');
+ listen(){const R=10;let r=0,score=0;const qs=FOCUS?shuffle(Array(5).fill(FOCUS).concat(pick(((FAM.find(f=>f.includes(FOCUS))||[]).filter(x=>x!==FOCUS)).concat(pick(ALPHA.filter(x=>x!==FOCUS),5)),5))):pick(LET.filter(x=>x!=='ء'),R);const p=$('#play');
   const q=()=>{setProg(r/R);const L=qs[r];const k=LI(L);
    const fam=FAM.find(f=>f.includes(L));let d=fam?fam.filter(x=>x!==L):[];d=shuffle(d).concat(pick(ALPHA.filter(x=>x!==L&&!d.includes(x)),3)).slice(0,3);
    const opts=shuffle([L,...d]);p.innerHTML='';
@@ -530,8 +556,8 @@ const RUN={
      else{locked=true;b.classList.add('no');sfx.no();[...o.children].forEach(c=>{if(c.textContent===disp(L))c.classList.add('ok')});toast('هذا حرف '+NAMES[x]);say(['n'+LI(x)],false);later(()=>{r++;r<R?q():finish(by(score,R,9,7),`عرفت ${arN(score)} من ${arN(R)} حروف.`)},1700)}};o.appendChild(b)});
    p.appendChild(o);say(r===0?['listen','q'+k]:['q'+k])};q()},
 
- pick(){const R=10;let r=0,score=0;const qs=pick(PIC,R);const p=$('#play');
-  const q=()=>{setProg(r/R);const [L,w,img]=qs[r];const k=LI(L);const opts=shuffle([L,...pick(ALPHA.filter(x=>x!==L&&x!==(L==='ء'?'ا':'')),3)].map(x=>x==='ء'?'أ':x));
+ pick(){const R=10;let r=0,score=0;const fc=FOCUS?PIC.find(c=>c[0]===FOCUS):null;const qs=fc?shuffle([fc,fc,...pick(PIC.filter(c=>c!==fc),R-2)]):pick(PIC,R);const p=$('#play');
+  const q=()=>{setProg(r/R);const [L,w,img]=qs[r];const k=LI(L);const dd=pick(ALPHA.filter(x=>x!==L&&x!==(L==='ء'?'ا':'')),3);if(FOCUS&&FOCUS!==L&&FOCUS!=='ء'&&!dd.includes(FOCUS))dd[0]=FOCUS;const opts=shuffle([L,...dd].map(x=>x==='ء'?'أ':x));
    const ans=L==='ء'?'أ':L;p.innerHTML='';
    p.append(el('p','ask','بأيّ حرفٍ تبدأ هذه الصورة؟'));
    const pc=el('button','pic',`<img src="${IMG[img]}" alt="صورة ${w}">`);pc.onclick=()=>say('w'+k);p.appendChild(pc);
@@ -542,7 +568,7 @@ const RUN={
      later(()=>{r++;r<R?q():finish(by(score,R,9,7),`أجبت ${arN(score)} من ${arN(R)} إجابات صحيحة.`)},1500)};o.appendChild(b)});
    p.appendChild(o);if(r===0)say('pick')};q()},
 
- balloons(){const p=$('#play');const ROUNDS=3,NEED=5;let r=0,mist=0;const targets=pick(PIC.map(c=>c[0]).filter(x=>x!=='ء'&&x!=='ا'),ROUNDS);
+ balloons(){const p=$('#play');const ROUNDS=3,NEED=5;let r=0,mist=0;const targets=FOCUS&&FOCUS!=='ء'?[FOCUS,FOCUS,FOCUS]:pick(PIC.map(c=>c[0]).filter(x=>x!=='ء'&&x!=='ا'),ROUNDS);
   let alive=true;cleanup=()=>{alive=false};
   const round=()=>{setProg(r/ROUNDS);const L=targets[r];const k=LI(L);let hits=0;p.innerHTML='';
    const fam=FAM.find(f=>f.includes(L));const dis=shuffle((fam?fam.filter(x=>x!==L):[]).concat(pick(ALPHA.filter(x=>x!==L),5)));
@@ -568,7 +594,7 @@ const RUN={
     rid=requestAnimationFrame(loop)};
    last=performance.now();spawnAt=last+400;rid=requestAnimationFrame(loop)};round()},
 
- memory(){const p=$('#play');const set=pick(PIC.filter(c=>c[0]!=='ء'),6);let tiles=shuffle(set.flatMap(c=>[{k:c[0],t:'L'},{k:c[0],t:'P',img:c[2]}]));
+ memory(){const p=$('#play');const set=(()=>{const fc=FOCUS?PIC.find(c=>c[0]===FOCUS):null;const o=pick(PIC.filter(c=>c[0]!=='ء'&&c!==fc),fc?5:6);return fc?[fc,...o]:o})();let tiles=shuffle(set.flatMap(c=>[{k:c[0],t:'L'},{k:c[0],t:'P',img:c[2]}]));
   let open=[],done=0,moves=0,lock=false;p.innerHTML='';p.append(el('p','ask','طابِق كلَّ حرفٍ مع صورتِه'));say('memory');
   const g=el('div','mem');tiles.forEach(T=>{const b=el('button','tile');b.setAttribute('aria-label','بطاقة');
    b.innerHTML=`<div class="in"><div class="face back"><img src="${IMG.i_star_c}" alt=""></div><div class="face front">${T.t==='L'?disp(T.k):`<img src="${IMG[T.img]}" alt="">`}</div></div>`;
@@ -579,7 +605,7 @@ const RUN={
      else{later(()=>{b1.classList.remove('open');b2.classList.remove('open');open=[];lock=false},1300)}}};g.appendChild(b)});p.appendChild(g)},
 
  train(){const p=$('#play');const ROUNDS=3;let r=0,mist=0;
-  const round=()=>{setProg(r/ROUNDS);const s=Math.random()*(ALPHA.length-6)|0;const seq=ALPHA.slice(s,s+6);let k=1;p.innerHTML='';
+  const round=()=>{setProg(r/ROUNDS);const fi=FOCUS?ALPHA.indexOf(FOCUS):-1;const s=fi>=0?Math.max(0,Math.min(ALPHA.length-6,fi-(Math.random()*5|0))):Math.random()*(ALPHA.length-6)|0;const seq=ALPHA.slice(s,s+6);let k=1;p.innerHTML='';
    p.append(el('p','ask',`أكمِلْ ترتيبَ الحروف ليسيرَ القطار<small>بعد الحرف «${disp(seq[0])}» يأتي…؟</small>`));if(r===0)say('train');
    const tr=el('div','track');tr.innerHTML=`<svg class="engine" viewBox="0 0 92 86" aria-hidden="true"><rect x="22" y="22" width="52" height="46" rx="10" fill="#DE4A52"/><rect x="56" y="6" width="16" height="22" rx="4" fill="#283370"/><rect x="30" y="30" width="22" height="18" rx="4" fill="#fff"/><rect x="10" y="50" width="20" height="18" rx="5" fill="#FDB515"/><circle cx="36" cy="72" r="11" fill="#283370" stroke="#fff" stroke-width="4"/><circle cx="64" cy="72" r="11" fill="#283370" stroke="#fff" stroke-width="4"/></svg>`;
    const eng=tr.querySelector('.engine');const slots=seq.map((L,i)=>{const s=i===0?el('div','wagon',disp(L)):el('div','slot');tr.insertBefore(s,eng);return s});p.appendChild(tr);
@@ -595,7 +621,7 @@ const RUN={
  word3(){wordTrain(WORDS3)},
  word4(){wordTrain(WORDS4)},
  odd(){const p=$('#play');const R=8;let r=0,mist=0;const sizes=[9,9,12,12,16,16,20,20];
-  const q=()=>{setProg(r/R);const fam=rnd(FAM);const [a,b]=shuffle(fam);const n=sizes[r];const pos=Math.random()*n|0;p.innerHTML='';
+  const q=()=>{setProg(r/R);let a,b;const ff=FOCUS?FAM.find(f=>f.includes(FOCUS)):null;if(FOCUS&&FOCUS!=='ء'){const o=ff?rnd(ff.filter(x=>x!==FOCUS)):rnd(ALPHA.filter(x=>x!==FOCUS));[a,b]=r%2?[o,FOCUS]:[FOCUS,o]}else{[a,b]=shuffle(rnd(FAM))}const n=sizes[r];const pos=Math.random()*n|0;p.innerHTML='';
    p.append(el('p','ask','أين الحرف المختلف؟'));const g=el('div','oddgrid');g.style.gridTemplateColumns=`repeat(${n>=16?(innerWidth<460?4:5):n===12?4:3},minmax(0,1fr))`;
    if(r===0)say('odd');let locked=false;
    for(let i=0;i<n;i++){const L=i===pos?b:a;const t=el('button','opt',disp(L));t.onclick=()=>{if(locked)return;
@@ -603,7 +629,7 @@ const RUN={
      else{mist++;t.classList.remove('no');void t.offsetWidth;t.classList.add('no');sfx.no();toast('هذا حرف '+NAMES[a]+'.. ابحث مرة أخرى')}};g.appendChild(t)}
    p.appendChild(g)};q()},
 
- dots(){const p=$('#play');const R=10;let r=0,score=0;const pool=shuffle(ALPHA).slice(0,R);
+ dots(){const p=$('#play');const R=10;let r=0,score=0;const pool=FOCUS&&DOTS[FOCUS]!==undefined?shuffle([FOCUS,FOCUS,FOCUS,FOCUS,...pick(((FAM.find(f=>f.includes(FOCUS))||[]).filter(x=>x!==FOCUS)).concat(pick(ALPHA.filter(x=>x!==FOCUS),6)),6)]):shuffle(ALPHA).slice(0,R);
   const dsvg=n=>{const pts={0:[],1:[[50,50]],2:[[32,50],[68,50]],3:[[32,62],[68,62],[50,32]]}[n];return `<svg viewBox="0 0 100 100" aria-hidden="true">${n===0?'<text x="50" y="64" text-anchor="middle" font-family="Ruqiaround" font-weight="700" font-size="40" fill="#283370">لا</text>':''}${pts.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="13"/>`).join('')}</svg>`};
   const q=()=>{setProg(r/R);const L=pool[r];const n=DOTS[L];p.innerHTML='';
    p.append(el('p','ask','كم نقطةً في هذا الحرف؟'),el('div','bigL',disp(L)));if(r===0)say('dots');
@@ -615,7 +641,7 @@ const RUN={
 
  harakat(){const p=$('#play');const order=shuffle(['f','k','d','f']);let r=0,mist=0;
   const round=()=>{setProg(r/order.length);const h=order[r];const others=Object.keys(HAR).filter(x=>x!==h);
-   const target=pick(BASE,3).map(L=>({L,h,ok:1}));const wrong=pick(BASE,6).map((L,i)=>({L,h:others[i%2],ok:0}));
+   const FB=FOCUS&&BASE.includes(FOCUS)?FOCUS:null;const target=FB?[{L:FB,h,ok:1},...pick(BASE.filter(x=>x!==FB),2).map(L=>({L,h,ok:1}))]:pick(BASE,3).map(L=>({L,h,ok:1}));const wrong=FB?[{L:FB,h:others[0],ok:0},{L:FB,h:others[1],ok:0},...pick(BASE.filter(x=>x!==FB),4).map((L,i)=>({L,h:others[i%2],ok:0}))]:pick(BASE,6).map((L,i)=>({L,h:others[i%2],ok:0}));
    const items=shuffle([...target,...wrong]);let found=0;p.innerHTML='';
    p.append(el('p','ask',`اصطَدِ الحروفَ ${HAR[h].n}<small>التي عليها ${HAR[h].name} <span class="mark">ـ${HAR[h].m}ـ</span></small>`));say('hunt_'+h);
    const g=el('div','bubbles');items.forEach(it=>{const b=el('button','bub',it.L+HAR[it.h].m);b.onclick=()=>{say('s'+BASE.indexOf(it.L)+it.h,false);
@@ -624,7 +650,7 @@ const RUN={
    p.appendChild(g)};round()},
 
  hear(){const p=$('#play');const R=10;let r=0,score=0;
-  const q=()=>{setProg(r/R);const L=rnd(BASE),h=rnd(['f','k','d']);const key='s'+BASE.indexOf(L)+h;p.innerHTML='';
+  const q=()=>{setProg(r/R);const L=FOCUS&&BASE.includes(FOCUS)?FOCUS:rnd(BASE),h=rnd(['f','k','d']);const key='s'+BASE.indexOf(L)+h;p.innerHTML='';
    p.append(el('p','ask','ماذا تسمع؟<small>فتحة أم كسرة أم ضمة؟</small>'));const sb=sayBtn('اسمع',[key]);sb.classList.add('pulse');p.appendChild(sb);
    const o=el('div','opts three');let locked=false;
    shuffle(['f','k','d']).forEach(x=>{const b=el('button','opt',L+HAR[x].m);b.dataset.h=x;b.onclick=()=>{if(locked)return;locked=true;
@@ -632,7 +658,7 @@ const RUN={
      later(()=>{r++;r<R?q():finish(by(score,R,9,7),`ميّزت ${arN(score)} من ${arN(R)} حركات.`)},1700)};o.appendChild(b)});
    p.appendChild(o);say(r===0?['hear',key]:[key])};q()},
 
- sort(){const p=$('#play');const R=12;const pool=shuffle(Object.keys(SORT).flatMap(k=>pick(SORTALL.filter(x=>x.k===k),3))).slice(0,R);let r=0,score=0;
+ sort(){const p=$('#play');const R=12;const fs=FOCUS?shuffle(SORTALL.filter(x=>hasL(x.w,FOCUS))):[];const pool=shuffle(fs.concat(shuffle(Object.keys(SORT).flatMap(k=>pick(SORTALL.filter(x=>x.k===k&&!fs.includes(x)),3)))).slice(0,R));let r=0,score=0;
   const q=()=>{setProg(r/R);const it=pool[r];p.innerHTML='';p.append(el('p','ask','في أيّ سلّةٍ تضعُ هذه الكلمة؟'));
    const itm=el('button','item',it.w);itm.onclick=()=>say(it.key);p.appendChild(itm);const g=el('div','baskets');let locked=false;
    BK.forEach(([k,n,sym])=>{const b=el('button','bk '+k,`<span class="sym">${k==='m'?'<span style="font-size:30px">ا و ي</span>':'ـ'+sym+'ـ'}</span>${n}`);b.onclick=()=>{if(locked)return;locked=true;
@@ -640,7 +666,7 @@ const RUN={
      later(()=>{r++;r<R?q():finish(by(score,R,11,8),`صنّفت ${arN(score)} من ${arN(R)} كلمات صحيحًا.`)},1900)};g.appendChild(b)});
    p.appendChild(g);say(r===0?['sort',it.key]:[it.key])};q()},
 
- readpick(){const p=$('#play');const R=10;let r=0,score=0;const pool=pick(SORTALL,R);
+ readpick(){const p=$('#play');const R=10;let r=0,score=0;const fs=FOCUS?shuffle(SORTALL.filter(x=>hasL(x.w,FOCUS))):[];const pool=shuffle(fs.concat(pick(SORTALL.filter(x=>!fs.includes(x)),R)).slice(0,R));
   const q=()=>{setProg(r/R);const it=pool[r];const first=it.w.replace(/[^ء-ي]/g,'')[0];
    let d=shuffle(SORTALL.filter(x=>x.key!==it.key&&x.k!==it.k&&x.w.replace(/[^ء-ي]/g,'')[0]===first));d=d.concat(shuffle(SORTALL.filter(x=>x.key!==it.key&&!d.includes(x)))).slice(0,3);
    p.innerHTML='';p.append(el('p','ask','استمع ثم اختر ما تسمعه'));const sb=sayBtn('اسمع',[it.key]);sb.classList.add('pulse');p.appendChild(sb);
@@ -671,7 +697,7 @@ const RUN={
    p.appendChild(o)};q()},
 
  color(){const p=$('#play');const R=5;let r=0;const res=[];
-  const plan=shuffle(['star','circle','tri','hex','moon','drop','diamond']).slice(0,3);const lets=pick(['ب','ن','م','ع','ق','ج','و','ه','ص','ك'],2);
+  const plan=shuffle(['star','circle','tri','hex','moon','drop','diamond']).slice(0,3);const lets=FOCUS&&FOCUS!=='ء'?[FOCUS,FOCUS]:pick(['ب','ن','م','ع','ق','ج','و','ه','ص','ك'],2);
   const items=[{t:'s',v:plan[0]},{t:'l',v:lets[0]},{t:'s',v:plan[1]},{t:'l',v:lets[1]},{t:'s',v:plan[2]}];
   const cols=shuffle(Object.keys(PAL));
   const round=async()=>{setProg(r/R);const it=items[r];const want=cols[r%cols.length];const [wc,wk,wn]=PAL[want];p.innerHTML='';

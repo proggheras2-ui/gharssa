@@ -1,0 +1,10 @@
+(function(){const R=matchMedia('(prefers-reduced-motion: reduce)').matches;const D=document;D.documentElement.classList.add('js');
+const sel='.ttl,.tile,.comp,.lv,.pcard,.video,.store,.doc,.surahs li,.media,.gallery a,.jcard,.stat,.qhead,.tuhfa,.jump,.extra .tile,.cbtn,.social a,.pager';
+const items=[...D.querySelectorAll(sel)];const groups=new Map();items.forEach(el=>{const p=el.parentElement;const k=groups.get(p)||0;el.style.setProperty('--k',k);groups.set(p,k+1);el.classList.add('rv')});
+const ar=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+const count=b=>{const t=+b.dataset.count;if(R){b.textContent=ar(t);return}let s=null;const f=ts=>{s=s||ts;const p=Math.min(1,(ts-s)/1400);b.textContent=ar(Math.round(t*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)};
+if('IntersectionObserver'in window&&!R){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');e.target.querySelectorAll('[data-count]').forEach(count);io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});items.forEach(el=>io.observe(el));const j=D.querySelector('.journey');if(j)io.observe(j)}
+else{items.forEach(el=>el.classList.add('in'));D.querySelectorAll('[data-count]').forEach(count);const j=D.querySelector('.journey');if(j)j.classList.add('in')}
+const bar=D.querySelector('.sprog');const onS=()=>{const h=D.documentElement;bar.style.transform='scaleX('+(h.scrollTop/((h.scrollHeight-h.clientHeight)||1))+')';D.querySelector('.nav').classList.toggle('stuck',h.scrollTop>140)};addEventListener('scroll',onS,{passive:true});onS();
+const hero=D.querySelector('.hero');if(hero&&!R&&matchMedia('(pointer:fine)').matches){const ds=[...hero.querySelectorAll('.doodle')];hero.addEventListener('pointermove',e=>{const r=hero.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;ds.forEach(d=>d.style.translate=(x*-d.dataset.depth)+'px '+(y*-d.dataset.depth)+'px')});hero.addEventListener('pointerleave',()=>ds.forEach(d=>d.style.translate=''))}
+})();

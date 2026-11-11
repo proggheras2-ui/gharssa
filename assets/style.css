@@ -179,3 +179,145 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--yellow);outline-off
 .foot .wrap{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-block:20px;flex-wrap:wrap}
 .foot img{height:32px;width:auto}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ================= motion & polish layer ================= */
+.sprog{position:fixed;top:0;inset-inline:0;height:5px;background:var(--yellow);transform-origin:right;transform:scaleX(0);z-index:60;border-radius:0 0 4px 4px}
+.nav{transition:box-shadow .3s}
+.nav.stuck{box-shadow:0 10px 24px -12px rgba(40,51,112,.8)}
+.nav .links a{position:relative;transition:background .25s,color .25s,transform .25s cubic-bezier(.2,.9,.3,1.4)}
+.nav .links a:hover{transform:translateY(-2px)}
+.nav .links a[aria-current]{animation:pill .6s cubic-bezier(.2,.9,.3,1.4) both}
+@keyframes pill{from{transform:scale(.7)}}
+
+/* hero */
+.hero{padding-bottom:40px}
+.hero .wrap{z-index:2}
+.hero .wave{position:absolute;bottom:-1px;left:0;width:100%;height:clamp(40px,7vw,90px);z-index:1}
+.hero .wave .w1{fill:var(--white);opacity:.35;animation:waveA 9s ease-in-out infinite alternate}
+.hero .wave .w2{fill:var(--white);animation:waveB 7s ease-in-out infinite alternate}
+@keyframes waveA{to{transform:translateX(-40px)}}@keyframes waveB{to{transform:translateX(30px) scaleY(1.08)}}
+.hero .wave path{transform-box:fill-box;transform-origin:bottom}
+.tiles-sec{margin-top:-40px}
+.bubs{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.bub{position:absolute;bottom:-30px;left:var(--x);width:var(--z);height:var(--z);border-radius:50%;border:2px solid rgba(255,255,255,.45);background:rgba(255,255,255,.08);animation:rise var(--t) linear infinite;animation-delay:var(--d)}
+@keyframes rise{0%{transform:translate(0,0);opacity:0}10%{opacity:1}50%{transform:translate(18px,-50vh)}100%{transform:translate(-10px,-110vh);opacity:0}}
+.doodle{transition:translate .6s cubic-bezier(.2,.8,.3,1);opacity:.95}
+.doodle.spin{animation:floatSpin 12s ease-in-out infinite;animation-delay:var(--d,0s)}
+.doodle.wig{animation:floatWig 6s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes floatSpin{50%{transform:translateY(-14px) rotate(180deg)}100%{transform:rotate(360deg)}}
+@keyframes floatWig{25%{transform:rotate(-10deg) translateY(-6px)}75%{transform:rotate(10deg) translateY(-12px)}}
+.hero h1.pop .w{display:inline-block;animation:wpop .8s cubic-bezier(.2,.9,.3,1.5) both;animation-delay:calc(.15s + var(--i)*.14s)}
+.hero h1 span.w + span, .hero h1 span > .w{display:inline-block}
+@keyframes wpop{0%{opacity:0;transform:translateY(40px) scale(.4) rotate(-8deg)}100%{opacity:1;transform:none}}
+.hero h1 span:not(.w){display:inline-block;position:relative}
+.hero h1 span:not(.w)::after{content:"";position:absolute;inset-inline:6%;bottom:2px;height:.14em;background:var(--yellow);border-radius:99px;transform:scaleX(0);transform-origin:right;animation:uline .7s .9s cubic-bezier(.2,.9,.3,1.2) forwards;opacity:.5}
+@keyframes uline{to{transform:scaleX(1)}}
+.rv-h{animation:fadeUp .8s .55s both}
+.hero .cta{animation:fadeUp .8s .8s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}}
+.btn{transition:transform .25s cubic-bezier(.2,.9,.3,1.5),box-shadow .25s}
+.btn:hover{transform:translateY(-3px) rotate(-1.5deg)}
+.hero .btn.y{animation:glow 2.6s 2s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 6px 0 rgba(0,0,0,.14),0 0 0 0 rgba(253,181,21,.6)}50%{box-shadow:0 6px 0 rgba(0,0,0,.14),0 0 0 12px rgba(253,181,21,0)}}
+
+/* reveal */
+.js .rv{opacity:0;transform:translateY(34px) scale(.96);transition:opacity .7s cubic-bezier(.2,.8,.3,1),transform .8s cubic-bezier(.2,.9,.3,1.25);transition-delay:calc(var(--k,0)*90ms)}
+.js .rv.in{opacity:1;transform:none}
+.js .rv.in:hover{transition-delay:0s}
+.ttl::before{transform:scaleY(.2);transition:transform .7s .2s cubic-bezier(.2,.9,.3,1.6)}
+.ttl.in::before,.ttl:not(.rv)::before{transform:none}
+.ttl::after{content:"";width:46px;height:12px;flex:none;background:radial-gradient(circle,var(--yellow) 3px,transparent 4px) 0 50%/16px 12px repeat-x;opacity:0;transition:opacity .6s .6s}
+.ttl.in::after{opacity:1}
+
+/* tiles */
+.tile{position:relative;overflow:hidden;isolation:isolate}
+.tile::before{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.1);top:-50px;left:-40px;z-index:-1;transition:transform .5s cubic-bezier(.2,.9,.3,1.3)}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.28) 50%,transparent 65%);transform:translateX(120%);transition:transform .8s;z-index:-1}
+.tile:hover{transform:translateY(-8px) rotate(-1deg)}
+.tile:hover::before{transform:scale(1.6)}
+.tile:hover::after{transform:translateX(-120%)}
+.tile .ic{transition:transform .5s cubic-bezier(.2,.9,.3,1.6)}
+.tile:hover .ic{transform:rotate(-12deg) scale(1.18)}
+.js .tile.rv.in:hover{transform:translateY(-8px) rotate(-1deg)}
+
+/* stats */
+.stats-sec{padding-block:clamp(18px,4vw,40px) 0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat{border-radius:var(--r);padding:18px 12px;text-align:center;border:3px dashed var(--line);background:var(--white)}
+.stat b{display:block;font-size:clamp(44px,7vw,64px);line-height:1.1}
+.stat span{font-weight:700;color:var(--soft)}
+.s-n b{color:var(--navy)}.s-s b{color:var(--sky)}.s-y b{color:var(--yellow)}.s-r b{color:var(--red)}
+.s-n{border-color:var(--navy)}.s-s{border-color:var(--sky)}.s-y{border-color:var(--yellow)}.s-r{border-color:var(--red)}
+.stat.in b{animation:jelly .9s .3s}
+@keyframes jelly{30%{transform:scale(1.25,.8)}50%{transform:scale(.85,1.15)}70%{transform:scale(1.08,.95)}}
+
+/* components */
+.comp{transition:transform .35s cubic-bezier(.2,.9,.3,1.5),border-color .3s}
+.comp .cic{position:relative;transition:transform .5s cubic-bezier(.2,.9,.3,1.6)}
+.comp .cic::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:3px dashed var(--sky);opacity:0;transition:opacity .3s}
+.comp:hover{border-color:var(--sky);transform:translateY(-6px)}
+.js .comp.rv.in:hover{transform:translateY(-6px)}
+.comp:hover .cic{transform:rotate(14deg) scale(1.08)}
+.comp:hover .cic::after{opacity:1;animation:spin 6s linear infinite}
+.comp img{animation:bob 3.2s ease-in-out infinite;animation-delay:calc(var(--k,0)*-.6s)}
+@keyframes bob{50%{transform:translateY(-5px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* levels journey */
+.journey{position:relative}
+.journey .road{position:absolute;top:50%;left:0;width:100%;height:40px;transform:translateY(-50%);z-index:0;overflow:visible}
+.journey .road path{fill:none;stroke:var(--navy);stroke-width:5;stroke-linecap:round;stroke-dasharray:4 16;opacity:.25;vector-effect:non-scaling-stroke}
+.journey.in .road path{animation:march 1.4s linear infinite}
+@keyframes march{to{stroke-dashoffset:-40}}
+.journey .lvs{position:relative;z-index:1}
+@media (max-width:960px){.journey .road{display:none}}
+.lv{transition:transform .35s cubic-bezier(.2,.9,.3,1.5),box-shadow .35s}
+.lv::after{content:"";position:absolute;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.14);bottom:-40px;left:-30px;transition:transform .5s}
+.lv:hover{transform:translateY(-8px) rotate(1.5deg);box-shadow:0 18px 30px -16px rgba(40,51,112,.7)}
+.js .lv.rv.in:hover{transform:translateY(-8px) rotate(1.5deg)}
+.lv:hover::after{transform:scale(1.8)}
+.lv .num{display:inline-block;transition:transform .5s cubic-bezier(.2,.9,.3,1.8)}
+.lv:hover .num{transform:scale(1.18) rotate(-8deg)}
+.lv.in .num{animation:numPop .7s calc(var(--k,0)*90ms + .3s) cubic-bezier(.2,.9,.3,1.8) both}
+@keyframes numPop{from{transform:scale(0) rotate(-40deg)}}
+
+/* cards, media, docs */
+.pcard{transition:border-color .3s,transform .35s cubic-bezier(.2,.9,.3,1.5)}
+.pcard .ic{transition:transform .5s cubic-bezier(.2,.9,.3,1.6)}
+.pcard:hover .ic{transform:scale(1.2) rotate(-10deg)}
+.js .pcard.rv.in:hover{transform:translateY(-6px)}
+.video{transition:transform .4s}
+.media{transition:transform .35s cubic-bezier(.2,.9,.3,1.4)}
+.media img{transition:transform .6s}
+.media:hover img{transform:scale(1.08)}
+.js .media.rv.in:hover,.js .doc.rv.in:hover{transform:translateY(-5px)}
+.doc{transition:border-color .2s,transform .35s cubic-bezier(.2,.9,.3,1.4)}
+.doc:hover .ic{animation:wig .5s}
+@keyframes wig{25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+.store{position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.2,.9,.3,1.4)}
+.store .ic{transition:transform .5s cubic-bezier(.2,.9,.3,1.6)}
+.store:hover .ic{transform:rotate(-12deg) scale(1.15)}
+.js .store.rv.in:hover{transform:translateY(-6px)}
+.gallery a{transition:transform .35s cubic-bezier(.2,.9,.3,1.4)}
+.js .gallery a.rv.in:hover{transform:scale(1.04) rotate(-1deg)}
+.lb{animation:fadeIn .25s}.lb img{animation:zoomIn .35s cubic-bezier(.2,.9,.3,1.3)}
+@keyframes fadeIn{from{opacity:0}}@keyframes zoomIn{from{transform:scale(.7);opacity:0}}
+.jcard .jic{animation:bob 3s ease-in-out infinite}
+.social a{transition:transform .35s cubic-bezier(.2,.9,.3,1.8)}
+.js .social a.rv.in:hover{transform:translateY(-6px) rotate(-8deg)}
+.cbtn{transition:background .3s}.cbtn:hover{background:rgba(255,255,255,.24)}
+.surahs li{transition:border-color .25s}.surahs li:hover{border-color:var(--sky)}
+
+/* section divider for alt sections */
+.sec.alt{position:relative}
+.sec.alt::before{content:"";position:absolute;top:-22px;left:0;right:0;height:24px;background:var(--mist);-webkit-mask:radial-gradient(18px 22px at 50% 100%,#000 98%,transparent) 0 0/36px 24px repeat-x;mask:radial-gradient(18px 22px at 50% 100%,#000 98%,transparent) 0 0/36px 24px repeat-x}
+
+/* footer doodles dance */
+.foot img{animation:hop 2.4s ease-in-out infinite;animation-delay:calc(var(--n,0)*.18s)}
+.foot img:nth-child(1){--n:0}.foot img:nth-child(2){--n:1}.foot img:nth-child(3){--n:2}.foot img:nth-child(4){--n:3}.foot img:nth-child(5){--n:4}.foot img:nth-child(6){--n:5}.foot img:nth-child(7){--n:6}.foot img:nth-child(8){--n:7}
+@keyframes hop{0%,60%,100%{transform:none}30%{transform:translateY(-8px) rotate(-8deg)}}
+@media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none}.bubs{display:none}}
+.hero h1 .w{color:inherit}
+.hero h1 span:not(.w)::after{opacity:1;height:.09em;bottom:-.02em;inset-inline:10%}
+.hero .wave{left:-6%;width:112%}
