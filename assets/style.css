@@ -210,8 +210,6 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--yellow);outline-off
 .hero h1 span.w + span, .hero h1 span > .w{display:inline-block}
 @keyframes wpop{0%{opacity:0;transform:translateY(40px) scale(.4) rotate(-8deg)}100%{opacity:1;transform:none}}
 .hero h1 span:not(.w){display:inline-block;position:relative}
-.hero h1 span:not(.w)::after{content:"";position:absolute;inset-inline:6%;bottom:2px;height:.14em;background:var(--yellow);border-radius:99px;transform:scaleX(0);transform-origin:right;animation:uline .7s .9s cubic-bezier(.2,.9,.3,1.2) forwards;opacity:.5}
-@keyframes uline{to{transform:scaleX(1)}}
 .rv-h{animation:fadeUp .8s .55s both}
 .hero .cta{animation:fadeUp .8s .8s both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}}
@@ -319,6 +317,4 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--yellow);outline-off
 @keyframes hop{0%,60%,100%{transform:none}30%{transform:translateY(-8px) rotate(-8deg)}}
 @media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none}.bubs{display:none}}
 .hero h1 .w{color:inherit}
-.hero h1 span:not(.w)::after{opacity:1;height:.09em;bottom:-.02em;inset-inline:10%}
 .hero .wave{left:-6%;width:112%}
-.hero h1 span:not(.w)::after{display:none}

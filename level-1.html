@@ -11,7 +11,7 @@
 <meta property="og:image" content="assets/img/icon.png">
 <link rel="icon" href="assets/img/icon.png">
 <link rel="preload" href="assets/fonts/Ruqiaround-Bold.otf" as="font" type="font/otf" crossorigin>
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/style.css?v=3">
 </head>
 <body>
 <div class="sprog" aria-hidden="true"></div>
@@ -49,6 +49,6 @@ document.querySelector('.menu').addEventListener('click',e=>{const b=e.currentTa
 document.querySelectorAll('[data-lb]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const d=document.createElement('div');d.className='lb';d.innerHTML='<img src="'+a.href+'" alt="">';d.onclick=()=>d.remove();document.addEventListener('keydown',function k(ev){if(ev.key==='Escape'){d.remove();document.removeEventListener('keydown',k)}});document.body.appendChild(d)}));
 
 </script>
-<script src="assets/motion.js" defer></script>
+<script src="assets/motion.js?v=3" defer></script>
 </body>
 </html>
