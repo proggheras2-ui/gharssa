@@ -1,0 +1,1078 @@
+{
+ "v": 1,
+ "site": {
+  "titlePre": "برنامج",
+  "name": "غرس",
+  "slogan": "غراسُ اليوم.. ثمارُ الغد",
+  "intro": "برنامج تعليمي قرآني يأخذ بيد الطفل من الحروف إلى إتقان التلاوة",
+  "cta": [
+   {
+    "label": "سجّل طفلك الآن",
+    "href": "https://forms.gle/12do2TuQf1bp5TE77",
+    "style": "y"
+   },
+   {
+    "label": "تصفّح المستويات",
+    "href": "levels.html",
+    "style": "w"
+   }
+  ]
+ },
+ "contact": {
+  "phone": "055 252 1152",
+  "phone_int": "966552521152",
+  "mail": "gheras4children@gmail.com",
+  "wa": "https://wa.me/message/Z3IPNXYBPSAGJ1",
+  "wach": "https://whatsapp.com/channel/0029VaCsWDD42DcdBfbz683Y",
+  "tg": "https://t.me/joinchat/V78ppi1SLn0_ZlSX",
+  "yt": "https://www.youtube.com/@GherasSA",
+  "map": "https://goo.gl/maps/uQATtQkdp9N2"
+ },
+ "nav": [
+  {
+   "label": "الرئيسية",
+   "href": "index.html",
+   "show": true
+  },
+  {
+   "label": "المستويات",
+   "href": "levels.html",
+   "show": true
+  },
+  {
+   "label": "الألعاب",
+   "href": "games/index.html?v=10",
+   "show": true
+  },
+  {
+   "label": "تربويات وآداب",
+   "href": "tarbawiyat.html",
+   "show": true
+  },
+  {
+   "label": "ثمارنا",
+   "href": "fruits.html",
+   "show": true
+  },
+  {
+   "label": "مشاعركم",
+   "href": "feelings.html",
+   "show": true
+  },
+  {
+   "label": "النقل",
+   "href": "transport.html",
+   "show": true
+  },
+  {
+   "label": "انضم إلينا",
+   "href": "join.html",
+   "show": true
+  }
+ ],
+ "home": [
+  {
+   "id": "tiles",
+   "type": "tiles",
+   "title": "",
+   "show": true,
+   "items": [
+    {
+     "title": "المستويات",
+     "desc": "ستة مستويات من الحروف إلى التلاوة",
+     "href": "levels.html",
+     "color": "t-navy",
+     "icon": "book"
+    },
+    {
+     "title": "إتقان الحروف",
+     "desc": "تقييم الطلاب ومتابعة إتقانهم",
+     "href": "https://script.google.com/macros/s/AKfycbyL3oIz9BJNkck2ctg85zEYBstz_dN_XJ8tgrmj4iORVQeVQWPtFhgyJYW9svZu9RHzPw/exec",
+     "color": "t-yel",
+     "icon": "letters"
+    },
+    {
+     "title": "الألعاب التعليمية",
+     "desc": "١٧ لعبة ممتعة للحروف والحركات",
+     "href": "games/index.html?v=10",
+     "color": "t-grad",
+     "icon": "game"
+    },
+    {
+     "title": "تربويات وآداب",
+     "desc": "قيم وآداب نغرسها في أطفالنا",
+     "href": "tarbawiyat.html",
+     "color": "t-sky",
+     "icon": "tree"
+    },
+    {
+     "title": "التسجيل",
+     "desc": "سجّل طفلك في برنامج غرس",
+     "href": "https://forms.gle/12do2TuQf1bp5TE77",
+     "color": "t-red",
+     "icon": "form"
+    },
+    {
+     "title": "انضم إلينا",
+     "desc": "تطوّع وكن جزءًا من رحلة التغيير",
+     "href": "join.html",
+     "color": "t-navy2",
+     "icon": "hand"
+    }
+   ]
+  },
+  {
+   "id": "stats",
+   "type": "stats",
+   "title": "",
+   "show": true,
+   "items": [
+    {
+     "n": 6,
+     "label": "مستويات متدرّجة",
+     "color": "n"
+    },
+    {
+     "n": 29,
+     "label": "حرفًا نتعلّمها",
+     "color": "s"
+    },
+    {
+     "n": 17,
+     "label": "لعبة تعليمية",
+     "color": "y"
+    },
+    {
+     "n": 5,
+     "label": "مكوّنات للبرنامج",
+     "color": "r"
+    }
+   ]
+  },
+  {
+   "id": "comps",
+   "type": "comps",
+   "title": "مكوّنات البرنامج",
+   "show": true,
+   "items": [
+    {
+     "title": "حفظ القرآن الكريم",
+     "icon": "i_book_c"
+    },
+    {
+     "title": "منهج بيان",
+     "icon": "i_star_c"
+    },
+    {
+     "title": "حفظ متن تحفة الأطفال",
+     "icon": "i_pencil_c"
+    },
+    {
+     "title": "الحساب",
+     "icon": "i_puzzle_c"
+    },
+    {
+     "title": "تربويات وآداب",
+     "icon": "i_sun_c"
+    }
+   ]
+  },
+  {
+   "id": "levels",
+   "type": "levels",
+   "title": "رحلة المستويات",
+   "show": true
+  },
+  {
+   "id": "cards",
+   "type": "cards",
+   "title": "من أنشطة غرس",
+   "show": true,
+   "items": [
+    {
+     "title": "ثمارنا",
+     "desc": "إنجازات أطفالنا وثمار البرنامج",
+     "href": "fruits.html",
+     "icon": "tree"
+    },
+    {
+     "title": "مشاعركم",
+     "desc": "كلمات أولياء الأمور عن غرس",
+     "href": "feelings.html",
+     "icon": "heart"
+    },
+    {
+     "title": "برنامج النقل",
+     "desc": "نقل آمن للأطفال من وإلى المقر",
+     "href": "transport.html",
+     "icon": "bus"
+    }
+   ]
+  },
+  {
+   "id": "videos",
+   "type": "videos",
+   "title": "مرئيات غرس",
+   "show": true,
+   "items": [
+    {
+     "title": "مرئي برنامج غرس ١",
+     "yt": "nZF57Fy2e2U"
+    },
+    {
+     "title": "مرئي برنامج غرس ٢",
+     "yt": "MhqqIhhVKY8"
+    }
+   ]
+  },
+  {
+   "id": "stores",
+   "type": "stores",
+   "title": "",
+   "show": true,
+   "items": [
+    {
+     "title": "كتب نور البيان",
+     "desc": "اطلبها من متجر غراس",
+     "href": "https://gheras-store.com/كتب-نور-البيان/c1450878277",
+     "icon": "book",
+     "style": "s1"
+    },
+    {
+     "title": "متجر غراس",
+     "desc": "منتجات تعليمية للأطفال",
+     "href": "https://store.gheras.sa/",
+     "icon": "store",
+     "style": "s2"
+    }
+   ]
+  }
+ ],
+ "levelsPage": {
+  "title": "مستويات البرنامج",
+  "sub": "ستة مستويات متدرّجة.. من تعلّم الحروف إلى تمكين التلاوة"
+ },
+ "levels": [
+  {
+   "n": 1,
+   "name": "المستوى الأول",
+   "stage": "مرحلة الحروف",
+   "color": "yel",
+   "show": true,
+   "books": [
+    {
+     "title": "كتاب الحروف",
+     "url": "https://drive.google.com/file/d/1c-5FwctXrpi6F9V8WBI0fzxv_3uPrAnP/view"
+    },
+    {
+     "title": "كتاب الحساب",
+     "url": "https://drive.google.com/file/d/1yogLiX-481WiJfQaB1CYMx9Xt6tDcQea/view"
+    }
+   ],
+   "quran": "حفظ سورة الفاتحة، ومن سورة الناس إلى سورة العصر",
+   "quran_pdf": "https://drive.google.com/file/d/1L4VI-xHdTe-V2umarEMEtJHyL73227Ml/view",
+   "surahs": [
+    {
+     "name": "الفاتحة",
+     "url": "https://drive.google.com/file/d/1zAS39pHfAftIHdXHqnWOre3eQvdZztgu/view",
+     "kind": "doc"
+    },
+    {
+     "name": "الناس",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_114.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الفلق",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_113.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الإخلاص",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_112.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "المسد",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_111.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "النصر",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_110.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الكافرون",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_109.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الكوثر",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_108.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الماعون",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_107.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "قريش",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_106.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الفيل",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_105.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الهمزة",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_104.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "العصر",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_103.mp3",
+     "kind": "mp3"
+    }
+   ],
+   "tuhfa": "الأبيات ١ – ١١"
+  },
+  {
+   "n": 2,
+   "name": "المستوى الثاني",
+   "stage": "مرحلة الحركات",
+   "color": "sky",
+   "show": true,
+   "books": [
+    {
+     "title": "كتاب الحركات",
+     "url": "https://drive.google.com/file/d/1irst-r2w6iUTOMXWXGX_XMhWhPblqWPH/view"
+    },
+    {
+     "title": "كتاب الحساب",
+     "url": "https://drive.google.com/file/d/1mh7JILArNytJNbXs6Bi5baOcv25NAgOo/view"
+    }
+   ],
+   "quran": "من سورة التكاثر إلى سورة الضحى",
+   "quran_pdf": "https://drive.google.com/file/d/19d-wnwibiIRGanY5UmNDVmurv6rsK912/view",
+   "surahs": [
+    {
+     "name": "التكاثر",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_102.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "القارعة",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_101.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "العاديات",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_100.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الزلزلة",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_099.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "البينة",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_098.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "القدر",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_097.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "العلق",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_096.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "التين",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_095.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الشرح",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_094.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الضحى",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_093.mp3",
+     "kind": "mp3"
+    }
+   ],
+   "tuhfa": "الأبيات ١٢ – ٢٣"
+  },
+  {
+   "n": 3,
+   "name": "المستوى الثالث",
+   "stage": "مرحلة المدود والتنوينات",
+   "color": "red",
+   "show": true,
+   "books": [
+    {
+     "title": "مرحلة التنوينات",
+     "url": "https://drive.google.com/file/d/1GK0TZRqXtE5RJZ-UoEABDfgPWNDqIrAp/view"
+    },
+    {
+     "title": "مرحلة المدود",
+     "url": "https://drive.google.com/file/d/1ugok6zr9JS9McVw_V06wAkhMr02VWC_x/view"
+    },
+    {
+     "title": "كتاب الحساب",
+     "url": "https://drive.google.com/file/d/1_KfuUQP2ApZznwX6Wexe059Jot94aGtF/view"
+    }
+   ],
+   "quran": "من سورة الليل إلى سورة الانشقاق",
+   "quran_pdf": "https://drive.google.com/file/d/1iFrBgN7dxcZA0r-RJ-18EHF90i9Gaszd/view",
+   "surahs": [
+    {
+     "name": "الليل",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_092.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الشمس",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_091.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "البلد",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_090.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الفجر",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_089.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الغاشية",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_088.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الأعلى",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_087.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الطارق",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_086.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "البروج",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_085.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الانشقاق",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_084.mp3",
+     "kind": "mp3"
+    }
+   ],
+   "tuhfa": "الأبيات ٢٤ – ٣٤"
+  },
+  {
+   "n": 4,
+   "name": "المستوى الرابع",
+   "stage": "مرحلة السكون والشدّات",
+   "color": "navy",
+   "show": true,
+   "books": [
+    {
+     "title": "مرحلة السكون",
+     "url": "https://drive.google.com/file/d/1505PP9NRckbObDbgYdy9e7L79oiRN0s-/view"
+    },
+    {
+     "title": "مرحلة الشدّات",
+     "url": "https://drive.google.com/file/d/1vHxBhgXIpjNDnla7znHxthHWT1U0LxRe/view"
+    },
+    {
+     "title": "كتاب الحساب",
+     "url": "https://drive.google.com/file/d/1mT4S1jp9oFsnxJ9zNxVl12FRW5dYnJWI/view"
+    }
+   ],
+   "quran": "من سورة المطففين إلى سورة النبأ",
+   "quran_pdf": "https://drive.google.com/file/d/19ZDJvChuARnSexusKST5Ur-Ko__vnBam/view",
+   "surahs": [
+    {
+     "name": "المطففين",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_083.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الانفطار",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_082.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "التكوير",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_081.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "عبس",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_080.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "النازعات",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_079.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "النبأ",
+     "url": "https://d1.islamhouse.com/data/ar/ih_sounds/chain/Quran_Teacher/Quran_Teacher_Khalifah_Altunijy/Quran_Teacher_Khalifah_Altunijy_078.mp3",
+     "kind": "mp3"
+    }
+   ],
+   "tuhfa": "الأبيات ٣٥ – ٤٧"
+  },
+  {
+   "n": 5,
+   "name": "المستوى الخامس",
+   "stage": "مرحلة خاتمة التلاوة",
+   "color": "sky",
+   "show": true,
+   "books": [
+    {
+     "title": "تمهيدي التلاوة",
+     "url": "https://drive.google.com/file/d/1qRcCa_UV4hmMW2Ta1WyOtgSCAwdZG2EH/view"
+    },
+    {
+     "title": "التلاوة المتقدمة",
+     "url": "https://drive.google.com/file/d/16ye9NhJH03Ml3oMRQ9U6ZnXPbYMeVlqR/view"
+    }
+   ],
+   "quran": "من سورة المرسلات إلى سورة المزمل",
+   "quran_pdf": "https://drive.google.com/file/d/19ZDJvChuARnSexusKST5Ur-Ko__vnBam/view",
+   "surahs": [
+    {
+     "name": "المرسلات",
+     "url": "https://download.quran.islamway.net/quran3/737/077.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "الإنسان",
+     "url": "https://download.quran.islamway.net/quran3/737/076.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "القيامة",
+     "url": "https://download.quran.islamway.net/quran3/737/075.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "المدثر",
+     "url": "https://download.quran.islamway.net/quran3/737/074.mp3",
+     "kind": "mp3"
+    },
+    {
+     "name": "المزمل",
+     "url": "https://download.quran.islamway.net/quran3/737/073.mp3",
+     "kind": "mp3"
+    }
+   ],
+   "tuhfa": "الأبيات ٤٨ – ٦١"
+  },
+  {
+   "n": 6,
+   "name": "المستوى السادس",
+   "stage": "مرحلة تمكين التلاوة",
+   "color": "red",
+   "show": true,
+   "books": [
+    {
+     "title": "التلاوة المتقدمة",
+     "url": "https://drive.google.com/file/d/16ye9NhJH03Ml3oMRQ9U6ZnXPbYMeVlqR/view"
+    }
+   ],
+   "quran": "من سورة الجن إلى سورة الملك",
+   "quran_pdf": "https://drive.google.com/file/d/19ZDJvChuARnSexusKST5Ur-Ko__vnBam/view",
+   "surahs": [
+    {
+     "name": "الجن",
+     "url": "",
+     "kind": ""
+    },
+    {
+     "name": "نوح",
+     "url": "",
+     "kind": ""
+    },
+    {
+     "name": "المعارج",
+     "url": "",
+     "kind": ""
+    },
+    {
+     "name": "الحاقة",
+     "url": "",
+     "kind": ""
+    },
+    {
+     "name": "القلم",
+     "url": "",
+     "kind": ""
+    },
+    {
+     "name": "الملك",
+     "url": "",
+     "kind": ""
+    }
+   ],
+   "tuhfa": "المتن كاملًا: الأبيات ١ – ٦١"
+  }
+ ],
+ "media": [
+  {
+   "title": "أنشودة الحروف",
+   "url": "https://www.youtube.com/watch?v=uuZa5e1vvuQ",
+   "yt": "uuZa5e1vvuQ"
+  },
+  {
+   "title": "برنامج قلم أستاذ وكتاب",
+   "url": "https://www.youtube.com/watch?v=LT-827Ucvsc&list=PLCuK2jDSEfNwwwbinxg3j3LVcvCqRjaUm",
+   "yt": "LT-827Ucvsc"
+  },
+  {
+   "title": "مسلسل معاذ والأصدقاء",
+   "url": "https://youtube.com/playlist?list=PL2Otts-WVUlw8-6amHwpBC3-cl1GbKWBU",
+   "yt": ""
+  }
+ ],
+ "tuhfa": {
+  "pdf": "https://drive.google.com/file/d/10T2Lrx5QRKWiJ84Xy96gRPzPZ-UYqLVI/view",
+  "video": "https://www.youtube.com/watch?v=sMbpvVFwE8Y"
+ },
+ "letters": "https://script.google.com/macros/s/AKfycbyL3oIz9BJNkck2ctg85zEYBstz_dN_XJ8tgrmj4iORVQeVQWPtFhgyJYW9svZu9RHzPw/exec",
+ "pages": [
+  {
+   "id": "tarbawiyat",
+   "type": "gallery",
+   "title": "تربويات وآداب",
+   "sub": "قيم وآداب نغرسها في قلوب أطفالنا",
+   "images": [
+    {
+     "full": "assets/tarbawiyat/t01.jpg",
+     "thumb": "assets/tarbawiyat/t01_s.jpg",
+     "alt": "بطاقة تربوية 1"
+    },
+    {
+     "full": "assets/tarbawiyat/t02.jpg",
+     "thumb": "assets/tarbawiyat/t02_s.jpg",
+     "alt": "بطاقة تربوية 2"
+    },
+    {
+     "full": "assets/tarbawiyat/t03.jpg",
+     "thumb": "assets/tarbawiyat/t03_s.jpg",
+     "alt": "بطاقة تربوية 3"
+    },
+    {
+     "full": "assets/tarbawiyat/t04.jpg",
+     "thumb": "assets/tarbawiyat/t04_s.jpg",
+     "alt": "بطاقة تربوية 4"
+    },
+    {
+     "full": "assets/tarbawiyat/t05.jpg",
+     "thumb": "assets/tarbawiyat/t05_s.jpg",
+     "alt": "بطاقة تربوية 5"
+    },
+    {
+     "full": "assets/tarbawiyat/t06.jpg",
+     "thumb": "assets/tarbawiyat/t06_s.jpg",
+     "alt": "بطاقة تربوية 6"
+    },
+    {
+     "full": "assets/tarbawiyat/t07.jpg",
+     "thumb": "assets/tarbawiyat/t07_s.jpg",
+     "alt": "بطاقة تربوية 7"
+    },
+    {
+     "full": "assets/tarbawiyat/t08.jpg",
+     "thumb": "assets/tarbawiyat/t08_s.jpg",
+     "alt": "بطاقة تربوية 8"
+    },
+    {
+     "full": "assets/tarbawiyat/t09.jpg",
+     "thumb": "assets/tarbawiyat/t09_s.jpg",
+     "alt": "بطاقة تربوية 9"
+    },
+    {
+     "full": "assets/tarbawiyat/t10.jpg",
+     "thumb": "assets/tarbawiyat/t10_s.jpg",
+     "alt": "بطاقة تربوية 10"
+    },
+    {
+     "full": "assets/tarbawiyat/t11.jpg",
+     "thumb": "assets/tarbawiyat/t11_s.jpg",
+     "alt": "بطاقة تربوية 11"
+    },
+    {
+     "full": "assets/tarbawiyat/t12.jpg",
+     "thumb": "assets/tarbawiyat/t12_s.jpg",
+     "alt": "بطاقة تربوية 12"
+    }
+   ]
+  },
+  {
+   "id": "fruits",
+   "type": "video",
+   "title": "ثمارنا",
+   "sub": "من ثمار برنامج غرس وإنجازات أطفالنا",
+   "yt": "P7MW7_DVNwI"
+  },
+  {
+   "id": "feelings",
+   "type": "video",
+   "title": "مشاعركم",
+   "sub": "كلمات أولياء الأمور عن برنامج غرس",
+   "yt": "vXjeLT6O3jo"
+  },
+  {
+   "id": "transport",
+   "type": "video",
+   "title": "برنامج نقل غرس",
+   "sub": "نقل آمن ومريح للأطفال من وإلى مقر البرنامج",
+   "yt": "DCSqhWI9V14"
+  },
+  {
+   "id": "join",
+   "type": "join",
+   "title": "انضم إلينا",
+   "sub": "حيث نزرع بذور الأمل ونرعى مستقبل أجيالنا",
+   "cards": [
+    {
+     "title": "تطوّع معنا",
+     "text": "كن نبراسًا يضيء درب العلم والمعرفة، شارك بوقتك وجهدك، وساهم في بناء جيلٍ واعٍ ومتعلّم. تطوّع وكن جزءًا من رحلة التغيير.",
+     "btn": "تواصل للتطوّع",
+     "href": "https://wa.me/message/Z3IPNXYBPSAGJ1",
+     "icon": "hand"
+    },
+    {
+     "title": "سجّل طفلك",
+     "text": "انضم إلينا حيث نزرع بذور الأمل ونرعى مستقبل أجيالنا، فكل يدٍ تساهم تصنع فارقًا في حياة الأطفال.",
+     "btn": "نموذج التسجيل",
+     "href": "https://forms.gle/12do2TuQf1bp5TE77",
+     "icon": "form"
+    }
+   ]
+  }
+ ],
+ "games": {
+  "order": [],
+  "hidden": []
+ },
+ "kids": {
+  "d52a83e0f0ee4a01": [
+   "الوليد"
+  ],
+  "e93d52dc13f43405": [
+   "حكيم"
+  ],
+  "e3090f6c270d8394": [
+   "حمد"
+  ],
+  "9805f4668b8cea58": [
+   "سلطان"
+  ],
+  "5dea8161eee132f0": [
+   "خالد"
+  ],
+  "570cd20dbba98fd8": [
+   "عبدالعزيز"
+  ],
+  "50da5dc263a10a76": [
+   "عبدالله"
+  ],
+  "d54930de47ba046c": [
+   "عبدالله"
+  ],
+  "741fbbb8f0659d5f": [
+   "فهد"
+  ],
+  "ae540b12b796454b": [
+   "فهد"
+  ],
+  "e26475436753b81d": [
+   "عبدالعزيز"
+  ],
+  "e367f90c9e468dc5": [
+   "محمد"
+  ],
+  "73bce22c84108647": [
+   "سعد"
+  ],
+  "51ff81094d4f4c32": [
+   "محمد"
+  ],
+  "35dbb109a334f362": [
+   "أنس"
+  ],
+  "b2aa0d5d19e4ea9e": [
+   "سلطان"
+  ],
+  "23529dae4c34f084": [
+   "محمد"
+  ],
+  "fb8e71456c0c6a3e": [
+   "خالد"
+  ],
+  "35c3f3ded1503c30": [
+   "ابراهيم"
+  ],
+  "8b4d29ec4812c587": [
+   "ابراهيم"
+  ],
+  "9c244c0f0e94fd09": [
+   "جواد"
+  ],
+  "0606211016635581": [
+   "حكيم"
+  ],
+  "739c61c6cd543f89": [
+   "حمد"
+  ],
+  "b992b224bf5047cb": [
+   "سليمان"
+  ],
+  "225a70c143cf9f82": [
+   "طلال"
+  ],
+  "9d817b0f1418711c": [
+   "عبدالله"
+  ],
+  "30f92e98f9ccf009": [
+   "عبدالوهاب"
+  ],
+  "08609d1254c29ed8": [
+   "فيصل"
+  ],
+  "271bc885e2422897": [
+   "محمد"
+  ],
+  "30cfdedcb575e897": [
+   "محمد",
+   "مهند"
+  ],
+  "3ccdaa61624f7912": [
+   "مهند"
+  ],
+  "941604066bf33046": [
+   "عبدالله"
+  ],
+  "9fb758c3150ca8d9": [
+   "تمام"
+  ],
+  "8ea0bd0191740d74": [
+   "أسيد"
+  ],
+  "e2da7ce963bb0f12": [
+   "أوس"
+  ],
+  "1dd40c8e41bbf706": [
+   "ثابت"
+  ],
+  "1f6742ed7dd86bcd": [
+   "عبدالرحمن"
+  ],
+  "981b2279de33b3e5": [
+   "احمد"
+  ],
+  "fe272c0c2764dee7": [
+   "عمر"
+  ],
+  "cc1a911fc787b1d7": [
+   "فهد"
+  ],
+  "c88d1549c221365e": [
+   "محمد"
+  ],
+  "34493bb175f5196b": [
+   "مشعل"
+  ],
+  "b8a4632807c49f19": [
+   "فيصل"
+  ],
+  "5489e3f00bdd9b14": [
+   "عساف"
+  ],
+  "14aa887d76461152": [
+   "تميم"
+  ],
+  "741d52b530da8e2e": [
+   "محمد"
+  ],
+  "8cd3440d43824eb6": [
+   "بسام"
+  ],
+  "fbf8f4dbef58b713": [
+   "عمر"
+  ],
+  "2a95e98697937af7": [
+   "عبدالرحمن",
+   "محمد"
+  ],
+  "bfc07242f436d5c8": [
+   "ابراهيم"
+  ],
+  "5c118c07e82c9d1f": [
+   "تميم",
+   "مهند"
+  ],
+  "c642425af0af5497": [
+   "صالح"
+  ],
+  "d8c37c648a315a79": [
+   "عبدالله"
+  ],
+  "cdc871e42b346b52": [
+   "عز"
+  ],
+  "096a834bed38c044": [
+   "محمد"
+  ],
+  "f8c0bf37773dab9a": [
+   "محمد"
+  ],
+  "b593a4cbdbc5f0ff": [
+   "عبدالله"
+  ],
+  "eb8fac0f33969ad1": [
+   "خالد"
+  ],
+  "63eecc022e986ce4": [
+   "محمد"
+  ],
+  "e943a0a5cba8659d": [
+   "بسام"
+  ],
+  "8581192dcc859b88": [
+   "عبدالعزيز"
+  ],
+  "920276d065fd5160": [
+   "عزام"
+  ],
+  "a1922ac1dda5cbe2": [
+   "عثمان"
+  ],
+  "05a4e321f25513ac": [
+   "عبدالله"
+  ],
+  "ccb96e8a64a60682": [
+   "إبراهيم"
+  ],
+  "6427bd8eb585c1c6": [
+   "خالد"
+  ],
+  "1d2ad67cb7a5e2b9": [
+   "سعيد"
+  ],
+  "335034fc7c4e89fa": [
+   "عبدالإله"
+  ],
+  "6095e8da38c59e25": [
+   "عثمان"
+  ],
+  "69ce0f6adb2bf18f": [
+   "فهد"
+  ],
+  "580e7084235ba284": [
+   "فيصل"
+  ],
+  "d4701031f1334092": [
+   "هشام"
+  ],
+  "b63cd71b3cfbe512": [
+   "همام"
+  ],
+  "67f2eeab408b0e19": [
+   "عبدالله"
+  ],
+  "fde3d8b3cc82e984": [
+   "عبدالحكيم"
+  ],
+  "1e2e9cd78db4d5cb": [
+   "أسامة"
+  ],
+  "3dc7818c164589db": [
+   "عبداللطيف",
+   "فوزان"
+  ],
+  "35b75931435e6976": [
+   "ياسر"
+  ],
+  "467cd49b4b72095c": [
+   "عبدالملك"
+  ],
+  "f1d143dd8cd704e4": [
+   "عبدالله"
+  ],
+  "04d5c91b649f4260": [
+   "ابراهيم",
+   "فارس"
+  ],
+  "6f7e2c90063f6722": [
+   "بدر"
+  ],
+  "78e13270527f8b29": [
+   "تميم"
+  ],
+  "692a3be0afec0078": [
+   "عبدالله"
+  ],
+  "65e674ef211ed717": [
+   "عبدالعزيز"
+  ],
+  "fb58ce9292a5f787": [
+   "عبدالعزيز"
+  ],
+  "e282fd4972a0743b": [
+   "عزيز"
+  ],
+  "95aa02386853dd4d": [
+   "فواز"
+  ],
+  "bae93fd0a318e6f4": [
+   "نايف"
+  ],
+  "0523d4cb035e6d01": [
+   "ريان"
+  ],
+  "f6d28e1c0f8b8b18": [
+   "عبدالعزيز"
+  ],
+  "5ed7d43cd8ce5aad": [
+   "حسان"
+  ],
+  "baed6a347141c025": [
+   "عبدالرحمن"
+  ],
+  "c4fccb059ad6ad59": [
+   "عبدالعزيز"
+  ],
+  "40756c0bcfe6c878": [
+   "محمد"
+  ],
+  "a1c45319459878b4": [
+   "الوليد"
+  ],
+  "54355485882af749": [
+   "سليمان"
+  ],
+  "6d47217565db723e": [
+   "نايف"
+  ]
+ }
+}

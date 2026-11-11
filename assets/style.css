@@ -320,3 +320,9 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--yellow);outline-off
 .hero .wave{left:-6%;width:112%}
 .brand{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.14)}
 .brand .sep{background:var(--white)}
+/* boot loader + text sections */
+.boot{min-height:100vh;display:flex;gap:12px;align-items:center;justify-content:center;background:var(--grad)}
+.boot i{width:18px;height:18px;border-radius:50%;background:var(--yellow);animation:bootp .9s ease-in-out infinite}
+.boot i:nth-child(2){background:var(--white);animation-delay:.15s}.boot i:nth-child(3){background:var(--red);animation-delay:.3s}
+@keyframes bootp{50%{transform:translateY(-16px)}}
+.txt p{font-size:20px;line-height:1.9;margin:0 0 14px}

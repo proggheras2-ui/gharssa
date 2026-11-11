@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>لوحة التحكم | برنامج غرس</title>
+<link rel="icon" href="../assets/img/icon.png">
+<style>
+@font-face{font-family:"Ruqiaround";src:url(../assets/fonts/Ruqiaround-Bold.otf) format("opentype");font-weight:700}
+@font-face{font-family:"Ruqiaround";src:url(../assets/fonts/Ruqiaround-Medium.otf) format("opentype");font-weight:500}
+:root{--navy:#283370;--sky:#0AA4AD;--red:#DE4A52;--yellow:#FDB515;--white:#fff;--mist:#EEF3F8;--line:#D9E2EE;--soft:#4a5488;--grad:linear-gradient(135deg,#283370,#0AA4AD);--f:"Ruqiaround",Tahoma,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--mist);color:var(--navy);font:500 16px/1.6 var(--f)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.brand{background:var(--navy);display:flex;justify-content:center;align-items:center;gap:28px;padding:14px}
+.brand img{height:46px}.brand .sep{width:2px;height:40px;background:#fff}
+.top{background:var(--grad);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.top h1{margin:0;font-size:24px;flex:1}
+.top a,.top button{background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 16px;font-weight:700;text-decoration:none}
+.layout{display:grid;grid-template-columns:220px 1fr;gap:18px;max-width:1200px;margin:18px auto;padding:0 16px 120px}
+@media(max-width:820px){.layout{grid-template-columns:1fr}}
+.tabs{display:flex;flex-direction:column;gap:6px;position:sticky;top:12px;align-self:start}
+@media(max-width:820px){.tabs{flex-direction:row;overflow-x:auto;position:static}}
+.tabs button{background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 14px;text-align:right;font-weight:700;white-space:nowrap}
+.tabs button[aria-selected=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.panel{background:#fff;border-radius:22px;padding:20px;box-shadow:0 10px 30px -22px rgba(40,51,112,.6)}
+.panel h2{margin:0 0 6px;font-size:26px}.panel>p.help{margin:0 0 16px;color:var(--soft)}
+h3.sub{margin:22px 0 10px;font-size:20px;display:flex;align-items:center;gap:8px}
+h3.sub::before{content:"";width:8px;height:22px;border-radius:4px;background:var(--grad)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+label.f{display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:14px}
+label.f.full{grid-column:1/-1}
+input[type=text],input[type=url],input[type=number],input[type=password],select,textarea{border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:#fff;font-weight:500;width:100%}
+textarea{min-height:90px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sky)}
+.item{border:2px solid var(--line);border-radius:16px;margin-bottom:10px;background:#fff;overflow:hidden}
+.item.off{opacity:.55}
+.ihead{display:flex;align-items:center;gap:6px;padding:8px 10px;background:var(--mist)}
+.ihead .t{flex:1;font-weight:700;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ib{width:36px;height:36px;border-radius:10px;border:0;background:#fff;font-size:16px;display:grid;place-items:center;flex:none}
+.ib:hover{background:var(--yellow)}.ib.del:hover{background:var(--red);color:#fff}
+.ib:disabled{opacity:.3;cursor:default;background:#fff}
+.ibody{padding:12px}.item.closed .ibody{display:none}
+.add{border:2px dashed var(--sky);background:#fff;color:var(--sky);border-radius:14px;padding:8px 16px;font-weight:700}
+.add:hover{background:var(--sky);color:#fff}
+.btn{border:0;border-radius:999px;padding:10px 22px;font-weight:700;background:var(--navy);color:#fff}
+.btn.y{background:var(--yellow);color:var(--navy)}.btn.r{background:var(--red)}.btn.g{background:#fff;color:var(--navy);border:2px solid var(--line)}
+.savebar{position:fixed;bottom:0;inset-inline:0;background:var(--navy);color:#fff;display:flex;align-items:center;gap:12px;padding:12px 18px;z-index:20;box-shadow:0 -10px 30px -10px rgba(0,0,0,.4);transform:translateY(110%);transition:transform .3s}
+.savebar.on{transform:none}.savebar:not(.on){box-shadow:none}.savebar span{flex:1;font-weight:700}
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-150%);background:var(--navy);color:#fff;padding:10px 22px;border-radius:999px;font-weight:700;z-index:40;transition:transform .3s}
+.toast.on{transform:translateX(-50%)}.toast.err{background:var(--red)}
+.login{max-width:560px;margin:40px auto;padding:0 16px}
+.steps{background:var(--mist);border-radius:16px;padding:12px 16px 12px 30px;margin:12px 0;font-size:15px}
+.steps li{margin-bottom:6px}
+.kid{display:inline-flex;align-items:center;gap:6px;background:var(--mist);border-radius:999px;padding:4px 6px 4px 12px;margin:4px;font-weight:700}
+.kid button{width:26px;height:26px;border-radius:50%;border:0;background:#fff;color:var(--red);font-weight:700}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.thumb{position:relative;border-radius:12px;overflow:hidden;border:2px solid var(--line);background:var(--mist)}
+.thumb img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.thumb .acts{position:absolute;bottom:4px;inset-inline:4px;display:flex;gap:4px;justify-content:center}
+.thumb .acts .ib{width:30px;height:30px;font-size:13px}
+.chk{display:flex;align-items:center;gap:8px;font-weight:700}
+.note{background:#FFF6E0;border-radius:14px;padding:10px 14px;font-size:14px;margin:10px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+</style>
+</head>
+<body>
+<header class="brand"><img src="../assets/img/gheras_w.png" alt="جمعية غراس لتنمية الطفل"><span class="sep"></span><img src="../assets/img/ghars_w.png" alt="برنامج غرس"></header>
+<div id="app"></div>
+<div class="savebar" id="savebar"><span>لديك تعديلات غير منشورة</span><button class="btn g" id="discard">تجاهل</button><button class="btn y" id="save">حفظ ونشر على الموقع</button></div>
+<div class="toast" id="toast"></div>
+<script>
+const OWNER='proggheras2-ui',REPO='gharssa',BR='main',API=`https://api.github.com/repos/${OWNER}/${REPO}/contents/`;
+const GAMES=[['learn','بطاقات الحروف'],['listen','أين الحرف؟'],['pick','صورة وحرف'],['balloons','بالونات الحروف'],['memory','ذاكرة الحروف'],['train','قطار الحروف'],['odd','الحرف المختلف'],['dots','عُدّ النقاط'],['word3','قطار الكلمات الثلاثية'],['word4','قطار الكلمات الرباعية'],['harakat','صيّاد الحركات'],['hear','اسمع الحركة'],['sort','سلال القراءة'],['readpick','اسمع واقرأ'],['trace','اكتب الحرف'],['color','لوّن الشكل'],['pattern','ما الشكل التالي؟']];
+const ICONS=[['book','كتاب'],['letters','حروف أ ب'],['game','لعبة'],['tree','شجرة'],['form','نموذج'],['hand','يد'],['heart','قلب'],['bus','حافلة'],['store','متجر'],['play','تشغيل'],['pdf','ملف'],['mic','ميكروفون'],['phone','هاتف'],['mail','بريد'],['map','موقع']];
+const DOODLES=[['i_book_c','كتاب'],['i_star_c','نجمة'],['i_pencil_c','قلم'],['i_puzzle_c','أحجية'],['i_sun_c','شمس'],['i_leaf_c','ورقة'],['i_spiral_c','دوامة'],['i_tri_c','مثلث']];
+const TILE_C=[['t-navy','كحلي'],['t-navy2','تدرّج سماوي→كحلي'],['t-grad','تدرّج الهوية'],['t-sky','سماوي'],['t-red','أحمر'],['t-yel','أصفر']];
+const LV_C=[['yel','أصفر'],['sky','سماوي'],['red','أحمر'],['navy','كحلي']];
+const ST_C=[['n','كحلي'],['s','سماوي'],['y','أصفر'],['r','أحمر']];
+const SEC_T={tiles:'بطاقات الأقسام',stats:'شريط الأرقام',comps:'مكوّنات البرنامج',levels:'رحلة المستويات',cards:'بطاقات الأنشطة',videos:'مرئيات',stores:'المتاجر',text:'نص حر'};
+const PAGE_T={gallery:'معرض صور',video:'فيديو يوتيوب',join:'بطاقات انضمام',text:'نص'};
+const $=s=>document.querySelector(s);const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let TOK='';try{TOK=localStorage.getItem('ghars_admin_tok')||''}catch(e){}
+let C=null,SHA=null,ORIG='',tab='general';
+function toast(m,err){const t=$('#toast');t.textContent=m;t.className='toast on'+(err?' err':'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='toast',2600)}
+const b64e=s=>{const b=new TextEncoder().encode(s);let r='';for(let i=0;i<b.length;i+=0x8000)r+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));return btoa(r)};
+const b64d=s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g,'')),c=>c.charCodeAt(0)));
+async function gh(path,opt={}){const r=await fetch(API+path+(opt.method?'':`?ref=${BR}&t=${Date.now()}`),{...opt,headers:{Authorization:'Bearer '+TOK,Accept:'application/vnd.github+json',...(opt.headers||{})}});if(!r.ok){const e=new Error(r.status);e.status=r.status;try{e.body=await r.json()}catch(x){}throw e}return r.json()}
+async function hashKid(code){const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('gharsKids:'+code));return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,16)}
+function dirty(){$('#savebar').classList.toggle('on',JSON.stringify(C)!==ORIG)}
+
+/* ---------- login ---------- */
+function loginView(msg){$('#app').innerHTML=`<div class="login"><div class="panel"><h2>لوحة تحكم موقع غرس</h2><p class="help">هذه اللوحة خاصة بك. للدخول تحتاج «مفتاح دخول» من حساب GitHub الذي يملك الموقع، وتُنشئه مرة واحدة فقط.</p>
+<ol class="steps"><li>افتح <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">صفحة إنشاء مفتاح في GitHub</a> وأنت مسجّل الدخول.</li>
+<li>اكتب اسمًا مثل «لوحة غرس»، واختر مدة الصلاحية.</li><li>في <b>Repository access</b> اختر <b>Only select repositories</b> ثم <b>gharssa</b>.</li>
+<li>في <b>Permissions</b> → <b>Contents</b> اختر <b>Read and write</b>.</li><li>اضغط <b>Generate token</b> وانسخ المفتاح والصقه هنا.</li></ol>
+<label class="f">مفتاح الدخول<input type="password" id="tok" autocomplete="off" placeholder="github_pat_..."></label>
+<div class="note">يُحفظ المفتاح في هذا المتصفح فقط، ولا يُرسل إلا إلى GitHub. لا تشاركه مع أحد.</div>
+<div class="row"><button class="btn y" id="go">دخول</button><span id="lmsg" style="color:var(--red);font-weight:700">${msg||''}</span></div></div></div>`;
+ $('#go').onclick=async()=>{TOK=$('#tok').value.trim();if(!TOK)return;$('#lmsg').textContent='جارٍ التحقق...';try{await load();try{localStorage.setItem('ghars_admin_tok',TOK)}catch(e){}}catch(e){TOK='';$('#lmsg').textContent=e.status===401?'المفتاح غير صحيح أو منتهي':e.status===404?'المفتاح لا يملك صلاحية على مستودع gharssa':'تعذّر الاتصال، حاول مرة أخرى'}}}
+async function load(){const d=await gh('content.json');SHA=d.sha;C=JSON.parse(b64d(d.content));C.games=C.games||{order:[],hidden:[]};C.kids=C.kids||{};ORIG=JSON.stringify(C);main()}
+
+/* ---------- generic editors ---------- */
+function field(obj,f){const w=el('label','f'+(f.full||f.type==='textarea'?' full':''),esc(f.label));let i;
+ if(f.type==='select'){i=el('select');f.opts.forEach(([v,l])=>{const o=el('option','',esc(l));o.value=v;i.appendChild(o)});i.value=obj[f.k]??f.opts[0][0]}
+ else if(f.type==='textarea'){i=el('textarea');i.value=obj[f.k]??''}
+ else if(f.type==='check'){const c=el('label','chk');i=el('input');i.type='checkbox';i.checked=obj[f.k]!==false;c.append(i,document.createTextNode(f.label));i.onchange=()=>{obj[f.k]=i.checked;dirty()};return c}
+ else{i=el('input');i.type=f.type==='num'?'number':f.type==='url'?'url':'text';i.value=obj[f.k]??'';if(f.ph)i.placeholder=f.ph;if(f.type==='url')i.dir='ltr'}
+ i.oninput=i.onchange=()=>{obj[f.k]=f.type==='num'?+i.value:i.value;dirty();if(f.onchange)f.onchange()};w.appendChild(i);return w}
+function fields(obj,list){const g=el('div','grid2');list.forEach(f=>g.appendChild(f.type==='list'?listBlock(obj,f):field(obj,f)));return g}
+function listBlock(obj,f){const w=el('div','f full');w.style.gridColumn='1/-1';w.appendChild(el('h3','sub',esc(f.label)));obj[f.k]=obj[f.k]||[];w.appendChild(listEd(obj[f.k],f));return w}
+function listEd(arr,o){const box=el('div');
+ const draw=()=>{box.innerHTML='';arr.forEach((it,i)=>{const card=el('div','item closed'+(it.show===false?' off':''));const h=el('div','ihead');
+   const t=el('span','t',esc((o.title?o.title(it):it[o.fields[0].k])||'(بدون عنوان)'));t.onclick=()=>card.classList.toggle('closed');
+   const up=el('button','ib','▲');up.title='أعلى';up.disabled=i===0;up.onclick=()=>{[arr[i-1],arr[i]]=[arr[i],arr[i-1]];dirty();draw()};
+   const dn=el('button','ib','▼');dn.title='أسفل';dn.disabled=i===arr.length-1;dn.onclick=()=>{[arr[i+1],arr[i]]=[arr[i],arr[i+1]];dirty();draw()};
+   h.append(t,up,dn);
+   if(o.toggle){const v=el('button','ib',it.show===false?'🚫':'👁');v.title=it.show===false?'إظهار':'إخفاء';v.onclick=()=>{it.show=it.show===false;dirty();draw()};h.appendChild(v)}
+   const ed=el('button','ib','✎');ed.title='تعديل';ed.onclick=()=>card.classList.toggle('closed');h.appendChild(ed);
+   if(o.del!==false){const d=el('button','ib del','🗑');d.title='حذف';d.onclick=()=>{if(confirm('حذف «'+(t.textContent)+'»؟')){arr.splice(i,1);dirty();draw()}};h.appendChild(d)}
+   card.appendChild(h);const body=el('div','ibody');const fl=(typeof o.fields==='function'?o.fields(it):o.fields).map(f=>({...f,onchange:()=>{t.textContent=(o.title?o.title(it):it[o.fields[0]?.k])||'(بدون عنوان)';f.onchange&&f.onchange()}}));
+   body.appendChild(fields(it,fl));if(o.extra)o.extra(it,body);card.appendChild(body);box.appendChild(card)});
+  if(o.blank){const a=el('button','add','+ إضافة '+(o.noun||''));a.onclick=()=>{const n=o.blank();arr.push(n);dirty();draw();box.querySelectorAll('.item')[arr.length-1]?.classList.remove('closed')};box.appendChild(a)}};
+ draw();return box}
+
+/* ---------- image upload ---------- */
+function resize(file,max){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{const k=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.84).split(',')[1])};img.onerror=rej;img.src=URL.createObjectURL(file)})}
+async function upload(path,b64){await gh(path,{method:'PUT',body:JSON.stringify({message:'لوحة التحكم: رفع صورة',content:b64,branch:BR})})}
+
+/* ---------- tabs ---------- */
+const TABS=[['general','عام'],['home','الصفحة الرئيسية'],['nav','القائمة العلوية'],['levels','المستويات'],['pages','الصفحات'],['games','الألعاب'],['kids','الأطفال'],['contact','التواصل']];
+function main(){$('#app').innerHTML=`<div class="top"><h1>لوحة التحكم</h1><a href="../index.html" target="_blank" rel="noopener">عرض الموقع ↗</a><button id="logout">خروج</button></div><div class="layout"><nav class="tabs" role="tablist"></nav><section class="panel" id="panel"></section></div>`;
+ $('#logout').onclick=()=>{if(JSON.stringify(C)!==ORIG&&!confirm('لديك تعديلات غير محفوظة، هل تريد الخروج؟'))return;try{localStorage.removeItem('ghars_admin_tok')}catch(e){}TOK='';$('#savebar').classList.remove('on');loginView()};
+ const tb=$('.tabs');TABS.forEach(([k,n])=>{const b=el('button','',n);b.setAttribute('role','tab');b.setAttribute('aria-selected',k===tab);b.onclick=()=>{tab=k;main()};tb.appendChild(b)});
+ const P=$('#panel');VIEWS[tab](P);dirty()}
+const linkF=(k='href',l='الرابط')=>({k,label:l,type:'url',ph:'index.html أو https://...'});
+const VIEWS={
+ general(P){P.innerHTML='<h2>الإعدادات العامة</h2><p class="help">عنوان الواجهة والعبارات والروابط الأساسية.</p>';
+  P.appendChild(fields(C.site,[{k:'titlePre',label:'بداية العنوان'},{k:'name',label:'الكلمة المميّزة (بالأصفر)'},{k:'slogan',label:'الشعار النصّي',full:1},{k:'intro',label:'الوصف المختصر',type:'textarea'}]));
+  P.appendChild(el('h3','sub','أزرار الواجهة'));P.appendChild(listEd(C.site.cta,{fields:[{k:'label',label:'نص الزر'},linkF(),{k:'style',label:'اللون',type:'select',opts:[['y','أصفر'],['w','أبيض'],['n','كحلي'],['r','أحمر']]}],blank:()=>({label:'زر جديد',href:'',style:'y'}),noun:'زر'}));
+  P.appendChild(el('h3','sub','روابط عامة'));P.appendChild(fields(C,[{k:'letters',label:'رابط موقع إتقان الحروف',type:'url',full:1}]));P.appendChild(fields(C.tuhfa,[{k:'pdf',label:'ملف متن تحفة الأطفال',type:'url'},{k:'video',label:'فيديو منظومة التحفة',type:'url'}]));
+  P.appendChild(el('h3','sub','صفحة المستويات'));P.appendChild(fields(C.levelsPage,[{k:'title',label:'العنوان'},{k:'sub',label:'الوصف'}]))},
+ home(P){P.innerHTML='<h2>الصفحة الرئيسية</h2><p class="help">رتّب الأقسام بالأسهم، وأخفِ ما لا تريده بزر العين، واضغط على اسم القسم لتعديل محتواه.</p>';
+  const F={tiles:[{k:'title',label:'العنوان'},{k:'desc',label:'الوصف'},linkF(),{k:'color',label:'اللون',type:'select',opts:TILE_C},{k:'icon',label:'الأيقونة',type:'select',opts:ICONS}],
+   stats:[{k:'label',label:'النص'},{k:'n',label:'الرقم',type:'num'},{k:'color',label:'اللون',type:'select',opts:ST_C}],
+   comps:[{k:'title',label:'الاسم'},{k:'icon',label:'الرسمة',type:'select',opts:DOODLES}],
+   cards:[{k:'title',label:'العنوان'},{k:'desc',label:'الوصف'},linkF(),{k:'icon',label:'الأيقونة',type:'select',opts:ICONS}],
+   videos:[{k:'title',label:'عنوان الفيديو'},{k:'yt',label:'رابط أو رمز يوتيوب',onchange:null}],
+   stores:[{k:'title',label:'العنوان'},{k:'desc',label:'الوصف'},linkF(),{k:'icon',label:'الأيقونة',type:'select',opts:ICONS},{k:'style',label:'اللون',type:'select',opts:[['s1','تدرّج الهوية'],['s2','أصفر']]}]};
+  const BL={tiles:()=>({title:'قسم جديد',desc:'',href:'',color:'t-navy',icon:'book'}),stats:()=>({label:'',n:0,color:'n'}),comps:()=>({title:'مكوّن جديد',icon:'i_star_c'}),cards:()=>({title:'نشاط جديد',desc:'',href:'',icon:'heart'}),videos:()=>({title:'فيديو جديد',yt:''}),stores:()=>({title:'متجر',desc:'',href:'',icon:'store',style:'s1'})};
+  P.appendChild(listEd(C.home,{toggle:1,title:s=>(SEC_T[s.type]||s.type)+(s.title?' — '+s.title:''),fields:s=>[{k:'title',label:'عنوان القسم (اختياري)'}].concat(s.type==='text'?[{k:'text',label:'النص',type:'textarea'}]:[]),
+   extra:(s,body)=>{if(F[s.type]){body.appendChild(el('h3','sub','العناصر'));body.appendChild(listEd(s.items=s.items||[],{fields:F[s.type],blank:BL[s.type],noun:'عنصر'}))}else if(s.type==='levels')body.appendChild(el('p','help','هذا القسم يعرض المستويات تلقائيًا من تبويب «المستويات».'))}}));
+  const r=el('div','row');r.style.marginTop='12px';const sel=el('select');Object.entries(SEC_T).forEach(([k,n])=>{const o=el('option','',n);o.value=k;sel.appendChild(o)});sel.style.width='auto';const a=el('button','add','+ إضافة قسم');a.onclick=()=>{const t=sel.value;C.home.push({id:t+Date.now(),type:t,title:'',show:true,items:[],text:''});dirty();main()};r.append(sel,a);P.appendChild(r);
+  P.appendChild(el('div','note','روابط اليوتيوب: يمكنك لصق الرابط كاملًا وسيُستخرج الرمز تلقائيًا عند الحفظ.'))},
+ nav(P){P.innerHTML='<h2>القائمة العلوية</h2><p class="help">روابط شريط القائمة في كل الصفحات.</p>';P.appendChild(listEd(C.nav,{toggle:1,fields:[{k:'label',label:'النص'},linkF()],blank:()=>({label:'رابط جديد',href:'',show:true}),noun:'رابط'}))},
+ levels(P){P.innerHTML='<h2>المستويات</h2><p class="help">بيانات كل مستوى وكتبه وسوره. رقم المستوى يحدد صفحته (level-1.html ... level-6.html).</p>';
+  P.appendChild(listEd(C.levels,{toggle:1,title:L=>L.name,del:false,fields:[{k:'name',label:'اسم المستوى'},{k:'stage',label:'المرحلة'},{k:'color',label:'اللون',type:'select',opts:LV_C},{k:'quran',label:'المنهج القرآني',full:1},{k:'quran_pdf',label:'ملف السور',type:'url'},{k:'tuhfa',label:'أبيات التحفة'},
+   {k:'books',label:'الكتب',type:'list',fields:[{k:'title',label:'اسم الكتاب'},{k:'url',label:'الرابط',type:'url'}],blank:()=>({title:'كتاب جديد',url:''}),noun:'كتاب'},
+   {k:'surahs',label:'السور',type:'list',title:s=>'سورة '+s.name,fields:[{k:'name',label:'اسم السورة'},{k:'url',label:'رابط الصوت أو الملف',type:'url'},{k:'kind',label:'النوع',type:'select',opts:[['mp3','تلاوة صوتية'],['doc','ملف'],['','للحفظ فقط']]}],blank:()=>({name:'',url:'',kind:'mp3'}),noun:'سورة'}]}));
+  P.appendChild(el('h3','sub','الوسائل التعليمية (تظهر في كل المستويات)'));P.appendChild(listEd(C.media,{fields:[{k:'title',label:'العنوان'},{k:'url',label:'الرابط',type:'url'},{k:'yt',label:'رمز يوتيوب للصورة (اختياري)'}],blank:()=>({title:'وسيلة جديدة',url:'',yt:''}),noun:'وسيلة'}))},
+ pages(P){P.innerHTML='<h2>الصفحات</h2><p class="help">الصفحات الداخلية. أي صفحة جديدة تفتح على الرابط: page.html?id=المعرّف — ويمكنك إضافتها للقائمة العلوية.</p>';
+  P.appendChild(listEd(C.pages,{toggle:1,title:p=>p.title+' ('+(PAGE_T[p.type]||p.type)+')',fields:p=>[{k:'title',label:'العنوان'},{k:'sub',label:'الوصف'},{k:'id',label:'المعرّف (حروف إنجليزية)'}].concat(p.type==='video'?[{k:'yt',label:'رابط أو رمز يوتيوب'}]:p.type==='text'?[{k:'text',label:'النص',type:'textarea'}]:p.type==='join'?[{k:'cards',label:'البطاقات',type:'list',fields:[{k:'title',label:'العنوان'},{k:'text',label:'النص',type:'textarea'},{k:'btn',label:'نص الزر'},linkF(),{k:'icon',label:'الأيقونة',type:'select',opts:ICONS}],blank:()=>({title:'',text:'',btn:'',href:'',icon:'hand'}),noun:'بطاقة'}]:[]),
+   extra:(p,body)=>{const ln=el('p','help','رابط الصفحة: ');const a=el('a','',['tarbawiyat','fruits','feelings','transport','join'].includes(p.id)?p.id+'.html':'page.html?id='+esc(p.id));a.href='../'+a.textContent;a.target='_blank';ln.appendChild(a);body.prepend(ln);if(p.type==='gallery')galleryEd(p,body)}}));
+  const r=el('div','row');r.style.marginTop='12px';const sel=el('select');sel.style.width='auto';Object.entries(PAGE_T).forEach(([k,n])=>{const o=el('option','',n);o.value=k;sel.appendChild(o)});const a=el('button','add','+ صفحة جديدة');
+  a.onclick=()=>{const id='p'+Date.now().toString(36);C.pages.push({id,type:sel.value,title:'صفحة جديدة',sub:'',show:true,images:[],cards:[],text:'',yt:''});dirty();main()};r.append(sel,a);P.appendChild(r)},
+ games(P){P.innerHTML='<h2>الألعاب</h2><p class="help">رتّب ظهور الألعاب في صفحة الألعاب، وأخفِ ما لا تريده.</p>';const G=C.games;
+  const ord=GAMES.map(g=>g[0]).sort((a,b)=>{const ia=G.order.indexOf(a),ib=G.order.indexOf(b);return (ia<0?999:ia)-(ib<0?999:ib)});
+  const arr=ord.map(id=>({id,t:GAMES.find(g=>g[0]===id)[1],show:!G.hidden.includes(id)}));
+  const sync=()=>{G.order=arr.map(x=>x.id);G.hidden=arr.filter(x=>x.show===false).map(x=>x.id)};
+  const box=listEd(arr,{toggle:1,del:false,title:x=>x.t,fields:[]});box.addEventListener('click',()=>setTimeout(()=>{sync();dirty()}));P.appendChild(box)},
+ kids(P){const n=Object.values(C.kids).reduce((a,v)=>a+v.length,0);P.innerHTML=`<h2>الأطفال</h2><p class="help">عند إدخال وليّ الأمر آخر ٥ أرقام من جواله في صفحة الألعاب، يظهر اسم طفله ويُرحَّب به. المسجّلون الآن: <b>${n}</b> طفلًا.</p>
+  <div class="note">للخصوصية لا تُحفظ أرقام الجوالات في الموقع أبدًا؛ يُحفظ الاسم الأول فقط مع رمز مشفّر من آخر ٥ أرقام.</div>
+  <h3 class="sub">إضافة طفل</h3><div class="grid2"><label class="f">آخر ٥ أرقام من جوال وليّ الأمر<input id="kc" inputmode="numeric" maxlength="5" dir="ltr"></label><label class="f">الاسم الأول للطفل<input id="kn" maxlength="20"></label></div><div class="row" style="margin-top:10px"><button class="btn" id="kadd">إضافة</button></div>
+  <h3 class="sub">استيراد من ملف Excel</h3><p class="help">العمود الأول: اسم الطالب، العمود الثاني: الجوال. يُقرأ الملف في جهازك فقط ولا يُرفع.</p><div class="row"><input type="file" id="kx" accept=".xlsx,.xls,.csv"><label class="chk"><input type="checkbox" id="krep"> استبدال القائمة الحالية</label></div>
+  <h3 class="sub">بحث وحذف</h3><div class="grid2"><label class="f">ابحث بآخر ٥ أرقام<input id="ks" inputmode="numeric" maxlength="5" dir="ltr"></label></div><div id="kres" style="margin-top:8px"></div>
+  <h3 class="sub">كل الأسماء</h3><div id="kall"></div>`;
+  const all=$('#kall');const drawAll=()=>{all.innerHTML='';Object.entries(C.kids).forEach(([h,ns])=>ns.forEach((nm,i)=>{const k=el('span','kid',esc(nm));const d=el('button','','×');d.title='حذف';d.onclick=()=>{if(!confirm('حذف «'+nm+'»؟'))return;ns.splice(i,1);if(!ns.length)delete C.kids[h];dirty();VIEWS.kids(P)};k.appendChild(d);all.appendChild(k)}))};drawAll();
+  $('#kadd').onclick=async()=>{const c=$('#kc').value.replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\D/g,''),nm=$('#kn').value.trim();if(c.length!==5||!nm)return toast('اكتب ٥ أرقام والاسم',1);const h=await hashKid(c);(C.kids[h]=C.kids[h]||[]);if(!C.kids[h].includes(nm))C.kids[h].push(nm);dirty();toast('تمت إضافة '+nm);VIEWS.kids(P)};
+  $('#ks').oninput=async e=>{const c=e.target.value.replace(/\D/g,'');const r=$('#kres');if(c.length!==5){r.innerHTML='';return}const ns=C.kids[await hashKid(c)]||[];r.innerHTML=ns.length?'مسجّل: '+ns.map(esc).join('، '):'لا يوجد أطفال بهذا الرقم'};
+  $('#kx').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{if(!window.XLSX)await new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+   const wb=XLSX.read(await f.arrayBuffer());const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1});const map=$('#krep').checked?{}:C.kids;let n=0;
+   for(const r of rows.slice(1)){const nm=String(r[0]||'').trim(),ph=String(r[1]||'').replace(/\D/g,'');if(!nm||ph.length<5)continue;let t=nm.replace('عبد ال','عبدال').split(/\s+/);const first=['عبد','ابو','أبو'].includes(t[0])&&t[1]?t[0]+' '+t[1]:t[0];const h=await hashKid(ph.slice(-5));(map[h]=map[h]||[]);if(!map[h].includes(first)){map[h].push(first);n++}}
+   C.kids=map;dirty();toast('تم استيراد '+n+' طفلًا');VIEWS.kids(P)}catch(err){toast('تعذّرت قراءة الملف',1)}}},
+ contact(P){P.innerHTML='<h2>التواصل</h2><p class="help">تظهر في أسفل كل الصفحات.</p>';P.appendChild(fields(C.contact,[{k:'phone',label:'رقم الجوال (للعرض)'},{k:'phone_int',label:'الرقم الدولي للواتساب (مثل 9665...)'},{k:'mail',label:'البريد الإلكتروني'},{k:'wa',label:'رابط واتساب',type:'url'},{k:'wach',label:'قناة واتساب',type:'url'},{k:'tg',label:'تيليجرام',type:'url'},{k:'yt',label:'يوتيوب',type:'url'},{k:'map',label:'الموقع على الخريطة',type:'url'}]))}
+};
+function galleryEd(p,body){p.images=p.images||[];const w=el('div');body.appendChild(el('h3','sub','الصور'));body.appendChild(w);
+ const draw=()=>{w.innerHTML='';const g=el('div','thumbs');p.images.forEach((im,i)=>{const t=el('div','thumb');const src=/^https?:/.test(im.thumb||im.full)?(im.thumb||im.full):'../'+(im.thumb||im.full);t.innerHTML=`<img src="${esc(src)}" alt="">`;const a=el('div','acts');
+   const r=el('button','ib','▶');r.title='قبل';r.disabled=i===0;r.onclick=()=>{[p.images[i-1],p.images[i]]=[p.images[i],p.images[i-1]];dirty();draw()};
+   const l=el('button','ib','◀');l.title='بعد';l.disabled=i===p.images.length-1;l.onclick=()=>{[p.images[i+1],p.images[i]]=[p.images[i],p.images[i+1]];dirty();draw()};
+   const d=el('button','ib del','🗑');d.onclick=()=>{if(confirm('حذف الصورة من الصفحة؟')){p.images.splice(i,1);dirty();draw()}};a.append(r,l,d);t.appendChild(a);g.appendChild(t)});w.appendChild(g);
+  const up=el('label','add');up.style.display='inline-block';up.style.marginTop='10px';up.textContent='+ رفع صور';const inp=el('input');inp.type='file';inp.accept='image/*';inp.multiple=true;inp.hidden=true;up.appendChild(inp);w.appendChild(up);
+  inp.onchange=async()=>{const fs=[...inp.files];if(!fs.length)return;toast('جارٍ رفع '+fs.length+' صورة...');try{for(const f of fs){const id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);const full=`assets/uploads/${id}.jpg`,thumb=`assets/uploads/${id}_s.jpg`;
+     await upload(full,await resize(f,1400));await upload(thumb,await resize(f,520));p.images.push({full,thumb,alt:p.title});dirty();draw()}toast('تم رفع الصور ✓ اضغط «حفظ ونشر»')}catch(e){toast('تعذّر رفع الصورة',1)}}};draw()}
+const ytId=v=>{v=String(v||'');const m=v.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/);return m?m[1]:v.trim()};
+function clean(){C.home.forEach(s=>{if(s.type==='videos')s.items.forEach(v=>v.yt=ytId(v.yt))});C.pages.forEach(p=>{if(p.type==='video')p.yt=ytId(p.yt)});C.v=(C.v||1)+1}
+$('#save').onclick=async()=>{const b=$('#save');b.disabled=true;b.textContent='جارٍ النشر...';try{clean();const body=JSON.stringify(C,null,1);
+  const r=await gh('content.json',{method:'PUT',body:JSON.stringify({message:'لوحة التحكم: تحديث محتوى الموقع',content:b64e(body),sha:SHA,branch:BR})});SHA=r.content.sha;ORIG=JSON.stringify(C);dirty();toast('تم النشر ✓ يظهر على الموقع خلال دقيقة تقريبًا')}
+ catch(e){toast(e.status===409?'تغيّر المحتوى من مكان آخر، حدّث الصفحة':'تعذّر الحفظ ('+e.status+')',1)}b.disabled=false;b.textContent='حفظ ونشر على الموقع'};
+$('#discard').onclick=()=>{if(confirm('تجاهل كل التعديلات غير المنشورة؟')){C=JSON.parse(ORIG);main()}};
+addEventListener('beforeunload',e=>{if(C&&JSON.stringify(C)!==ORIG){e.preventDefault();e.returnValue=''}});
+if(TOK)load().catch(()=>loginView('انتهت صلاحية المفتاح، أدخله من جديد'));else loginView();
+</script>
+</body>
+</html>

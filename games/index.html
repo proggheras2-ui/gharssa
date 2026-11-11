@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="../assets/img/icon.png">
 <title>ألعاب غرس</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -295,6 +300,7 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--yellow);outline-off
 .pname{width:100%;border-radius:16px;border:3px solid #D9E2EE;padding:12px 16px;font:700 20px var(--f);color:var(--navy);text-align:center;margin-bottom:14px}
 .pname:focus{outline:none;border-color:var(--sky)}
 .perr{color:var(--red);font-weight:700;min-height:24px}
+.pkids{margin-bottom:10px}
 .pnote{font-size:14px;color:#4a5488;margin-top:12px}
 .pav{width:84px;height:84px;margin:0 auto;border-radius:50%;background:var(--grad);color:var(--white);display:grid;place-items:center;font-size:40px;font-weight:700;box-shadow:0 0 0 6px #EEF3F8}
 .pstat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
@@ -312,6 +318,11 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--yellow);outline-off
 @keyframes fstar{0%{transform:translate(0,0) scale(.2) rotate(0);opacity:1}60%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1) rotate(var(--rot,200deg));opacity:0}}
 .end .stars svg{animation:starIn .6s cubic-bezier(.2,.9,.3,1.8) both}.end .stars svg:nth-child(2){animation-delay:.25s}.end .stars svg:nth-child(3){animation-delay:.5s}
 @keyframes starIn{from{transform:scale(0) rotate(-120deg)}}
+.opt.hint,.bk.hint{animation:hint 1s ease-in-out infinite;box-shadow:0 0 0 5px var(--yellow)!important}
+@keyframes hint{50%{transform:scale(1.08)}}
+.opt.no:disabled,.bk.no:disabled{opacity:.55;cursor:not-allowed}
+.skip{display:block;margin:18px auto 0;background:rgba(255,255,255,.16);color:var(--white);border:2px solid rgba(255,255,255,.4);border-radius:999px;padding:8px 20px;font:700 16px var(--f);cursor:pointer}
+.skip:hover{background:rgba(255,255,255,.28)}
 canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:70}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -454,6 +465,10 @@ const SPK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"
 let PROF={},CUR=null;try{PROF=JSON.parse(localStorage.getItem('ghars_profiles')||'{}')||{};CUR=localStorage.getItem('ghars_cur');if(!PROF[CUR])CUR=null}catch(e){}
 let store={};try{store=CUR?PROF[CUR].s:JSON.parse(localStorage.getItem('ghars_games_v1')||'{}')}catch(e){store={}}
 const save=()=>{try{if(CUR){PROF[CUR].s=store;PROF[CUR].t=Date.now();localStorage.setItem('ghars_profiles',JSON.stringify(PROF))}else localStorage.setItem('ghars_games_v1',JSON.stringify(store))}catch(e){}};
+let KIDS={"d52a83e0f0ee4a01": ["الوليد"], "e93d52dc13f43405": ["حكيم"], "e3090f6c270d8394": ["حمد"], "9805f4668b8cea58": ["سلطان"], "5dea8161eee132f0": ["خالد"], "570cd20dbba98fd8": ["عبدالعزيز"], "50da5dc263a10a76": ["عبدالله"], "d54930de47ba046c": ["عبدالله"], "741fbbb8f0659d5f": ["فهد"], "ae540b12b796454b": ["فهد"], "e26475436753b81d": ["عبدالعزيز"], "e367f90c9e468dc5": ["محمد"], "73bce22c84108647": ["سعد"], "51ff81094d4f4c32": ["محمد"], "35dbb109a334f362": ["أنس"], "b2aa0d5d19e4ea9e": ["سلطان"], "23529dae4c34f084": ["محمد"], "fb8e71456c0c6a3e": ["خالد"], "35c3f3ded1503c30": ["ابراهيم"], "8b4d29ec4812c587": ["ابراهيم"], "9c244c0f0e94fd09": ["جواد"], "0606211016635581": ["حكيم"], "739c61c6cd543f89": ["حمد"], "b992b224bf5047cb": ["سليمان"], "225a70c143cf9f82": ["طلال"], "9d817b0f1418711c": ["عبدالله"], "30f92e98f9ccf009": ["عبدالوهاب"], "08609d1254c29ed8": ["فيصل"], "271bc885e2422897": ["محمد"], "30cfdedcb575e897": ["محمد", "مهند"], "3ccdaa61624f7912": ["مهند"], "941604066bf33046": ["عبدالله"], "9fb758c3150ca8d9": ["تمام"], "8ea0bd0191740d74": ["أسيد"], "e2da7ce963bb0f12": ["أوس"], "1dd40c8e41bbf706": ["ثابت"], "1f6742ed7dd86bcd": ["عبدالرحمن"], "981b2279de33b3e5": ["احمد"], "fe272c0c2764dee7": ["عمر"], "cc1a911fc787b1d7": ["فهد"], "c88d1549c221365e": ["محمد"], "34493bb175f5196b": ["مشعل"], "b8a4632807c49f19": ["فيصل"], "5489e3f00bdd9b14": ["عساف"], "14aa887d76461152": ["تميم"], "741d52b530da8e2e": ["محمد"], "8cd3440d43824eb6": ["بسام"], "fbf8f4dbef58b713": ["عمر"], "2a95e98697937af7": ["عبدالرحمن", "محمد"], "bfc07242f436d5c8": ["ابراهيم"], "5c118c07e82c9d1f": ["تميم", "مهند"], "c642425af0af5497": ["صالح"], "d8c37c648a315a79": ["عبدالله"], "cdc871e42b346b52": ["عز"], "096a834bed38c044": ["محمد"], "f8c0bf37773dab9a": ["محمد"], "b593a4cbdbc5f0ff": ["عبدالله"], "eb8fac0f33969ad1": ["خالد"], "63eecc022e986ce4": ["محمد"], "e943a0a5cba8659d": ["بسام"], "8581192dcc859b88": ["عبدالعزيز"], "920276d065fd5160": ["عزام"], "a1922ac1dda5cbe2": ["عثمان"], "05a4e321f25513ac": ["عبدالله"], "ccb96e8a64a60682": ["إبراهيم"], "6427bd8eb585c1c6": ["خالد"], "1d2ad67cb7a5e2b9": ["سعيد"], "335034fc7c4e89fa": ["عبدالإله"], "6095e8da38c59e25": ["عثمان"], "69ce0f6adb2bf18f": ["فهد"], "580e7084235ba284": ["فيصل"], "d4701031f1334092": ["هشام"], "b63cd71b3cfbe512": ["همام"], "67f2eeab408b0e19": ["عبدالله"], "fde3d8b3cc82e984": ["عبدالحكيم"], "1e2e9cd78db4d5cb": ["أسامة"], "3dc7818c164589db": ["عبداللطيف", "فوزان"], "35b75931435e6976": ["ياسر"], "467cd49b4b72095c": ["عبدالملك"], "f1d143dd8cd704e4": ["عبدالله"], "04d5c91b649f4260": ["ابراهيم", "فارس"], "6f7e2c90063f6722": ["بدر"], "78e13270527f8b29": ["تميم"], "692a3be0afec0078": ["عبدالله"], "65e674ef211ed717": ["عبدالعزيز"], "fb58ce9292a5f787": ["عبدالعزيز"], "e282fd4972a0743b": ["عزيز"], "95aa02386853dd4d": ["فواز"], "bae93fd0a318e6f4": ["نايف"], "0523d4cb035e6d01": ["ريان"], "f6d28e1c0f8b8b18": ["عبدالعزيز"], "5ed7d43cd8ce5aad": ["حسان"], "baed6a347141c025": ["عبدالرحمن"], "c4fccb059ad6ad59": ["عبدالعزيز"], "40756c0bcfe6c878": ["محمد"], "a1c45319459878b4": ["الوليد"], "54355485882af749": ["سليمان"], "6d47217565db723e": ["نايف"]};let GCFG=null;
+function listGames(){if(!GCFG)return GAMES;const h=GCFG.hidden||[],o=GCFG.order||[];return GAMES.filter(G=>!h.includes(G.id)).sort((a,b)=>{const ia=o.indexOf(a.id),ib=o.indexOf(b.id);return (ia<0?999:ia)-(ib<0?999:ib)})}
+try{fetch('../content.json?'+Date.now()).then(r=>r.ok?r.json():null).then(c=>{if(!c)return;if(c.kids)KIDS=c.kids;if(c.games){GCFG=c.games;if(!current)home()}}).catch(()=>{})}catch(e){}
+async function kidsFor(code){try{const d=new TextEncoder().encode('gharsKids:'+code);const h=[...new Uint8Array(await crypto.subtle.digest('SHA-256',d))].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,16);return KIDS[h]||[]}catch(e){return []}}
 function useProfile(code,name){if(code){if(!PROF[code])PROF[code]={n:name||'',s:{},p:{},t:Date.now()};else if(name)PROF[code].n=name;PROF[code].p=PROF[code].p||{};CUR=code;store=PROF[code].s}else{CUR=null;try{store=JSON.parse(localStorage.getItem('ghars_games_v1')||'{}')}catch(e){store={}}}
  try{CUR?localStorage.setItem('ghars_cur',CUR):localStorage.removeItem('ghars_cur');localStorage.setItem('ghars_profiles',JSON.stringify(PROF))}catch(e){};home()}
 let FOCUS=null;try{const q=new URLSearchParams(location.search).get('letter');FOCUS=q||localStorage.getItem('ghars_focus')||null}catch(e){}
@@ -510,6 +525,12 @@ function confetti(big){if(matchMedia('(prefers-reduced-motion: reduce)').matches
  if(big){add(innerWidth*.15,innerHeight*.75,6);add(innerWidth*.85,innerHeight*.75,-6);add(innerWidth/2,innerHeight*.35,0)}else add(innerWidth/2,innerHeight*.35,0);
  cancelAnimationFrame(raf);(function step(){cx.clearRect(0,0,fx.width,fx.height);parts.forEach(p=>{p.vy+=.2;p.x+=p.vx;p.y+=p.vy;p.a+=p.s;cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;if(p.st){cx.beginPath();for(let k=0;k<10;k++){const rr=k%2?p.r*.45:p.r*1.1,an=k*Math.PI/5;cx.lineTo(Math.sin(an)*rr,-Math.cos(an)*rr)}cx.fill()}else cx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);cx.restore()});parts=parts.filter(p=>p.y<fx.height+40);if(parts.length)raf=requestAnimationFrame(step);else cx.clearRect(0,0,fx.width,fx.height)})()}
 
+let tries=0;
+const ENC=['لا تيأس! حاول مرة أخرى','قريب جدًا! جرّب مرة ثانية','لا بأس، حاول مجددًا','فكّر قليلًا وحاول مرة أخرى'];
+function wrongTry(b,ok,teach){b.classList.add('no');b.disabled=true;sfx.no();tries++;
+ if(tries>=2&&ok){ok.classList.add('hint');toast('انظر.. هذا هو الصحيح، اضغط عليه');if(teach)teach()}
+ else{toast(ENC[Math.random()*ENC.length|0]);say('retry',false)}}
+function skipBtn(p,go){const s=el('button','skip','تخطَّ هذا السؤال');s.onclick=()=>{sfx.flip();stopVoice();timers.forEach(clearTimeout);timers=[];go()};p.appendChild(s)}
 let tt=0;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1400)}
 const PRAISE=['أحسنت!','عمل رائع!','ممتاز!','بارك الله فيك!','ما شاء الله!','أنت بطل!'];
 const praise=()=>PRAISE[Math.random()*PRAISE.length|0];
@@ -535,14 +556,14 @@ function renderFocus(){const fb=$('#focusbar');if(!fb)return;const F=FOCUS;
  const g=$('#fgrid');LET.forEach(L=>{const b=el('button','',disp(L));b.setAttribute('aria-label','حرف '+NAMES[L]);b.setAttribute('aria-pressed',L===F);b.onclick=()=>{FOCUS=L;try{localStorage.setItem('ghars_focus',L)}catch(e){}g.hidden=true;home();sfx.ok()};g.appendChild(b)});
  $('#fopen').onclick=()=>{g.hidden=!g.hidden};const c=$('#fclear');if(c)c.onclick=()=>{FOCUS=null;try{localStorage.removeItem('ghars_focus')}catch(e){};home()}}
 function renderProf(){const b=$('#profBtn');if(!b)return;const P=CUR&&PROF[CUR];const h=$('#hello');
- if(P){const nm=P.n||'بطلنا';b.innerHTML=`<span class="av">${nm.trim()[0]||'★'}</span>${nm}`;b.setAttribute('aria-label','ملف '+nm+' وتقدّمه');h.hidden=false;h.textContent='أهلًا يا '+nm+' 👋 هيّا نكمل التعلّم!'}
+ if(P){const nm=P.n||'بطلنا';b.innerHTML=`<span class="av">${nm.trim()[0]||'★'}</span>${nm}`;b.setAttribute('aria-label','ملف '+nm+' وتقدّمه');h.hidden=false;h.textContent='أهلًا بالبطل '+nm+' 👋'}
  else{b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.4-8 5.3V21h16v-1.7C20 16.4 16.4 14 12 14z"/></svg>احفظ تقدّم طفلك';b.setAttribute('aria-label','احفظ تقدّم طفلك');h.hidden=true}
  b.onclick=openProf}
 function openProf(){sfx.flip();document.querySelectorAll('.pmodal').forEach(x=>x.remove());const m=el('div','pmodal');const bx=el('div','pbox');m.appendChild(bx);m.onclick=e=>{if(e.target===m)m.remove()};
  const x=el('button','x','×');x.setAttribute('aria-label','إغلاق');x.onclick=()=>m.remove();
  const P=CUR&&PROF[CUR];
  if(P){const nm=P.n||'بطلنا';const tot=totalStars(),max=GAMES.length*3;const played=GAMES.filter(G=>store[G.id]).length;const bdg=BADGES.filter(([n])=>tot>=n).length;
-  bx.innerHTML=`<div class="pav">${nm.trim()[0]||'★'}</div><h3>${nm}</h3><p>رقم الحفظ: <b dir="ltr">${CUR}</b></p>
+  bx.innerHTML=`<div class="pav">${nm.trim()[0]||'★'}</div><h3>${nm}</h3><p>رقم الحفظ: <b dir="ltr">${CUR.split(':')[0]}</b></p>
   <div class="pstat"><div class="y"><b>${arN(tot)}</b><small>نجمة</small></div><div class="s"><b>${arN(played)}</b><small>لعبة أنجزها</small></div><div class="r"><b>${arN(bdg)}</b><small>وسام</small></div></div>
   <div style="font-weight:700;text-align:right">التقدّم: ${arN(Math.round(tot/max*100))}٪</div><div class="pbar"><i style="width:0"></i></div>
   <div class="pgames">${GAMES.map(G=>{const s=store[G.id]||0;return `<div><span>${G.t}</span><span class="st">${'★'.repeat(s)}<i>${'★'.repeat(3-s)}</i></span></div>`}).join('')}</div>
@@ -550,23 +571,24 @@ function openProf(){sfx.flip();document.querySelectorAll('.pmodal').forEach(x=>x
   <p class="pnote">يُحفظ التقدّم على هذا الجهاز تحت آخر ٥ أرقام من جوال وليّ الأمر.</p>`;
   bx.prepend(x);document.body.appendChild(m);requestAnimationFrame(()=>requestAnimationFrame(()=>{bx.querySelector('.pbar i').style.width=Math.round(tot/max*100)+'%'}));
   bx.querySelector('#pgo').onclick=()=>m.remove();bx.querySelector('#pout').onclick=()=>{m.remove();useProfile(null)};return}
- bx.innerHTML=`<div class="pav">★</div><h3>احفظ تقدّم طفلك</h3><p>اكتب آخر ٥ أرقام من جوال وليّ الأمر، لتُحفظ نجوم طفلك وأوسمته ويكمل من حيث توقّف.</p>
+ bx.innerHTML=`<div class="pav">★</div><h3>احفظ تقدّم طفلك</h3><p>اكتب آخر ٥ أرقام من جوال وليّ الأمر المسجّل في برنامج غرس، لتُحفظ نجوم طفلك وأوسمته ويكمل من حيث توقّف.</p>
   <div class="pins">${[0,1,2,3,4].map(i=>`<input inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="الرقم ${i+1}" autocomplete="off">`).join('')}</div>
-  <input class="pname" maxlength="20" placeholder="اسم الطفل (اختياري)" aria-label="اسم الطفل">
-  <div class="perr" role="alert"></div><div class="pbtns"><button class="pill y" id="pin">دخول</button></div>
-  <p class="pnote">إذا أدخلت الأرقام نفسها لاحقًا يعود تقدّم الطفل كما هو. يُحفظ التقدّم على هذا الجهاز.</p>`;
- bx.prepend(x);document.body.appendChild(m);const ins=[...bx.querySelectorAll('.pins input')];const nameI=bx.querySelector('.pname');
+  <div class="perr" role="alert"></div><div class="pkids"></div><div class="pbtns"><button class="pill y" id="pin">دخول</button></div>
+  <p class="pnote">حفظ التقدّم اختياري، والألعاب متاحة للجميع بدون تسجيل.</p>`;
+ bx.prepend(x);document.body.appendChild(m);const ins=[...bx.querySelectorAll('.pins input')];const err=bx.querySelector('.perr'),pk=bx.querySelector('.pkids');
  const norm=v=>v.replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/\D/g,'');
- ins.forEach((inp,i)=>{inp.addEventListener('input',()=>{const v=norm(inp.value);if(v.length>1){v.slice(0,5).split('').forEach((c,j)=>{if(ins[i+j])ins[i+j].value=c});(ins[Math.min(4,i+v.length)]).focus();return}inp.value=v;if(v&&ins[i+1])ins[i+1].focus();
-   const code=ins.map(q=>q.value).join('');if(code.length===5&&PROF[code]&&!nameI.value)nameI.value=PROF[code].n||''});
+ ins.forEach((inp,i)=>{inp.addEventListener('input',()=>{err.textContent='';pk.innerHTML='';const v=norm(inp.value);if(v.length>1){v.slice(0,5).split('').forEach((c,j)=>{if(ins[i+j])ins[i+j].value=c});(ins[Math.min(4,i+v.length)]).focus();if(ins.every(q=>q.value))go();return}inp.value=v;if(v&&ins[i+1])ins[i+1].focus();if(ins.every(q=>q.value))go()});
   inp.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!inp.value&&ins[i-1])ins[i-1].focus();if(e.key==='Enter')go()})});
- const go=()=>{const code=ins.map(q=>q.value).join('');if(!/^\d{5}$/.test(code)){bx.querySelector('.perr').textContent='اكتب ٥ أرقام كاملة';sfx.no();return}
-  const isNew=!PROF[code];m.remove();useProfile(code,nameI.value.trim());sfx.win();confetti();toast(isNew?'تم إنشاء ملف '+(nameI.value.trim()||'الطفل')+' ✓':'أهلًا بعودتك! تقدّمك محفوظ ✓')};
- bx.querySelector('#pin').onclick=go;nameI.addEventListener('keydown',e=>{if(e.key==='Enter')go()});setTimeout(()=>ins[0].focus(),100)}
+ const login=(code,name)=>{const key=code+':'+name;const isNew=!PROF[key];m.remove();useProfile(key,name);sfx.win();confetti();celebrate(false);toast(isNew?'أهلًا بالبطل '+name+' ✓':'أهلًا بعودتك يا '+name+'! تقدّمك محفوظ ✓');say('pr5',false)};
+ const go=async()=>{const code=ins.map(q=>q.value).join('');if(!/^\d{5}$/.test(code)){err.textContent='اكتب ٥ أرقام كاملة';sfx.no();return}
+  const names=await kidsFor(code);if(!names.length){err.textContent='هذا الرقم غير مسجّل في برنامج غرس.. تأكّد من آخر ٥ أرقام';sfx.no();return}
+  if(names.length===1)return login(code,names[0]);
+  pk.innerHTML='<p style="margin:0 0 8px;font-weight:700">من البطل الذي سيلعب الآن؟</p>';names.forEach(n=>{const k=el('button','pill y',n);k.style.margin='4px';k.onclick=()=>login(code,n);pk.appendChild(k)})};
+ bx.querySelector('#pin').onclick=go;setTimeout(()=>ins[0].focus(),100)}
 function home(){renderFocus();renderProf();
  const ch=$('#chips');ch.innerHTML='';CATS.forEach(([k,n])=>{const b=el('button','chip',n);b.setAttribute('aria-pressed',filter===k);b.onclick=()=>{filter=k;try{localStorage.setItem('ghars_cat',k)}catch(e){}home()};ch.appendChild(b)});
  const g=$('#grid');g.innerHTML='';
- GAMES.filter(G=>filter==='all'||G.cat===filter).forEach(G=>{const s=store[G.id]||0;
+ listGames().filter(G=>filter==='all'||G.cat===filter).forEach(G=>{const s=store[G.id]||0;
   const isF=FOCUS&&FOCUSABLE.includes(G.id);const c=el('button','card '+G.cls+(G.nw&&!s?' new':'')+(isF?' has-f':''));c.setAttribute('aria-label',G.t);
   const big=G.big==='BAL'?`<svg class="big" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 8c20 0 32 16 32 34 0 20-16 36-32 38-16-2-32-18-32-38C18 24 30 8 50 8z" fill="#DE4A52"/><path d="M45 80h10l-5 7z" fill="#DE4A52"/><path d="M50 87c-6 6 6 8 0 13" stroke="#283370" stroke-width="2.5" fill="none"/><text x="50" y="56" text-anchor="middle" font-family="Ruqiaround" font-weight="700" font-size="40" fill="#fff">ب</text></svg>`
    :G.big==='TRACE'?`<svg class="big" viewBox="20 30 165 135" style="width:150px;height:122px" aria-hidden="true"><path d="M164 54 C166 80 158 92 130 96 C100 100 70 99 50 92 C38 87 35 72 35 56" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-dasharray="0.1 18"/><path d="M-9 -9 L9 0 L-9 9Z" fill="#DE4A52" transform="translate(100 99) rotate(180)"/><circle cx="164" cy="54" r="13" fill="#FDB515"/><circle cx="99" cy="150" r="10" fill="#fff"/></svg>`
@@ -613,13 +635,13 @@ function wordTrain(LIST){const p=$('#play');const R=5;let r=0,mist=0;const fw=FO
   const eng=tr.querySelector('.engine');const slots=letters.map(()=>{const s=el('div','slot');tr.insertBefore(s,eng);return s});p.appendChild(tr);
   const extra=pick(DIST.filter(x=>!letters.includes(x)),letters.length===3?2:2);
   const lt=el('div','letters');shuffle(letters.map((x,j)=>({x,j})).concat(extra.map(x=>({x,j:-1})))).forEach(o=>{const b=el('button','opt',o.x==='ه'?'هـ':o.x);b.onclick=()=>{if(b.classList.contains('used'))return;
-    if(o.x===letters[i]){const wg=el('div','wagon',o.x==='ه'?'هـ':o.x);slots[i].replaceWith(wg);b.classList.add('used');sfx.ok();i++;
+    if(o.x===letters[i]){const wg=el('div','wagon',o.x==='ه'?'هـ':o.x);slots[i].replaceWith(wg);b.classList.add('used');b.classList.remove('hint');sfx.ok();i++;
       if(i===letters.length){lt.style.pointerEvents='none';
         const big=el('div','item',w);big.style.fontSize='clamp(60px,15vw,96px)';lt.replaceWith(big);
         say('w'+k,false).then(()=>{toast(praise());return say('pr'+(Math.random()*6|0),false)}).then(()=>{if(!document.body.contains(tr))return;sfx.train();tr.classList.add('go');
           later(()=>{r++;r<R?round():finish(mist===0?3:mist<=3?2:1,mist===0?'ركّبت كل الكلمات بدون أخطاء!':`ركّبت ${arN(R)} كلمات مع ${arN(mist)} أخطاء.`)},3200)})}}
-    else{b.classList.remove('no');void b.offsetWidth;b.classList.add('no');mist++;sfx.no();toast(i===0?'ما أول حرف في الكلمة؟':'ما الحرف الذي يأتي بعد «'+letters[i-1]+'»؟')}};lt.appendChild(b)});
-  p.appendChild(lt);say('w'+k)};round()}
+    else{b.classList.remove('no');void b.offsetWidth;b.classList.add('no');mist++;sfx.no();const sw=(lt._w=(lt._i===i?(lt._w||0):0)+1);lt._i=i;if(sw>=2){const hb=[...lt.children].find(c=>!c.classList.contains('used')&&c.textContent===(letters[i]==='ه'?'هـ':letters[i]));if(hb)hb.classList.add('hint');toast('انظر.. هذا هو الحرف الصحيح')}else{toast('لا تيأس! '+(i===0?'ما أول حرف في الكلمة؟':'ما الحرف الذي يأتي بعد «'+letters[i-1]+'»؟'));say('retry',false)}}};lt.appendChild(b)});
+  p.appendChild(lt);skipBtn(p,()=>{r++;r<R?round():finish(mist===0?3:mist<=3?2:1,mist===0?'ركّبت كل الكلمات بدون أخطاء!':`ركّبت ${arN(R)} كلمات مع ${arN(mist)} أخطاء.`)});say('w'+k)};round()}
 
 const RUN={
  learn(){let i=FOCUS?Math.max(0,CARDS.findIndex(c=>c[0]===FOCUS)):0;const p=$('#play');const seen=new Set();
@@ -638,27 +660,26 @@ const RUN={
    nav.append(pv,ct,nx);p.append(c,nav);voice()};draw()},
 
  listen(){const R=10;let r=0,score=0;const qs=FOCUS?shuffle(Array(5).fill(FOCUS).concat(pick(((FAM.find(f=>f.includes(FOCUS))||[]).filter(x=>x!==FOCUS)).concat(pick(ALPHA.filter(x=>x!==FOCUS),5)),5))):pick(LET.filter(x=>x!=='ء'),R);const p=$('#play');
-  const q=()=>{setProg(r/R);const L=qs[r];const k=LI(L);
+  const q=()=>{tries=0;setProg(r/R);const L=qs[r];const k=LI(L);
    const fam=FAM.find(f=>f.includes(L));let d=fam?fam.filter(x=>x!==L):[];d=shuffle(d).concat(pick(ALPHA.filter(x=>x!==L&&!d.includes(x)),3)).slice(0,3);
    const opts=shuffle([L,...d]);p.innerHTML='';
    p.append(el('p','ask','أين الحرف الذي تسمعه؟'));const sb=sayBtn('اسمع مرة أخرى',['q'+k]);sb.classList.add('pulse');p.appendChild(sb);
    const o=el('div','opts');let locked=false;
    opts.forEach(x=>{const b=el('button','opt',disp(x));b.onclick=()=>{if(locked)return;
-     if(x===L){locked=true;b.classList.add('ok');score++;sfx.ok();toast(praise());say('n'+k,false);later(()=>{r++;r<R?q():finish(by(score,R,9,7),`عرفت ${arN(score)} من ${arN(R)} حروف.`)},1300)}
-     else{locked=true;b.classList.add('no');sfx.no();[...o.children].forEach(c=>{if(c.textContent===disp(L))c.classList.add('ok')});toast('هذا حرف '+NAMES[x]);say(['n'+LI(x)],false);later(()=>{r++;r<R?q():finish(by(score,R,9,7),`عرفت ${arN(score)} من ${arN(R)} حروف.`)},1700)}};o.appendChild(b)});
-   p.appendChild(o);say(r===0?['listen','q'+k]:['q'+k])};q()},
+     if(x===L){locked=true;b.classList.add('ok');if(!tries)score++;sfx.ok();toast(praise());say('n'+k,false);later(()=>{r++;r<R?q():finish(by(score,R,9,7),`عرفت ${arN(score)} من ${arN(R)} حروف.`)},1300)}
+     else{wrongTry(b,[...o.children].find(c=>c.textContent===disp(L)),()=>say(['q'+k],false))}};o.appendChild(b)});
+   p.appendChild(o);skipBtn(p,()=>{r++;r<R?q():finish(by(score,R,9,7),`عرفت ${arN(score)} من ${arN(R)} حروف.`)});say(r===0?['listen','q'+k]:['q'+k])};q()},
 
  pick(){const R=10;let r=0,score=0;const fc=FOCUS?PIC.find(c=>c[0]===FOCUS):null;const qs=fc?shuffle([fc,fc,...pick(PIC.filter(c=>c!==fc),R-2)]):pick(PIC,R);const p=$('#play');
-  const q=()=>{setProg(r/R);const [L,w,img]=qs[r];const k=LI(L);const dd=pick(ALPHA.filter(x=>x!==L&&x!==(L==='ء'?'ا':'')),3);if(FOCUS&&FOCUS!==L&&FOCUS!=='ء'&&!dd.includes(FOCUS))dd[0]=FOCUS;const opts=shuffle([L,...dd].map(x=>x==='ء'?'أ':x));
+  const q=()=>{tries=0;setProg(r/R);const [L,w,img]=qs[r];const k=LI(L);const dd=pick(ALPHA.filter(x=>x!==L&&x!==(L==='ء'?'ا':'')),3);if(FOCUS&&FOCUS!==L&&FOCUS!=='ء'&&!dd.includes(FOCUS))dd[0]=FOCUS;const opts=shuffle([L,...dd].map(x=>x==='ء'?'أ':x));
    const ans=L==='ء'?'أ':L;p.innerHTML='';
    p.append(el('p','ask','بأيّ حرفٍ تبدأ هذه الصورة؟'));
    const pc=el('button','pic',`<img src="${IMG[img]}" alt="صورة ${w}">`);pc.onclick=()=>say('w'+k);p.appendChild(pc);
    const o=el('div','opts');let locked=false;
    opts.forEach(x=>{const b=el('button','opt',disp(x));b.onclick=()=>{if(locked)return;locked=true;
-     if(x===ans){b.classList.add('ok');score++;sfx.ok();toast(praise()+' «'+w+'»');say(['w'+k],false)}
-     else{b.classList.add('no');sfx.no();[...o.children].forEach(c=>{if(c.textContent===disp(ans))c.classList.add('ok')});toast('الصحيح: «'+w+'»');say(['w'+k,'n'+k],false)}
-     later(()=>{r++;r<R?q():finish(by(score,R,9,7),`أجبت ${arN(score)} من ${arN(R)} إجابات صحيحة.`)},1500)};o.appendChild(b)});
-   p.appendChild(o);if(r===0)say('pick')};q()},
+     if(x===ans){b.classList.add('ok');if(!tries)score++;sfx.ok();toast(praise()+' «'+w+'»');say(['w'+k],false);later(()=>{r++;r<R?q():finish(by(score,R,9,7),`أجبت ${arN(score)} من ${arN(R)} إجابات صحيحة.`)},1500)}
+     else{locked=false;wrongTry(b,[...o.children].find(c=>c.textContent===disp(ans)),()=>say(['w'+k,'n'+k],false))}};o.appendChild(b)});
+   p.appendChild(o);skipBtn(p,()=>{r++;r<R?q():finish(by(score,R,9,7),`أجبت ${arN(score)} من ${arN(R)} إجابات صحيحة.`)});if(r===0)say('pick')};q()},
 
  balloons(){const p=$('#play');const ROUNDS=3,NEED=5;let r=0,mist=0;const targets=FOCUS&&FOCUS!=='ء'?[FOCUS,FOCUS,FOCUS]:pick(PIC.map(c=>c[0]).filter(x=>x!=='ء'&&x!=='ا'),ROUNDS);
   let alive=true;cleanup=()=>{alive=false};
@@ -672,7 +693,7 @@ const RUN={
     b.style.left=x+'px';b.onpointerdown=e=>{e.preventDefault();if(b.classList.contains('pop'))return;
      if(ch===L){hits++;sfx.balloon();b.style.setProperty('--t',b.style.transform);b.classList.add('pop');o.dead=1;setTimeout(()=>b.remove(),320);head.querySelectorAll('.hits i')[hits-1].classList.add('on');
       if(hits===NEED){alive=false;cheer();toast(praise());later(()=>{alive=true;r++;r<ROUNDS?round():finish(mist<=1?3:mist<=4?2:1,mist===0?'فرقعت كل البالونات الصحيحة بدون خطأ!':`أخطأت ${arN(mist)} مرات.. واصل التدريب!`)},1100)}}
-     else{mist++;sfx.no();b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');toast('هذا حرف '+NAMES[ch])}};
+     else{mist++;sfx.no();b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');toast('لا تيأس! هذا حرف '+NAMES[ch]);say('retry',false)}};
     f.appendChild(b);balls.push(o)};
    const spawnBomb=()=>{const b=el('button','ball bomb',`<svg viewBox="0 0 86 118" aria-hidden="true"><circle cx="43" cy="68" r="34" fill="#283370" stroke="rgba(0,0,0,.25)" stroke-width="2"/><path d="M28 52c4-6 10-9 16-10" stroke="rgba(255,255,255,.45)" stroke-width="5" stroke-linecap="round" fill="none"/><rect x="34" y="26" width="18" height="12" rx="3" fill="#283370"/><path d="M43 26c2-9 9-12 16-10" stroke="#FDB515" stroke-width="4" fill="none" stroke-linecap="round"/><g class="spark"><circle cx="61" cy="15" r="7" fill="#DE4A52"/><circle cx="61" cy="15" r="3.5" fill="#FDB515"/></g></svg>`);
     b.setAttribute('aria-label','قنبلة! لا تضغط عليها');const W=f.clientWidth,bw=W<480?68:86;const x=Math.random()*(W-bw);const o={b,x,y:-10,v:(W<480?26:32)+Math.random()*10+r*4,sway:Math.random()*6.28,bomb:1};
@@ -702,13 +723,13 @@ const RUN={
    const tr=el('div','track');tr.innerHTML=`<svg class="engine" viewBox="0 0 92 86" aria-hidden="true"><rect x="22" y="22" width="52" height="46" rx="10" fill="#DE4A52"/><rect x="56" y="6" width="16" height="22" rx="4" fill="#283370"/><rect x="30" y="30" width="22" height="18" rx="4" fill="#fff"/><rect x="10" y="50" width="20" height="18" rx="5" fill="#FDB515"/><circle cx="36" cy="72" r="11" fill="#283370" stroke="#fff" stroke-width="4"/><circle cx="64" cy="72" r="11" fill="#283370" stroke="#fff" stroke-width="4"/></svg>`;
    const eng=tr.querySelector('.engine');const slots=seq.map((L,i)=>{const s=i===0?el('div','wagon',disp(L)):el('div','slot');tr.insertBefore(s,eng);return s});p.appendChild(tr);
    const lt=el('div','letters');shuffle(seq.slice(1)).forEach(L=>{const b=el('button','opt',disp(L));b.onclick=()=>{if(b.classList.contains('used'))return;
-     if(L===seq[k]){const w=el('div','wagon',disp(L));slots[k].replaceWith(w);b.classList.add('used');sfx.ok();k++;
+     if(L===seq[k]){const w=el('div','wagon',disp(L));slots[k].replaceWith(w);b.classList.add('used');b.classList.remove('hint');sfx.ok();k++;
        if(k===seq.length){lt.style.pointerEvents='none';toast(praise());
          say('pr'+(Math.random()*6|0),false).then(()=>{if(!document.body.contains(tr))return;sfx.train();tr.classList.add('go');
            later(()=>{r++;r<ROUNDS?round():finish(mist===0?3:mist<=3?2:1,mist===0?'رتّبت كل الحروف بدون أخطاء!':`رتّبت القطارات مع ${arN(mist)} أخطاء.`)},3200)})}
        else say('n'+LI(L),false)}
-     else{b.classList.remove('no');void b.offsetWidth;b.classList.add('no');mist++;sfx.no();toast('ما الحرف الذي يأتي بعد «'+disp(seq[k-1])+'»؟')}};lt.appendChild(b)});
-   p.appendChild(lt)};round()},
+     else{b.classList.remove('no');void b.offsetWidth;b.classList.add('no');mist++;sfx.no();const sw=(lt._w=(lt._k===k?(lt._w||0):0)+1);lt._k=k;if(sw>=2){const hb=[...lt.children].find(c=>!c.classList.contains('used')&&c.textContent===disp(seq[k]));if(hb)hb.classList.add('hint');toast('انظر.. هذا هو الحرف الصحيح');say('n'+LI(seq[k]),false)}else{toast('لا تيأس! ما الحرف الذي يأتي بعد «'+disp(seq[k-1])+'»؟');say('retry',false)}}};lt.appendChild(b)});
+   p.appendChild(lt);skipBtn(p,()=>{r++;r<ROUNDS?round():finish(mist===0?3:mist<=3?2:1,mist===0?'رتّبت كل الحروف بدون أخطاء!':`رتّبت القطارات مع ${arN(mist)} أخطاء.`)})};round()},
 
  word3(){wordTrain(WORDS3)},
  word4(){wordTrain(WORDS4)},
@@ -718,18 +739,17 @@ const RUN={
    if(r===0)say('odd');let locked=false;
    for(let i=0;i<n;i++){const L=i===pos?b:a;const t=el('button','opt',disp(L));t.onclick=()=>{if(locked)return;
      if(i===pos){locked=true;t.classList.add('ok');sfx.ok();toast('أحسنت! هذا حرف '+NAMES[b]);say('n'+LI(b),false);later(()=>{r++;r<R?q():finish(mist===0?3:mist<=2?2:1,mist===0?'عيونك حادّة! وجدت كل الحروف المختلفة.':`وجدتها كلها مع ${arN(mist)} أخطاء.`)},1300)}
-     else{mist++;t.classList.remove('no');void t.offsetWidth;t.classList.add('no');sfx.no();toast('هذا حرف '+NAMES[a]+'.. ابحث مرة أخرى')}};g.appendChild(t)}
+     else{mist++;t.classList.remove('no');void t.offsetWidth;t.classList.add('no');sfx.no();toast('لا تيأس! هذا حرف '+NAMES[a]+'.. ابحث مرة أخرى');say('retry',false)}};g.appendChild(t)}
    p.appendChild(g)};q()},
 
  dots(){const p=$('#play');const R=10;let r=0,score=0;const pool=FOCUS&&DOTS[FOCUS]!==undefined?shuffle([FOCUS,FOCUS,FOCUS,FOCUS,...pick(((FAM.find(f=>f.includes(FOCUS))||[]).filter(x=>x!==FOCUS)).concat(pick(ALPHA.filter(x=>x!==FOCUS),6)),6)]):shuffle(ALPHA).slice(0,R);
   const dsvg=n=>{const pts={0:[],1:[[50,50]],2:[[32,50],[68,50]],3:[[32,62],[68,62],[50,32]]}[n];return `<svg viewBox="0 0 100 100" aria-hidden="true">${n===0?'<text x="50" y="64" text-anchor="middle" font-family="Ruqiaround" font-weight="700" font-size="40" fill="#283370">لا</text>':''}${pts.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="13"/>`).join('')}</svg>`};
-  const q=()=>{setProg(r/R);const L=pool[r];const n=DOTS[L];p.innerHTML='';
+  const q=()=>{tries=0;setProg(r/R);const L=pool[r];const n=DOTS[L];p.innerHTML='';
    p.append(el('p','ask','كم نقطةً في هذا الحرف؟'),el('div','bigL',disp(L)));if(r===0)say('dots');
    const o=el('div','opts');let locked=false;
    [0,1,2,3].forEach(x=>{const b=el('button','opt dotsbtn',dsvg(x));b.setAttribute('aria-label',['لا نقاط','نقطة واحدة','نقطتان','ثلاث نقاط'][x]);b.onclick=()=>{if(locked)return;locked=true;
-     if(x===n){b.classList.add('ok');score++;sfx.ok();toast(praise())}else{b.classList.add('no');sfx.no();o.children[n].classList.add('ok');toast('حرف '+NAMES[L]+': '+['لا نقاط','نقطة واحدة','نقطتان','ثلاث نقاط'][n])}
-     say(['n'+LI(L),'d'+n],false);later(()=>{r++;r<R?q():finish(by(score,R,9,7),`أجبت ${arN(score)} من ${arN(R)} إجابات صحيحة.`)},1900)};o.appendChild(b)});
-   p.appendChild(o)};q()},
+     if(x===n){b.classList.add('ok');if(!tries)score++;sfx.ok();toast(praise());say(['n'+LI(L),'d'+n],false);later(()=>{r++;r<R?q():finish(by(score,R,9,7),`أجبت ${arN(score)} من ${arN(R)} إجابات صحيحة.`)},1900)}else{locked=false;wrongTry(b,o.children[n],()=>say(['n'+LI(L),'d'+n],false))}};o.appendChild(b)});
+   p.appendChild(o);skipBtn(p,()=>{r++;r<R?q():finish(by(score,R,9,7),`أجبت ${arN(score)} من ${arN(R)} إجابات صحيحة.`)});};q()},
 
  harakat(){const p=$('#play');const order=shuffle(['f','k','d','f']);let r=0,mist=0;
   const round=()=>{setProg(r/order.length);const h=order[r];const others=Object.keys(HAR).filter(x=>x!==h);
@@ -738,39 +758,36 @@ const RUN={
    p.append(el('p','ask',`اصطَدِ الحروفَ ${HAR[h].n}<small>التي عليها ${HAR[h].name} <span class="mark">ـ${HAR[h].m}ـ</span></small>`));say('hunt_'+h);
    const g=el('div','bubbles');items.forEach(it=>{const b=el('button','bub',it.L+HAR[it.h].m);b.onclick=()=>{say('s'+BASE.indexOf(it.L)+it.h,false);
      if(it.ok){b.classList.add('ok','gone');sfx.ok();found++;if(found===3){toast(praise());later(()=>{r++;r<order.length?round():finish(mist===0?3:mist<=2?2:1,mist===0?'اصطدت كل الحركات بدون خطأ!':`اصطدت الحركات مع ${arN(mist)} أخطاء.`)},1100)}}
-     else{b.classList.remove('no');void b.offsetWidth;b.classList.add('no');mist++;sfx.no();toast('هذا عليه '+HAR[it.h].name)}};g.appendChild(b)});
+     else{b.classList.remove('no');void b.offsetWidth;b.classList.add('no');mist++;sfx.no();toast('لا تيأس! هذا عليه '+HAR[it.h].name+'.. حاول مرة أخرى');say('retry',false)}};g.appendChild(b)});
    p.appendChild(g)};round()},
 
  hear(){const p=$('#play');const R=10;let r=0,score=0;
-  const q=()=>{setProg(r/R);const L=FOCUS&&BASE.includes(FOCUS)?FOCUS:rnd(BASE),h=rnd(['f','k','d']);const key='s'+BASE.indexOf(L)+h;p.innerHTML='';
+  const q=()=>{tries=0;setProg(r/R);const L=FOCUS&&BASE.includes(FOCUS)?FOCUS:rnd(BASE),h=rnd(['f','k','d']);const key='s'+BASE.indexOf(L)+h;p.innerHTML='';
    p.append(el('p','ask','ماذا تسمع؟<small>فتحة أم كسرة أم ضمة؟</small>'));const sb=sayBtn('اسمع',[key]);sb.classList.add('pulse');p.appendChild(sb);
    const o=el('div','opts three');let locked=false;
    shuffle(['f','k','d']).forEach(x=>{const b=el('button','opt',L+HAR[x].m);b.dataset.h=x;b.onclick=()=>{if(locked)return;locked=true;
-     if(x===h){b.classList.add('ok');score++;sfx.ok();toast(praise());cheer()}else{b.classList.add('no');sfx.no();o.querySelector(`[data-h="${h}"]`).classList.add('ok');toast('الصحيح: '+L+HAR[h].m+' ب'+HAR[h].name);say([key,'h_'+h],false)}
-     later(()=>{r++;r<R?q():finish(by(score,R,9,7),`ميّزت ${arN(score)} من ${arN(R)} حركات.`)},1700)};o.appendChild(b)});
-   p.appendChild(o);say(r===0?['hear',key]:[key])};q()},
+     if(x===h){b.classList.add('ok');if(!tries)score++;sfx.ok();toast(praise());cheer();later(()=>{r++;r<R?q():finish(by(score,R,9,7),`ميّزت ${arN(score)} من ${arN(R)} حركات.`)},1700)}else{locked=false;wrongTry(b,o.querySelector(`[data-h="${h}"]`),()=>say([key,'h_'+h],false))}};o.appendChild(b)});
+   p.appendChild(o);skipBtn(p,()=>{r++;r<R?q():finish(by(score,R,9,7),`ميّزت ${arN(score)} من ${arN(R)} حركات.`)});say(r===0?['hear',key]:[key])};q()},
 
  sort(){const p=$('#play');const R=12;const fs=FOCUS?shuffle(SORTALL.filter(x=>hasL(x.w,FOCUS))):[];const pool=shuffle(fs.concat(shuffle(Object.keys(SORT).flatMap(k=>pick(SORTALL.filter(x=>x.k===k&&!fs.includes(x)),3)))).slice(0,R));let r=0,score=0;
-  const q=()=>{setProg(r/R);const it=pool[r];p.innerHTML='';p.append(el('p','ask','في أيّ سلّةٍ تضعُ هذه الكلمة؟'));
+  const q=()=>{tries=0;setProg(r/R);const it=pool[r];p.innerHTML='';p.append(el('p','ask','في أيّ سلّةٍ تضعُ هذه الكلمة؟'));
    const itm=el('button','item',it.w);itm.onclick=()=>say(it.key);p.appendChild(itm);const g=el('div','baskets');let locked=false;
    BK.forEach(([k,n,sym])=>{const b=el('button','bk '+k,`<span class="sym">${k==='m'?'<span style="font-size:30px">ا و ي</span>':'ـ'+sym+'ـ'}</span>${n}`);b.onclick=()=>{if(locked)return;locked=true;
-     if(k===it.k){b.classList.add('ok');score++;sfx.ok();toast(praise());say([it.key,'b_'+k],false)}else{b.classList.add('no');sfx.no();g.querySelector('.bk.'+it.k).classList.add('ok');toast('هذه كلمة فيها '+BK.find(x=>x[0]===it.k)[1]);say([it.key,'b_'+it.k],false)}
-     later(()=>{r++;r<R?q():finish(by(score,R,11,8),`صنّفت ${arN(score)} من ${arN(R)} كلمات صحيحًا.`)},1900)};g.appendChild(b)});
-   p.appendChild(g);say(r===0?['sort',it.key]:[it.key])};q()},
+     if(k===it.k){b.classList.add('ok');if(!tries)score++;sfx.ok();toast(praise());say([it.key,'b_'+k],false);later(()=>{r++;r<R?q():finish(by(score,R,11,8),`صنّفت ${arN(score)} من ${arN(R)} كلمات صحيحًا.`)},1900)}else{locked=false;wrongTry(b,g.querySelector('.bk.'+it.k),()=>say([it.key,'b_'+it.k],false))}};g.appendChild(b)});
+   p.appendChild(g);skipBtn(p,()=>{r++;r<R?q():finish(by(score,R,11,8),`صنّفت ${arN(score)} من ${arN(R)} كلمات صحيحًا.`)});say(r===0?['sort',it.key]:[it.key])};q()},
 
  readpick(){const p=$('#play');const R=10;let r=0,score=0;const fs=FOCUS?shuffle(SORTALL.filter(x=>hasL(x.w,FOCUS))):[];const pool=shuffle(fs.concat(pick(SORTALL.filter(x=>!fs.includes(x)),R)).slice(0,R));
-  const q=()=>{setProg(r/R);const it=pool[r];const first=it.w.replace(/[^ء-ي]/g,'')[0];
+  const q=()=>{tries=0;setProg(r/R);const it=pool[r];const first=it.w.replace(/[^ء-ي]/g,'')[0];
    let d=shuffle(SORTALL.filter(x=>x.key!==it.key&&x.k!==it.k&&x.w.replace(/[^ء-ي]/g,'')[0]===first));d=d.concat(shuffle(SORTALL.filter(x=>x.key!==it.key&&!d.includes(x)))).slice(0,3);
    p.innerHTML='';p.append(el('p','ask','استمع ثم اختر ما تسمعه'));const sb=sayBtn('اسمع',[it.key]);sb.classList.add('pulse');p.appendChild(sb);
    const o=el('div','opts');let locked=false;
    shuffle([it,...d]).forEach(x=>{const b=el('button','opt',x.w);b.style.fontSize='clamp(34px,8vw,48px)';b.dataset.k=x.key;b.onclick=()=>{if(locked)return;locked=true;
-     if(x===it){b.classList.add('ok');score++;sfx.ok();toast(praise());cheer()}else{b.classList.add('no');sfx.no();o.querySelector(`[data-k="${it.key}"]`).classList.add('ok');toast('الصحيح: '+it.w);say([it.key],false)}
-     later(()=>{r++;r<R?q():finish(by(score,R,9,7),`قرأت ${arN(score)} من ${arN(R)} مقاطع صحيحًا.`)},1600)};o.appendChild(b)});
-   p.appendChild(o);say(r===0?['readpick',it.key]:[it.key])};q()},
+     if(x===it){b.classList.add('ok');if(!tries)score++;sfx.ok();toast(praise());cheer();later(()=>{r++;r<R?q():finish(by(score,R,9,7),`قرأت ${arN(score)} من ${arN(R)} مقاطع صحيحًا.`)},1600)}else{locked=false;wrongTry(b,o.querySelector(`[data-k="${it.key}"]`),()=>say([it.key],false))}};o.appendChild(b)});
+   p.appendChild(o);skipBtn(p,()=>{r++;r<R?q():finish(by(score,R,9,7),`قرأت ${arN(score)} من ${arN(R)} مقاطع صحيحًا.`)});say(r===0?['readpick',it.key]:[it.key])};q()},
 
  pattern(){const p=$('#play');const R=8;let r=0,score=0;const SH=['circle','star','tri','square','hex','drop','moon','diamond'];const CO=['#DE4A52','#FDB515','#0AA4AD','#283370'];
   const TYPES=['AB','AAB','ABB','ABC','AABB','ABAC'];
-  const q=()=>{setProg(r/R);const mode=r<3?'color':r<6?'shape':'both';const type=TYPES[Math.min(TYPES.length-1,(Math.random()*(2+r))|0)];
+  const q=()=>{tries=0;setProg(r/R);const mode=r<3?'color':r<6?'shape':'both';const type=TYPES[Math.min(TYPES.length-1,(Math.random()*(2+r))|0)];
    const units=[...new Set(type)].length;const sh=pick(SH,units),co=pick(CO,units);const baseShape=rnd(SH),baseCol=rnd(CO);
    const unit=ch=>{const i=type.indexOf(ch)>-1?[...new Set(type)].indexOf(ch):0;return mode==='color'?{s:baseShape,c:co[i]}:mode==='shape'?{s:sh[i],c:baseCol}:{s:sh[i],c:co[i]}};
    const L=type.length*2+Math.min(type.length,3);const seq=[];for(let i=0;i<L+1;i++)seq.push(unit(type[i%type.length]));const ans=seq.pop();
@@ -783,10 +800,9 @@ const RUN={
    for(const u of fromSeq.concat(near)){if(opts.length>=4)break;if(!opts.some(o=>key(o)===key(u)))opts.push(u)}
    const o=el('div','opts');let locked=false;
    shuffle(opts).forEach(u=>{const b=el('button','opt',svgShape(u.s,u.c));b.setAttribute('aria-label',SHN[u.s]);b.onclick=()=>{if(locked)return;locked=true;
-     if(key(u)===key(ans)){b.classList.add('ok');score++;sfx.ok();toast(praise());cheer();qc.className='cell fill';qc.innerHTML=svgShape(ans.s,ans.c)}
-     else{b.classList.add('no');sfx.no();[...o.children].forEach((c,i)=>{if(c.dataset.k===key(ans))c.classList.add('ok')});toast('انظر إلى النمط مرة أخرى');qc.className='cell fill';qc.innerHTML=svgShape(ans.s,ans.c)}
-     later(()=>{r++;r<R?q():finish(by(score,R,7,5),`اكتشفت ${arN(score)} من ${arN(R)} أنماط.`)},1500)};b.dataset.k=key(u);o.appendChild(b)});
-   p.appendChild(o)};q()},
+     if(key(u)===key(ans)){b.classList.add('ok');if(!tries)score++;sfx.ok();toast(praise());cheer();qc.className='cell fill';qc.innerHTML=svgShape(ans.s,ans.c);later(()=>{r++;r<R?q():finish(by(score,R,7,5),`اكتشفت ${arN(score)} من ${arN(R)} أنماط.`)},1500)}
+     else{locked=false;wrongTry(b,[...o.children].find(c=>c.dataset.k===key(ans)))}};b.dataset.k=key(u);o.appendChild(b)});
+   p.appendChild(o);skipBtn(p,()=>{r++;r<R?q():finish(by(score,R,7,5),`اكتشفت ${arN(score)} من ${arN(R)} أنماط.`)});};q()},
 
  color(){const p=$('#play');const R=5;let r=0;const res=[];
   const plan=shuffle(['star','circle','tri','hex','moon','drop','diamond']).slice(0,3);const lets=FOCUS&&FOCUS!=='ء'?[FOCUS,FOCUS]:pick(['ب','ن','م','ع','ق','ج','و','ه','ص','ك'],2);
@@ -844,35 +860,35 @@ const RUN={
   };round()}
 };
 /* ---------- letter tracing (200x200 guide paths, writing order) ---------- */
-const TJ='M48 46 C78 38 122 36 150 42 C128 44 114 48 104 54 C80 70 58 95 55 118 C53 142 68 153 92 154 L140 152';
+const TJ=['M48 46 C78 38 122 36 150 42','M110 47 C84 66 58 95 55 118 C53 142 68 153 92 154 L140 152'];
 const TS='M168 62 C168 82 160 88 146 86 C132 84 122 80 118 72 C116 84 108 90 96 90 C94 115 82 128 62 128 C42 128 32 112 32 88';
-const TSAD='M108 104 C118 78 150 52 166 70 C178 86 150 102 108 104 C100 104 94 98 92 92 C94 115 82 132 60 132 C40 132 28 118 28 104';
-const TTA=['M42 152 L120 150 C150 148 170 138 166 122 C162 104 130 102 82 115','M80 48 L80 150'];
+const TSAD=['M108 104 C118 78 150 52 166 70 C178 86 150 102 108 104','M106 104 C98 104 94 98 92 92 C94 115 82 132 60 132 C40 132 28 118 28 104'];
+const TTA=['M80 48 L80 150','M80 116 C128 102 162 104 166 122 C170 138 150 148 120 150 L42 152'];
 const TRACE={
  'ا':{s:['M100 30 L100 170']},
  'ب':{s:['M164 54 C166 80 158 92 130 96 C100 100 70 99 50 92 C38 87 35 72 35 56'],d:[[99,148]]},
  'ت':{s:['M174 94 C176 118 168 128 140 131 C110 134 75 133 55 128 C40 124 36 112 36 98'],d:[[115,65],[88,65]]},
  'ث':{s:['M168 94 C170 130 160 143 130 146 C100 149 70 148 50 140 C38 134 35 115 35 98'],d:[[99,51],[113,78],[85,78]]},
- 'ج':{s:[TJ],d:[[136,107]]},
- 'ح':{s:[TJ]},
- 'خ':{s:['M58 76 C80 70 110 70 124 76 C110 78 102 82 96 88 C80 102 66 118 64 135 C63 155 75 163 95 164 L130 160'],d:[[99,32]]},
- 'د':{s:['M110 48 C130 70 160 95 160 120 C160 140 130 146 100 148 L58 150']},
- 'ذ':{s:['M108 88 C125 105 145 120 143 135 C140 150 115 155 73 157'],d:[[97,35]]},
+ 'ج':{s:TJ,d:[[136,107]]},
+ 'ح':{s:TJ},
+ 'خ':{s:['M58 76 C80 70 110 70 124 76','M100 79 C84 94 66 118 64 135 C63 155 75 163 95 164 L130 160'],d:[[99,32]]},
+ 'د':{s:['M110 48 C130 70 160 95 160 124','M160 124 C158 142 130 146 100 148 L58 150']},
+ 'ذ':{s:['M108 88 C125 105 145 120 143 136','M143 136 C139 150 115 155 73 157'],d:[[97,35]]},
  'ر':{s:['M114 42 C122 70 128 95 124 115 C120 135 105 148 82 156']},
  'ز':{s:['M110 82 C116 100 118 115 114 130 C110 145 98 157 82 164'],d:[[108,32]]},
  'س':{s:[TS]},
  'ش':{s:['M168 84 C168 104 160 110 146 108 C132 106 122 102 118 94 C116 106 108 112 96 112 C94 137 82 150 62 150 C42 150 32 134 32 110'],d:[[135,43],[148,64],[122,64]]},
- 'ص':{s:[TSAD]},
- 'ض':{s:['M108 112 C118 86 150 62 166 78 C178 94 150 110 108 112 C100 112 94 106 92 100 C94 123 82 140 60 140 C40 140 28 126 28 112'],d:[[120,52]]},
+ 'ص':{s:TSAD},
+ 'ض':{s:['M108 112 C118 86 150 62 166 78 C178 94 150 110 108 112','M106 112 C98 112 94 106 92 100 C94 123 82 140 60 140 C40 140 28 126 28 112'],d:[[120,52]]},
  'ط':{s:TTA},
  'ظ':{s:TTA,d:[[122,49]]},
- 'ع':{s:['M134 46 C122 34 92 32 80 46 C70 60 78 80 92 86 C105 90 120 88 132 84 C110 88 80 100 68 120 C58 140 66 158 90 160 L138 162']},
- 'غ':{s:['M120 80 C112 72 94 72 88 80 C82 90 88 104 100 108 C108 110 118 110 126 108 C112 112 96 118 88 132 C82 150 90 166 106 168 L132 168'],d:[[100,32]]},
+ 'ع':{s:['M134 46 C122 34 92 32 80 46 C70 60 78 80 92 86 C105 90 120 88 132 84','M100 89 C84 98 72 108 68 120 C58 140 66 158 90 160 L138 162']},
+ 'غ':{s:['M120 80 C112 72 94 72 88 80 C82 90 88 104 100 108 C108 110 118 110 126 108','M104 110 C96 116 90 122 88 132 C82 150 90 166 106 168 L132 168'],d:[[100,32]]},
  'ف':{s:['M124 104 C112 100 112 78 132 74 C152 72 160 92 156 112 C152 135 140 146 110 148 L60 148 C45 147 36 135 36 115'],d:[[136,35]]},
  'ق':{s:['M118 104 C100 100 100 78 120 76 C142 74 150 95 150 120 C150 150 130 165 100 165 C70 165 50 150 46 120'],d:[[139,31],[120,31]]},
  'ك':{s:['M161 42 L160 130 C158 145 140 148 110 149 L60 148 C46 146 38 132 38 112','M112 58 C100 62 90 68 92 74 C95 80 108 84 106 90 C104 96 96 98 84 98']},
  'ل':{s:['M136 38 L136 140 C136 160 122 172 100 172 C80 172 66 158 66 118']},
- 'م':{s:['M92 104 C88 80 100 64 115 64 C130 64 136 80 134 92 C132 106 115 110 92 104 C70 100 64 110 63 125 L62 168']},
+ 'م':{s:['M92 104 C88 80 100 64 115 64 C130 64 136 80 134 92 C132 106 115 110 92 104','M90 104 C70 102 64 110 63 125 L62 168']},
  'ن':{s:['M160 60 C165 85 170 110 160 130 C148 148 122 152 98 150 C60 148 38 128 34 86'],d:[[86,43]]},
  'ه':{s:['M96 52 C70 70 56 90 57 110 C58 132 76 144 96 144 C120 144 148 132 148 104 C148 80 120 64 98 53']},
  'و':{s:['M104 88 C82 90 76 70 82 56 C90 40 120 38 128 60 C134 80 130 110 116 128 C106 142 94 150 80 158']},
