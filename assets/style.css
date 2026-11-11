@@ -321,3 +321,4 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--yellow);outline-off
 .hero h1 .w{color:inherit}
 .hero h1 span:not(.w)::after{opacity:1;height:.09em;bottom:-.02em;inset-inline:10%}
 .hero .wave{left:-6%;width:112%}
+.hero h1 span:not(.w)::after{display:none}
