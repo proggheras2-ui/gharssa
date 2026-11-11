@@ -469,7 +469,7 @@ let filter='all';try{filter=localStorage.getItem('ghars_cat')||'all'}catch(e){}
 function totalStars(){return GAMES.reduce((a,G)=>a+(store[G.id]||0),0)}
 function renderFocus(){const fb=$('#focusbar');if(!fb)return;const F=FOCUS;
  fb.innerHTML=`<div class="fhead"><span>🎯 حرف اليوم:</span><span class="fcur${F?'':' off'}">${F?disp(F):'—'}</span><button class="fbtn" id="fopen">${F?'تغيير الحرف':'اختر حرفًا'}</button>${F?'<button class="fbtn ghost" id="fclear">إلغاء التحديد</button>':''}</div>
- <small style="opacity:.92">${F?'ألعاب الحروف الآن تدور حول حرف '+NAMES[F]':'اختر حرف الدرس ليتدرّب عليه الأطفال في كل الألعاب'}</small><div class="fgrid" id="fgrid" hidden></div>`;
+ <small style="opacity:.92">${F?'ألعاب الحروف الآن تدور حول حرف '+NAMES[F]:'اختر حرف الدرس ليتدرّب عليه الأطفال في كل الألعاب'}</small><div class="fgrid" id="fgrid" hidden></div>`;
  const g=$('#fgrid');LET.forEach(L=>{const b=el('button','',disp(L));b.setAttribute('aria-label','حرف '+NAMES[L]);b.setAttribute('aria-pressed',L===F);b.onclick=()=>{FOCUS=L;try{localStorage.setItem('ghars_focus',L)}catch(e){}g.hidden=true;home();sfx.ok()};g.appendChild(b)});
  $('#fopen').onclick=()=>{g.hidden=!g.hidden};const c=$('#fclear');if(c)c.onclick=()=>{FOCUS=null;try{localStorage.removeItem('ghars_focus')}catch(e){};home()}}
 function home(){renderFocus();
