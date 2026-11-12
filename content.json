@@ -1,5 +1,5 @@
 {
- "v": 3,
+ "v": 4,
  "site": {
   "titlePre": "برنامج",
   "name": "غرس",
@@ -75,7 +75,7 @@
    "id": "tiles",
    "type": "tiles",
    "title": "",
-   "show": false,
+   "show": true,
    "items": [
     {
      "title": "المستويات",
