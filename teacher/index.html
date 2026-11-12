@@ -75,6 +75,7 @@ td.sc{font-weight:700;white-space:nowrap;padding:0 10px}
 <div class="hero"><h1>بوابة المعلمين</h1><p>اختر الطالب، ثم اضغط على الحروف التي أتقنها</p></div>
 <main class="wrap" id="app"></main>
 <div class="toast" id="toast"></div>
+<script src="../assets/report.js"></script>
 <script>
 const LIVE='https://script.google.com/macros/s/AKfycbyL3oIz9BJNkck2ctg85zEYBstz_dN_XJ8tgrmj4iORVQeVQWPtFhgyJYW9svZu9RHzPw/exec';
 const qp=new URLSearchParams(location.search);const API_URL=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)&&qp.get('api')?qp.get('api'):LIVE;
@@ -93,6 +94,10 @@ function login(msg){$('#app').innerHTML=`<div class="card login"><h2>أدخل ر
  ins.forEach((inp,i)=>{inp.addEventListener('input',()=>{const v=norm(inp.value);if(v.length>1){v.slice(0,6).split('').forEach((c,j)=>{if(ins[i+j])ins[i+j].value=c})}else inp.value=v;const n=ins.findIndex(x=>!x.value);if(n>=0)ins[n].focus();else go()});
   inp.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!inp.value&&ins[i-1])ins[i-1].focus();if(e.key==='Enter')go()})});
  $('#go').onclick=go;ins[0].focus()}
+
+async function maybeSendReport(d,s,r){if(!r||!r.notify||typeof drawGharsReport!=='function')return;try{const [gh,gs]=await Promise.all([loadImg('../assets/img/gheras_h.png'),loadImg('../assets/img/ghars_h.png')]);
+ const cv=await drawGharsReport({name:s.name,teacher:d.sheet,letters:d.letters,marks:s.marks,gheras:gh,ghars:gs,font:'Ruqiaround'});
+ const x=await api('report.send',{sheet:d.sheet,row:s.row,name:s.name,png:cv.toDataURL('image/png').split(',')[1]});if(x.sent)toast('📧 اكتمل التقييم وأُرسل التقرير لوليّ الأمر')}catch(e){}}
 async function grid(){if(!SHEETS.length){$('#app').innerHTML='<div class="card login"><h2>لا يوجد فصل مرتبط بحسابك</h2><p>اطلب من مدير البرنامج ربط فصلك بحسابك.</p></div>';return}
  $('#app').innerHTML=`<div class="bar"><h2>أهلًا ${esc(ME.name)}</h2>${SHEETS.length>1?'<select id="sh"></select>':''}<button class="btn g" id="out">خروج</button></div><div id="g">جارٍ التحميل...</div>`;
  $('#out').onclick=async()=>{try{await api('logout')}catch(e){}TOK='';try{sessionStorage.removeItem('ghars_ttok')}catch(e){}login()};
@@ -117,7 +122,7 @@ async function grid(){if(!SHEETS.length){$('#app').innerHTML='<div class="card l
    const LG=EV.querySelector('.letters');let pending=0;
    d.letters.forEach((Lt,j)=>{const t=el('button','lt');const paint=()=>{const m=s.marks[j];t.className='lt'+(m===1?' ok':m===0?' no':'');t.innerHTML=`${esc(Lt)}<i>${m===1?'أتقن':m===0?'لم يتقن':''}</i>`;t.setAttribute('aria-label',Lt+': '+(m===1?'أتقن':m===0?'لم يتقن':'لم يُقيَّم'))};paint();
     t.onclick=async()=>{const want=mode===-1?null:mode;const prev=s.marks[j];const nv=prev===want?null:want;s.marks[j]=nv;paint();upd();t.classList.add('busy');pending++;saved.textContent='جارٍ الحفظ...';
-     try{await api('letters.set',{sheet:d.sheet,row:s.row,col:j,name:s.name,value:nv})}catch(e){s.marks[j]=prev;paint();upd();toast(e.msg,1)}
+     try{const rs=await api('letters.set',{sheet:d.sheet,row:s.row,col:j,name:s.name,value:nv});maybeSendReport(d,s,rs)}catch(e){s.marks[j]=prev;paint();upd();toast(e.msg,1)}
      t.classList.remove('busy');if(--pending===0)saved.textContent='✓ تم حفظ كل التغييرات'};LG.appendChild(t)});
    upd();EV.querySelector('.back').onclick=()=>{L.classList.remove('detail');cur=-1;drawList();scrollTo(0,0)};
    const pv=EV.querySelector('.pv'),nx=EV.querySelector('.nx');pv.disabled=i===0;nx.disabled=i===d.students.length-1;pv.onclick=()=>open(i-1);nx.onclick=()=>open(i+1);
