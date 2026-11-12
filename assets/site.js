@@ -32,7 +32,8 @@ function shell(C,title,body){
 <footer class="foot" aria-hidden="true"><div class="wrap">${['i_star','i_book','i_spiral','i_pencil','i_sun','i_puzzle','i_tri','i_leaf'].map(k=>`<img src="${R}assets/img/${k}_c.png" alt="">`).join('')}</div></footer>`;
  D.querySelector('.menu').addEventListener('click',e=>{const b=e.currentTarget,o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',!o);D.getElementById('navlinks').classList.toggle('open',!o)});
  D.querySelectorAll('[data-lb]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const d=D.createElement('div');d.className='lb';d.innerHTML='<img src="'+a.href+'" alt="">';d.onclick=()=>d.remove();D.addEventListener('keydown',function k(ev){if(ev.key==='Escape'){d.remove();D.removeEventListener('keydown',k)}});B.appendChild(d)}));
- const m=D.createElement('script');m.src=R+'assets/motion.js?v='+C.v;B.appendChild(m)}
+ const m=D.createElement('script');m.src=R+'assets/motion.js?v='+C.v;B.appendChild(m);
+ if(PG==='home'){const g=D.createElement('script');g.src=R+'assets/gros.js?v=1';g.onload=()=>{const h=D.createElement('script');h.src=R+'assets/gros-home.js?v=1';B.appendChild(h)};B.appendChild(g)}}
 const lvCards=(C,big)=>C.levels.filter(L=>L.show!==false).map(L=>`<a class="lv c-${esc(L.color)}" href="${R}level-${L.n}.html"><span class="num">${ar(L.n)}</span><b>${esc(L.name)}</b><span>${esc(L.stage)}</span></a>`).join('');
 const SEC={
  tiles:s=>`<section class="sec tiles-sec"><div class="wrap"><div class="tiles">${s.items.map(t=>`<a class="tile ${esc(t.color)}" href="${esc(href(t.href))}"${ext(t.href)}>${svg(t.icon)}<b>${esc(t.title)}</b><span>${esc(t.desc)}</span></a>`).join('')}</div></div></section>`,
