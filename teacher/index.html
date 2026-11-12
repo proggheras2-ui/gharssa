@@ -77,7 +77,7 @@ td.sc{font-weight:700;white-space:nowrap;padding:0 10px}
 <div class="toast" id="toast"></div>
 <script src="../assets/report.js"></script>
 <script>
-const LIVE='https://script.google.com/macros/s/AKfycbyL3oIz9BJNkck2ctg85zEYBstz_dN_XJ8tgrmj4iORVQeVQWPtFhgyJYW9svZu9RHzPw/exec';
+const LIVE='https://script.google.com/macros/s/AKfycbwtAZTJu0tl13PkE6D7NjqMbjtnZzopZAuQ5gwiIbdR5K9pMJHAbUBomCkAHujd7-vLyA/exec';
 const qp=new URLSearchParams(location.search);const API_URL=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)&&qp.get('api')?qp.get('api'):LIVE;
 const $=s=>document.querySelector(s);const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
