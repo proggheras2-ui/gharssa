@@ -35,12 +35,44 @@ thead th{position:sticky;top:0;background:var(--navy);color:#fff;z-index:2;min-w
 .mk{width:38px;height:38px;border-radius:10px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:19px;line-height:1}
 .mk.ok{background:var(--sky);border-color:var(--sky);color:#fff}.mk.no{background:var(--red);border-color:var(--red);color:#fff}.mk.busy{opacity:.5}
 td.sc{font-weight:700;white-space:nowrap;padding:0 10px}
+
+/* easy evaluation UI */
+.layout{display:grid;grid-template-columns:320px minmax(0,1fr);gap:16px;align-items:start}
+@media(max-width:860px){.layout{grid-template-columns:minmax(0,1fr)}.layout.detail .slist{display:none}.layout:not(.detail) .eval{display:none}}
+.slist{background:#fff;border-radius:22px;padding:14px;position:sticky;top:10px;max-height:calc(100vh - 20px);overflow:auto}
+.slist .search{width:100%;margin-bottom:10px}
+.sbtn{display:block;width:100%;text-align:right;background:var(--mist);border:2px solid transparent;border-radius:16px;padding:10px 12px;margin-bottom:8px}
+.sbtn b{display:block;font-size:16px}.sbtn small{color:var(--soft);font-weight:700}
+.sbtn.on{border-color:var(--sky);background:#fff}
+.pbar{height:8px;border-radius:99px;background:#fff;overflow:hidden;margin:6px 0 2px}.sbtn.on .pbar{background:var(--mist)}.pbar i{display:block;height:100%;background:var(--sky);border-radius:99px;transition:width .3s}
+.eval{background:#fff;border-radius:22px;padding:16px}
+.ehead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.ehead h3{margin:0;font-size:22px;flex:1;min-width:180px}
+.back{background:var(--mist);border:0;border-radius:999px;padding:6px 14px;font-weight:700}
+@media(min-width:861px){.back{display:none}}
+.count{background:var(--mist);border-radius:999px;padding:4px 14px;font-weight:700;white-space:nowrap}
+.modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px;position:sticky;top:0;background:#fff;padding:6px 0;z-index:2}
+.modes button{border:3px solid var(--line);background:#fff;border-radius:16px;padding:10px 6px;font-weight:700;font-size:17px}
+.modes button[aria-pressed=true].m1{background:var(--sky);border-color:var(--sky);color:#fff}
+.modes button[aria-pressed=true].m0{background:var(--red);border-color:var(--red);color:#fff}
+.modes button[aria-pressed=true].mx{background:var(--navy);border-color:var(--navy);color:#fff}
+.letters{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px}
+@media(max-width:420px){.letters{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.lt{position:relative;aspect-ratio:1;border:3px solid var(--line);background:#fff;border-radius:18px;font-weight:700;font-size:30px;line-height:1;display:grid;place-items:center;padding-bottom:6px;transition:transform .12s}
+.lt:active{transform:scale(.94)}
+.lt i{position:absolute;bottom:5px;left:0;right:0;font-style:normal;font-size:12px}
+.lt.ok{background:var(--sky);border-color:var(--sky);color:#fff}.lt.no{background:var(--red);border-color:var(--red);color:#fff}
+.lt.busy::after{content:"";position:absolute;top:6px;left:6px;width:8px;height:8px;border-radius:50%;background:var(--yellow)}
+.enav{display:flex;gap:10px;margin-top:14px}.enav button{flex:1;border:0;border-radius:999px;padding:12px;font-weight:700;font-size:17px;background:var(--mist)}.enav .nx{background:var(--yellow)}
+.enav button:disabled{opacity:.4}
+.saved{font-size:13px;color:var(--soft);font-weight:700;min-height:20px;margin-top:6px}
+.viewsw{background:none;border:0;color:var(--sky);font-weight:700;text-decoration:underline;padding:0}
 .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-160%);background:var(--navy);color:#fff;padding:10px 22px;border-radius:999px;font-weight:700;z-index:40;transition:transform .3s}.toast.on{transform:translateX(-50%)}.toast.err{background:var(--red)}
 </style>
 </head>
 <body>
 <header class="brand"><img src="../assets/img/gheras_w.png" alt="جمعية غراس لتنمية الطفل"><span class="sep"></span><img src="../assets/img/ghars_w.png" alt="برنامج غرس"></header>
-<div class="hero"><h1>بوابة المعلمين</h1><p>تقييم إتقان الحروف لطلاب فصلك</p></div>
+<div class="hero"><h1>بوابة المعلمين</h1><p>اختر الطالب، ثم اضغط على الحروف التي أتقنها</p></div>
 <main class="wrap" id="app"></main>
 <div class="toast" id="toast"></div>
 <script>
@@ -62,18 +94,35 @@ function login(msg){$('#app').innerHTML=`<div class="card login"><h2>أدخل ر
   inp.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!inp.value&&ins[i-1])ins[i-1].focus();if(e.key==='Enter')go()})});
  $('#go').onclick=go;ins[0].focus()}
 async function grid(){if(!SHEETS.length){$('#app').innerHTML='<div class="card login"><h2>لا يوجد فصل مرتبط بحسابك</h2><p>اطلب من مدير البرنامج ربط فصلك بحسابك.</p></div>';return}
- $('#app').innerHTML=`<div class="card"><div class="bar"><h2>أهلًا ${esc(ME.name)}</h2><button class="btn g" id="out">خروج</button></div>
- <div class="bar">${SHEETS.length>1?'<select id="sh"></select>':''}<input class="search" id="q" placeholder="ابحث عن طالب"></div>
- <p class="legend">اضغط على خانة الحرف: مرة = <b style="color:var(--sky)">أتقن ✓</b>، مرتين = <b style="color:var(--red)">لم يتقن ✗</b>، ثلاث = فارغ. يُحفظ فورًا ويراه وليّ الأمر.</p><div id="g">جارٍ التحميل...</div></div>`;
+ $('#app').innerHTML=`<div class="bar"><h2>أهلًا ${esc(ME.name)}</h2>${SHEETS.length>1?'<select id="sh"></select>':''}<button class="btn g" id="out">خروج</button></div><div id="g">جارٍ التحميل...</div>`;
  $('#out').onclick=async()=>{try{await api('logout')}catch(e){}TOK='';try{sessionStorage.removeItem('ghars_ttok')}catch(e){}login()};
  const sel=$('#sh');if(sel){SHEETS.forEach(n=>{const o=el('option','',esc(n));o.value=n;sel.appendChild(o)});sel.onchange=()=>load(sel.value)}
- const load=async name=>{const g=$('#g');g.textContent='جارٍ التحميل...';try{const d=await api('letters.get',{sheet:name});
-  g.innerHTML=`<div class="tscroll"><table><thead><tr><th class="nm">الطالب</th>${d.letters.map(L=>`<th>${esc(L)}</th>`).join('')}<th>المتقن</th></tr></thead><tbody></tbody></table></div>`;const tb=g.querySelector('tbody');
-  d.students.forEach(s=>{const tr=el('tr');tr.dataset.n=s.name;tr.appendChild(el('th','nm',esc(s.name)));const sc=el('td','sc');const upd=()=>sc.textContent=s.marks.filter(m=>m===1).length+'/'+d.letters.length;
-   s.marks.forEach((m,i)=>{const td=el('td'),b=el('button','mk');const paint=()=>{b.className='mk'+(s.marks[i]===1?' ok':s.marks[i]===0?' no':'');b.textContent=s.marks[i]===1?'✓':s.marks[i]===0?'✗':'';b.setAttribute('aria-label',s.name+' — '+d.letters[i])};paint();
-    b.onclick=async()=>{const p=s.marks[i];s.marks[i]=p===null?1:p===1?0:null;paint();upd();b.classList.add('busy');try{await api('letters.set',{sheet:d.sheet,row:s.row,col:i,name:s.name,value:s.marks[i]})}catch(e){s.marks[i]=p;paint();upd();toast(e.msg,1)}b.classList.remove('busy')};
-    td.appendChild(b);tr.appendChild(td)});upd();tr.appendChild(sc);tb.appendChild(tr)});
-  $('#q').oninput=e=>tb.querySelectorAll('tr').forEach(tr=>tr.hidden=e.target.value&&!tr.dataset.n.includes(e.target.value.trim()))}catch(e){g.textContent=e.msg}};
+ let mode=1;try{mode=+(localStorage.getItem('ghars_mode')??1)}catch(e){}
+ const load=async name=>{const g=$('#g');g.textContent='جارٍ التحميل...';let d;try{d=await api('letters.get',{sheet:name})}catch(e){g.textContent=e.msg;return}
+  const N=d.letters.length,done=s=>s.marks.filter(m=>m===1).length;let cur=-1;
+  g.innerHTML=`<div class="layout"><aside class="slist"><input class="search" placeholder="ابحث عن طالب" aria-label="ابحث عن طالب"><div class="sl"></div></aside><section class="eval"></section></div>`;
+  const L=g.querySelector('.layout'),SL=g.querySelector('.sl'),EV=g.querySelector('.eval');
+  const drawList=()=>{const q=g.querySelector('.search').value.trim();SL.innerHTML='';d.students.forEach((s,i)=>{if(q&&!s.name.includes(q))return;const b=el('button','sbtn'+(i===cur?' on':''));const k=done(s);
+   b.innerHTML=`<b>${esc(s.name)}</b><div class="pbar"><i style="width:${Math.round(k/N*100)}%"></i></div><small>أتقن ${k} من ${N}</small>`;b.onclick=()=>open(i);SL.appendChild(b)});
+   if(!SL.children.length)SL.innerHTML='<p style="color:var(--soft)">لا يوجد طالب بهذا الاسم</p>'};
+  g.querySelector('.search').oninput=drawList;
+  const open=i=>{cur=i;const s=d.students[i];L.classList.add('detail');drawList();
+   EV.innerHTML=`<div class="ehead"><button class="back">→ الطلاب</button><h3>${esc(s.name)}</h3><span class="count"></span></div>
+   <div class="modes" role="group" aria-label="نوع التقييم"><button class="m1" data-m="1">✓ أتقن</button><button class="m0" data-m="0">✗ لم يتقن</button><button class="mx" data-m="-1">مسح</button></div>
+   <div class="letters"></div><div class="saved" aria-live="polite"></div>
+   <div class="enav"><button class="pv">→ السابق</button><button class="nx">التالي ←</button></div>`;
+   const cnt=EV.querySelector('.count'),saved=EV.querySelector('.saved');const upd=()=>{cnt.textContent='أتقن '+done(s)+' / '+N;drawList()};
+   const paintModes=()=>EV.querySelectorAll('.modes button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.m===mode));paintModes();
+   EV.querySelectorAll('.modes button').forEach(b=>b.onclick=()=>{mode=+b.dataset.m;try{localStorage.setItem('ghars_mode',mode)}catch(e){}paintModes()});
+   const LG=EV.querySelector('.letters');let pending=0;
+   d.letters.forEach((Lt,j)=>{const t=el('button','lt');const paint=()=>{const m=s.marks[j];t.className='lt'+(m===1?' ok':m===0?' no':'');t.innerHTML=`${esc(Lt)}<i>${m===1?'أتقن':m===0?'لم يتقن':''}</i>`;t.setAttribute('aria-label',Lt+': '+(m===1?'أتقن':m===0?'لم يتقن':'لم يُقيَّم'))};paint();
+    t.onclick=async()=>{const want=mode===-1?null:mode;const prev=s.marks[j];const nv=prev===want?null:want;s.marks[j]=nv;paint();upd();t.classList.add('busy');pending++;saved.textContent='جارٍ الحفظ...';
+     try{await api('letters.set',{sheet:d.sheet,row:s.row,col:j,name:s.name,value:nv})}catch(e){s.marks[j]=prev;paint();upd();toast(e.msg,1)}
+     t.classList.remove('busy');if(--pending===0)saved.textContent='✓ تم حفظ كل التغييرات'};LG.appendChild(t)});
+   upd();EV.querySelector('.back').onclick=()=>{L.classList.remove('detail');cur=-1;drawList();scrollTo(0,0)};
+   const pv=EV.querySelector('.pv'),nx=EV.querySelector('.nx');pv.disabled=i===0;nx.disabled=i===d.students.length-1;pv.onclick=()=>open(i-1);nx.onclick=()=>open(i+1);
+   if(innerWidth<=860)scrollTo(0,0)};
+  drawList();if(innerWidth>860&&d.students.length)open(0);else EV.innerHTML='<p style="color:var(--soft)">اختر طالبًا من القائمة لتقييمه</p>'};
  load(SHEETS[0])}
 (async()=>{if(TOK){try{const r=await api('me');ME=r.user;SHEETS=r.sheets;return grid()}catch(e){}}login()})();
 </script>
