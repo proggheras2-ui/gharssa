@@ -327,3 +327,11 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--yellow);outline-off
 @keyframes bootp{50%{transform:translateY(-16px)}}
 .txt p{font-size:20px;line-height:1.9;margin:0 0 14px}
 .contact .rights{text-align:center;margin:22px 0 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.25);font-size:15px;opacity:.9}
+
+.accbtn{flex:none;display:inline-flex;align-items:center;gap:8px;margin-inline-start:10px;background:var(--yellow);color:var(--navy);border-radius:999px;padding:6px 14px 6px 16px;font-weight:700;font-size:16px;white-space:nowrap;text-decoration:none;transition:transform .2s}
+.accbtn:hover{transform:translateY(-2px)}
+.accbtn svg{width:20px;height:20px}
+.accbtn img,.accbtn i{width:28px;height:28px;border-radius:50%;object-fit:cover;background:var(--navy);color:var(--white);display:grid;place-items:center;font-style:normal;font-size:14px}
+.accbtn span{max-width:12ch;overflow:hidden;text-overflow:ellipsis}
+.nav .links{flex:1;min-width:0}
+@media (max-width:860px){.nav .wrap{position:relative}.accbtn{position:absolute;left:max(16px,env(safe-area-inset-left,0px));top:8px;margin:0;font-size:15px;padding:5px 12px}}

@@ -804,7 +804,7 @@ const AV=(a,cls='av')=>a&&a.photo?`<span class="${cls}"><img src="${a.photo}" al
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function renderProf(){const b=$('#profBtn');if(!b)return;const h=$('#hello');
  if(ACC){const nm=ACC.name||'بطلنا';b.innerHTML=AV(ACC)+esc(nm);b.setAttribute('aria-label','حساب '+nm);h.hidden=false;h.textContent='أهلًا بالبطل '+nm}
- else{b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.4-8 5.3V21h16v-1.7C20 16.4 16.4 14 12 14z"/></svg>دخول / حساب جديد';b.setAttribute('aria-label','دخول أو إنشاء حساب لحفظ التقدّم');h.hidden=true}
+ else{b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.4-8 5.3V21h16v-1.7C20 16.4 16.4 14 12 14z"/></svg>احفظ تقدّمي';b.setAttribute('aria-label','احفظ تقدّمي: دخول أو إنشاء حساب');h.hidden=true}
  b.onclick=openProf}
 function modal(){sfx.flip();document.querySelectorAll('.pmodal').forEach(x=>x.remove());const m=el('div','pmodal');m.setAttribute('role','dialog');const bx=el('div','pbox');m.appendChild(bx);m.onclick=e=>{if(e.target===m)m.remove()};document.body.appendChild(m);
  const x=()=>{const b=el('button','x','×');b.setAttribute('aria-label','إغلاق');b.onclick=()=>m.remove();bx.prepend(b)};return {m,bx,x}}
@@ -1249,7 +1249,7 @@ RUN.trace=function(){const p=$('#play');const NS='http://www.w3.org/2000/svg';
  round()};
 
 
-home();refreshAcc();
+home();refreshAcc();try{if(new URLSearchParams(location.search).get('acc')){history.replaceState(null,'',location.pathname);setTimeout(openProf,300)}}catch(e){}
 const h=(location.hash||'').slice(1);if(GAMES.some(g=>g.id===h))start(h);
 addEventListener('hashchange',()=>{const k=(location.hash||'').slice(1);if(!k&&current)exit();else if(GAMES.some(g=>g.id===k)&&(!current||current.id!==k))start(k)});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&current)exit()});
