@@ -310,6 +310,32 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--yellow);outline-off
 .gstep i{width:28px;height:28px;border-radius:50%;border:2px solid var(--navy);display:grid;place-items:center;font-style:normal;font-size:14px;font-weight:700;flex:none;color:var(--navy)}
 .gstep.done i{background:var(--sky);border-color:var(--sky);color:var(--white)}
 .gstep.now{font-weight:700;color:var(--navy)}.gstep.now i{background:var(--yellow);border-color:var(--yellow)}
+.ptabs{display:flex;gap:6px;background:#EEF3F8;border-radius:999px;padding:5px;margin:4px auto 10px;width:max-content}
+.ptabs button{border:0;background:transparent;font:700 17px var(--f);color:var(--navy);padding:8px 20px;border-radius:999px;cursor:pointer}
+.ptabs button[aria-selected="true"]{background:var(--navy);color:var(--white)}
+.pf{display:grid;gap:6px;text-align:right}
+.pf label{font-weight:700;font-size:16px;margin-top:6px}
+.pf input:not([type=checkbox]){width:100%;border-radius:14px;border:3px solid #D9E2EE;padding:10px 14px;font:700 18px var(--f);color:var(--navy);background:#fff}
+.pf input:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 4px rgba(10,164,173,.2)}
+.pf input.l5{letter-spacing:10px;text-align:center;font-size:24px}
+.pf .chk{display:flex;align-items:center;gap:10px;cursor:pointer;margin-top:10px}
+.pf .chk input{width:22px;height:22px;accent-color:var(--sky);flex:none}
+.pf .hint{color:#4a5488;font-size:14px}
+.pf .pbtns{margin-top:8px}
+.gmini{width:110px;margin:-6px auto 0}.gmini svg{width:100%;height:auto}
+.aphoto{display:grid;justify-items:center;gap:6px}
+.pav img,.hbtn.prof .av img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.hbtn.prof .av{overflow:hidden}
+.pchg{font-weight:700;font-size:15px;color:var(--sky);cursor:pointer;text-decoration:underline}
+.pmail{font-size:15px;margin:0 0 4px!important}
+.stu{display:inline-block;background:#E6F6F7;color:var(--navy)!important;font-weight:700;border-radius:999px;padding:4px 14px;margin:0 0 6px!important}
+.psec{border:2px solid #D9E2EE;border-radius:16px;padding:8px 14px;margin-top:10px;text-align:right}
+.psec summary{font-weight:700;cursor:pointer;font-size:17px}
+.danger{margin-top:18px;border-top:2px dashed #F3C6C9;padding-top:16px;display:grid;justify-items:center}
+.rbtn{background:var(--red);color:var(--white);border:0;border-radius:999px;font:700 17px var(--f);padding:12px 22px;cursor:pointer}
+.rbtn:focus-visible,.pill:focus-visible,.ptabs button:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.rconf{background:#FDECEE;border-radius:18px;padding:14px;width:100%}
+.rconf p{color:var(--navy)!important;margin:0 0 4px!important}
 .pmodal{position:fixed;inset:0;z-index:85;background:rgba(20,26,60,.82);display:grid;place-items:center;padding:16px;animation:fadeIn .25s}
 @keyframes fadeIn{from{opacity:0}}
 .pbox{background:var(--white);color:var(--navy);border-radius:28px;padding:26px 22px;width:min(520px,100%);max-height:92vh;overflow:auto;text-align:center;position:relative;animation:boxIn .45s cubic-bezier(.2,.9,.3,1.3)}
@@ -671,15 +697,13 @@ const disp=L=>L==='ه'?'هـ':L==='ء'?'ء':L;
 const arN=n=>Number(n).toLocaleString('ar-SA');
 const STAR=(on)=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="${on?'#FDB515':'#D9E2EE'}" d="M12 2.6l2.9 6 6.5.8-4.8 4.5 1.2 6.5L12 17.3l-5.8 3.1 1.2-6.5L2.6 9.4l6.5-.8z"/></svg>`;
 const SPK='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 9v6h4l5 4V5L8 9z"/><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12"/></svg>';
-let PROF={},CUR=null;try{PROF=JSON.parse(localStorage.getItem('ghars_profiles')||'{}')||{};CUR=localStorage.getItem('ghars_cur');if(!PROF[CUR])CUR=null}catch(e){}
-let store={};try{store=CUR?PROF[CUR].s:JSON.parse(localStorage.getItem('ghars_games_v1')||'{}')}catch(e){store={}}
-const save=()=>{try{if(CUR){PROF[CUR].s=store;PROF[CUR].t=Date.now();localStorage.setItem('ghars_profiles',JSON.stringify(PROF))}else localStorage.setItem('ghars_games_v1',JSON.stringify(store))}catch(e){}};
+let PROF={},CUR=null;try{PROF=JSON.parse(localStorage.getItem('ghars_profiles')||'{}')||{};const c=localStorage.getItem('ghars_cur');if(PROF[c]){const g=JSON.parse(localStorage.getItem('ghars_games_v1')||'{}');const ps=PROF[c].s||{};for(const k in ps)g[k]=Math.max(g[k]||0,ps[k]);localStorage.setItem('ghars_games_v1',JSON.stringify(g));localStorage.removeItem('ghars_cur')}}catch(e){}
+let ACC=null,ATOK=null;try{ATOK=localStorage.getItem('ghars_acc_tok');ACC=ATOK?JSON.parse(localStorage.getItem('ghars_acc')||'null'):null;if(!ACC)ATOK=null}catch(e){}
+let store={};try{store=ACC?Object.assign({},ACC.progress||{}):JSON.parse(localStorage.getItem('ghars_games_v1')||'{}')}catch(e){store={}}
+const save=()=>{try{if(ACC){ACC.progress=Object.assign({},store);localStorage.setItem('ghars_acc',JSON.stringify(ACC));syncSoon()}else localStorage.setItem('ghars_games_v1',JSON.stringify(store))}catch(e){}};
 let KIDS={"d52a83e0f0ee4a01": ["الوليد"], "e93d52dc13f43405": ["حكيم"], "e3090f6c270d8394": ["حمد"], "9805f4668b8cea58": ["سلطان"], "5dea8161eee132f0": ["خالد"], "570cd20dbba98fd8": ["عبدالعزيز"], "50da5dc263a10a76": ["عبدالله"], "d54930de47ba046c": ["عبدالله"], "741fbbb8f0659d5f": ["فهد"], "ae540b12b796454b": ["فهد"], "e26475436753b81d": ["عبدالعزيز"], "e367f90c9e468dc5": ["محمد"], "73bce22c84108647": ["سعد"], "51ff81094d4f4c32": ["محمد"], "35dbb109a334f362": ["أنس"], "b2aa0d5d19e4ea9e": ["سلطان"], "23529dae4c34f084": ["محمد"], "fb8e71456c0c6a3e": ["خالد"], "35c3f3ded1503c30": ["ابراهيم"], "8b4d29ec4812c587": ["ابراهيم"], "9c244c0f0e94fd09": ["جواد"], "0606211016635581": ["حكيم"], "739c61c6cd543f89": ["حمد"], "b992b224bf5047cb": ["سليمان"], "225a70c143cf9f82": ["طلال"], "9d817b0f1418711c": ["عبدالله"], "30f92e98f9ccf009": ["عبدالوهاب"], "08609d1254c29ed8": ["فيصل"], "271bc885e2422897": ["محمد"], "30cfdedcb575e897": ["محمد", "مهند"], "3ccdaa61624f7912": ["مهند"], "941604066bf33046": ["عبدالله"], "9fb758c3150ca8d9": ["تمام"], "8ea0bd0191740d74": ["أسيد"], "e2da7ce963bb0f12": ["أوس"], "1dd40c8e41bbf706": ["ثابت"], "1f6742ed7dd86bcd": ["عبدالرحمن"], "981b2279de33b3e5": ["احمد"], "fe272c0c2764dee7": ["عمر"], "cc1a911fc787b1d7": ["فهد"], "c88d1549c221365e": ["محمد"], "34493bb175f5196b": ["مشعل"], "b8a4632807c49f19": ["فيصل"], "5489e3f00bdd9b14": ["عساف"], "14aa887d76461152": ["تميم"], "741d52b530da8e2e": ["محمد"], "8cd3440d43824eb6": ["بسام"], "fbf8f4dbef58b713": ["عمر"], "2a95e98697937af7": ["عبدالرحمن", "محمد"], "bfc07242f436d5c8": ["ابراهيم"], "5c118c07e82c9d1f": ["تميم", "مهند"], "c642425af0af5497": ["صالح"], "d8c37c648a315a79": ["عبدالله"], "cdc871e42b346b52": ["عز"], "096a834bed38c044": ["محمد"], "f8c0bf37773dab9a": ["محمد"], "b593a4cbdbc5f0ff": ["عبدالله"], "eb8fac0f33969ad1": ["خالد"], "63eecc022e986ce4": ["محمد"], "e943a0a5cba8659d": ["بسام"], "8581192dcc859b88": ["عبدالعزيز"], "920276d065fd5160": ["عزام"], "a1922ac1dda5cbe2": ["عثمان"], "05a4e321f25513ac": ["عبدالله"], "ccb96e8a64a60682": ["إبراهيم"], "6427bd8eb585c1c6": ["خالد"], "1d2ad67cb7a5e2b9": ["سعيد"], "335034fc7c4e89fa": ["عبدالإله"], "6095e8da38c59e25": ["عثمان"], "69ce0f6adb2bf18f": ["فهد"], "580e7084235ba284": ["فيصل"], "d4701031f1334092": ["هشام"], "b63cd71b3cfbe512": ["همام"], "67f2eeab408b0e19": ["عبدالله"], "fde3d8b3cc82e984": ["عبدالحكيم"], "1e2e9cd78db4d5cb": ["أسامة"], "3dc7818c164589db": ["عبداللطيف", "فوزان"], "35b75931435e6976": ["ياسر"], "467cd49b4b72095c": ["عبدالملك"], "f1d143dd8cd704e4": ["عبدالله"], "04d5c91b649f4260": ["ابراهيم", "فارس"], "6f7e2c90063f6722": ["بدر"], "78e13270527f8b29": ["تميم"], "692a3be0afec0078": ["عبدالله"], "65e674ef211ed717": ["عبدالعزيز"], "fb58ce9292a5f787": ["عبدالعزيز"], "e282fd4972a0743b": ["عزيز"], "95aa02386853dd4d": ["فواز"], "bae93fd0a318e6f4": ["نايف"], "0523d4cb035e6d01": ["ريان"], "f6d28e1c0f8b8b18": ["عبدالعزيز"], "5ed7d43cd8ce5aad": ["حسان"], "baed6a347141c025": ["عبدالرحمن"], "c4fccb059ad6ad59": ["عبدالعزيز"], "40756c0bcfe6c878": ["محمد"], "a1c45319459878b4": ["الوليد"], "54355485882af749": ["سليمان"], "6d47217565db723e": ["نايف"]};let GCFG=null;
 function listGames(){if(!GCFG)return GAMES;const h=GCFG.hidden||[],o=GCFG.order||[];return GAMES.filter(G=>!h.includes(G.id)).sort((a,b)=>{const ia=o.indexOf(a.id),ib=o.indexOf(b.id);return (ia<0?999:ia)-(ib<0?999:ib)})}
 try{fetch('../content.json?'+Date.now()).then(r=>r.ok?r.json():null).then(c=>{if(!c)return;if(c.kids)KIDS=c.kids;if(c.games){GCFG=c.games;if(!current)home()}}).catch(()=>{})}catch(e){}
-async function kidsFor(code){try{const d=new TextEncoder().encode('gharsKids:'+code);const h=[...new Uint8Array(await crypto.subtle.digest('SHA-256',d))].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,16);return KIDS[h]||[]}catch(e){return []}}
-function useProfile(code,name){if(code){if(!PROF[code])PROF[code]={n:name||'',s:{},p:{},t:Date.now()};else if(name)PROF[code].n=name;PROF[code].p=PROF[code].p||{};CUR=code;store=PROF[code].s}else{CUR=null;try{store=JSON.parse(localStorage.getItem('ghars_games_v1')||'{}')}catch(e){store={}}}
- try{CUR?localStorage.setItem('ghars_cur',CUR):localStorage.removeItem('ghars_cur');localStorage.setItem('ghars_profiles',JSON.stringify(PROF))}catch(e){};home()}
 let FOCUS=null;try{const q=new URLSearchParams(location.search).get('letter');FOCUS=q||localStorage.getItem('ghars_focus')||null}catch(e){}
 const FOCUSABLE=['trace','learn','listen','pick','balloons','memory','train','odd','dots','harakat','hear','sort','readpick','color','word3','word4'];
 const hasL=(w,F)=>w.includes(F)||(F==='ء'&&/[أإئؤ]/.test(w))||(F==='ا'&&/[أإآ]/.test(w));
@@ -764,36 +788,88 @@ function renderFocus(){const fb=$('#focusbar');if(!fb)return;const F=FOCUS;
  <small style="opacity:.92">${F?'ألعاب الحروف الآن تدور حول حرف '+NAMES[F]:'اختر حرف الدرس ليتدرّب عليه الأطفال في كل الألعاب'}</small><div class="fgrid" id="fgrid" hidden></div>`;
  const g=$('#fgrid');LET.forEach(L=>{const b=el('button','',disp(L));b.setAttribute('aria-label','حرف '+NAMES[L]);b.setAttribute('aria-pressed',L===F);b.onclick=()=>{FOCUS=L;try{localStorage.setItem('ghars_focus',L)}catch(e){}g.hidden=true;home();sfx.ok()};g.appendChild(b)});
  $('#fopen').onclick=()=>{g.hidden=!g.hidden};const c=$('#fclear');if(c)c.onclick=()=>{FOCUS=null;try{localStorage.removeItem('ghars_focus')}catch(e){};home()}}
-function renderProf(){const b=$('#profBtn');if(!b)return;const P=CUR&&PROF[CUR];const h=$('#hello');
- if(P){const nm=P.n||'بطلنا';b.innerHTML=`<span class="av">${nm.trim()[0]||'★'}</span>${nm}`;b.setAttribute('aria-label','ملف '+nm+' وتقدّمه');h.hidden=false;h.textContent='أهلًا بالبطل '+nm+' 👋'}
- else{b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.4-8 5.3V21h16v-1.7C20 16.4 16.4 14 12 14z"/></svg>احفظ تقدّم طفلك';b.setAttribute('aria-label','احفظ تقدّم طفلك');h.hidden=true}
+/* ---------- الحسابات (اختيارية) ---------- */
+const API='https://script.google.com/macros/s/AKfycbwtAZTJu0tl13PkE6D7NjqMbjtnZzopZAuQ5gwiIbdR5K9pMJHAbUBomCkAHujd7-vLyA/exec';
+async function api(a,d={}){try{const r=await fetch(API,{method:'POST',body:JSON.stringify({a,...d})});return await r.json()}catch(e){return {ok:false,error:'net'}}}
+const ERRS={email:'اكتب إيميلًا صحيحًا',name:'اكتب اسم البطل',weak:'كلمة المرور ٨ أحرف أو أرقام على الأقل',exists:'هذا الإيميل مسجّل من قبل، جرّب «دخول»',
+ nostudent:'لم نجد هذا الرقم في كشف طلاب غرس.. تأكّد من آخر ٥ أرقام من جوال وليّ الأمر',phone:'اكتب رقم جوال صحيح',consent:'ضع علامة الموافقة على التواصل',
+ bad:'الإيميل أو كلمة المرور غير صحيحة',locked:'محاولات كثيرة.. انتظر قليلًا ثم حاول',net:'تعذّر الاتصال.. تأكّد من الإنترنت وحاول مرة أخرى',photo:'الصورة غير مناسبة، جرّب صورة أخرى',auth:'انتهى الدخول، سجّل دخولك مرة أخرى'};
+const errTx=e=>ERRS[e]||'حدث خطأ، حاول مرة أخرى';
+let saveT=0,pendingSync=false;
+function setAcc(a,tok){ACC=a;if(tok)ATOK=tok;store=Object.assign({},(a&&a.progress)||{});try{if(ATOK)localStorage.setItem('ghars_acc_tok',ATOK);localStorage.setItem('ghars_acc',JSON.stringify(a))}catch(e){}}
+function logoutLocal(){ACC=null;ATOK=null;try{localStorage.removeItem('ghars_acc_tok');localStorage.removeItem('ghars_acc')}catch(e){}try{store=JSON.parse(localStorage.getItem('ghars_games_v1')||'{}')}catch(e){store={}}}
+function syncSoon(){if(!ATOK)return;pendingSync=true;clearTimeout(saveT);saveT=setTimeout(async()=>{const r=await api('acc.save',{tok:ATOK,progress:store});if(r.ok){pendingSync=false;const keep=store;setAcc(r.acc);for(const k in keep)store[k]=Math.max(store[k]||0,keep[k])}else if(r.error==='auth'){logoutLocal();if(!current)home()}},1200)}
+async function refreshAcc(){if(!ATOK)return;const r=await api('acc.me',{tok:ATOK});if(r.ok){const keep=store;setAcc(r.acc);let more=false;for(const k in keep)if((keep[k]||0)>(store[k]||0)){store[k]=keep[k];more=true}if(more)syncSoon();if(!current)home()}else if(r.error==='auth'){logoutLocal();if(!current)home()}}
+const AV=(a,cls='av')=>a&&a.photo?`<span class="${cls}"><img src="${a.photo}" alt=""></span>`:`<span class="${cls}">${esc(((a&&a.name)||'★').trim()[0]||'★')}</span>`;
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderProf(){const b=$('#profBtn');if(!b)return;const h=$('#hello');
+ if(ACC){const nm=ACC.name||'بطلنا';b.innerHTML=AV(ACC)+esc(nm);b.setAttribute('aria-label','حساب '+nm);h.hidden=false;h.textContent='أهلًا بالبطل '+nm}
+ else{b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.4-8 5.3V21h16v-1.7C20 16.4 16.4 14 12 14z"/></svg>دخول / حساب جديد';b.setAttribute('aria-label','دخول أو إنشاء حساب لحفظ التقدّم');h.hidden=true}
  b.onclick=openProf}
-function openProf(){sfx.flip();document.querySelectorAll('.pmodal').forEach(x=>x.remove());const m=el('div','pmodal');const bx=el('div','pbox');m.appendChild(bx);m.onclick=e=>{if(e.target===m)m.remove()};
- const x=el('button','x','×');x.setAttribute('aria-label','إغلاق');x.onclick=()=>m.remove();
- const P=CUR&&PROF[CUR];
- if(P){const nm=P.n||'بطلنا';const tot=totalStars(),max=GAMES.length*3;const played=GAMES.filter(G=>store[G.id]).length;const bdg=BADGES.filter(([n])=>tot>=n).length;
-  bx.innerHTML=`<div class="pav">${nm.trim()[0]||'★'}</div><h3>${nm}</h3><p>رقم الحفظ: <b dir="ltr">${CUR.split(':')[0]}</b></p>
-  <div class="pstat"><div class="y"><b>${arN(tot)}</b><small>نجمة</small></div><div class="s"><b>${arN(played)}</b><small>لعبة أنجزها</small></div><div class="r"><b>${arN(bdg)}</b><small>وسام</small></div></div>
-  <div style="font-weight:700;text-align:right">التقدّم: ${arN(Math.round(tot/max*100))}٪</div><div class="pbar"><i style="width:0"></i></div>
-  <div class="pgames">${GAMES.map(G=>{const s=store[G.id]||0;return `<div><span>${G.t}</span><span class="st">${'★'.repeat(s)}<i>${'★'.repeat(3-s)}</i></span></div>`}).join('')}</div>
-  <div class="pbtns"><button class="pill y" id="pgo">هيّا نلعب</button><button class="pill" id="pout">تسجيل خروج</button></div>
-  <p class="pnote">يُحفظ التقدّم على هذا الجهاز تحت آخر ٥ أرقام من جوال وليّ الأمر.</p>`;
-  bx.prepend(x);document.body.appendChild(m);requestAnimationFrame(()=>requestAnimationFrame(()=>{bx.querySelector('.pbar i').style.width=Math.round(tot/max*100)+'%'}));
-  bx.querySelector('#pgo').onclick=()=>m.remove();bx.querySelector('#pout').onclick=()=>{m.remove();useProfile(null)};return}
- bx.innerHTML=`<div class="pav">★</div><h3>احفظ تقدّم طفلك</h3><p>اكتب آخر ٥ أرقام من جوال وليّ الأمر المسجّل في برنامج غرس، لتُحفظ نجوم طفلك وأوسمته ويكمل من حيث توقّف.</p>
-  <div class="pins">${[0,1,2,3,4].map(i=>`<input inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="الرقم ${i+1}" autocomplete="off">`).join('')}</div>
-  <div class="perr" role="alert"></div><div class="pkids"></div><div class="pbtns"><button class="pill y" id="pin">دخول</button></div>
-  <p class="pnote">حفظ التقدّم اختياري، والألعاب متاحة للجميع بدون تسجيل.</p>`;
- bx.prepend(x);document.body.appendChild(m);const ins=[...bx.querySelectorAll('.pins input')];const err=bx.querySelector('.perr'),pk=bx.querySelector('.pkids');
- const norm=v=>v.replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/\D/g,'');
- ins.forEach((inp,i)=>{inp.addEventListener('input',()=>{err.textContent='';pk.innerHTML='';const v=norm(inp.value);if(v.length>1){v.slice(0,5).split('').forEach((c,j)=>{if(ins[i+j])ins[i+j].value=c});(ins[Math.min(4,i+v.length)]).focus();if(ins.every(q=>q.value))go();return}inp.value=v;if(v&&ins[i+1])ins[i+1].focus();if(ins.every(q=>q.value))go()});
-  inp.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!inp.value&&ins[i-1])ins[i-1].focus();if(e.key==='Enter')go()})});
- const login=(code,name)=>{const key=code+':'+name;const isNew=!PROF[key];m.remove();useProfile(key,name);sfx.win();confetti();celebrate(false);toast(isNew?'أهلًا بالبطل '+name+' ✓':'أهلًا بعودتك يا '+name+'! تقدّمك محفوظ ✓');say('pr5',false)};
- const go=async()=>{const code=ins.map(q=>q.value).join('');if(!/^\d{5}$/.test(code)){err.textContent='اكتب ٥ أرقام كاملة';sfx.no();return}
-  const names=await kidsFor(code);if(!names.length){err.textContent='هذا الرقم غير مسجّل في برنامج غرس.. تأكّد من آخر ٥ أرقام';sfx.no();return}
-  if(names.length===1)return login(code,names[0]);
-  pk.innerHTML='<p style="margin:0 0 8px;font-weight:700">من البطل الذي سيلعب الآن؟</p>';names.forEach(n=>{const k=el('button','pill y',n);k.style.margin='4px';k.onclick=()=>login(code,n);pk.appendChild(k)})};
- bx.querySelector('#pin').onclick=go;setTimeout(()=>ins[0].focus(),100)}
+function modal(){sfx.flip();document.querySelectorAll('.pmodal').forEach(x=>x.remove());const m=el('div','pmodal');m.setAttribute('role','dialog');const bx=el('div','pbox');m.appendChild(bx);m.onclick=e=>{if(e.target===m)m.remove()};document.body.appendChild(m);
+ const x=()=>{const b=el('button','x','×');b.setAttribute('aria-label','إغلاق');b.onclick=()=>m.remove();bx.prepend(b)};return {m,bx,x}}
+function busy(btn,on,tx){btn.disabled=on;if(on){btn.dataset.t=btn.textContent;btn.textContent=tx||'لحظة...'}else if(btn.dataset.t)btn.textContent=btn.dataset.t}
+const numN=v=>String(v||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+function openProf(){if(ACC)return openAccount();openAuth('login')}
+function openAuth(mode){const {m,bx,x}=modal();
+ const reg=mode==='reg';
+ bx.innerHTML=`<div class="gmini">${Gros.svg({stage:gStage().n,mood:'welcome'})}</div>
+ <div class="ptabs" role="tablist"><button role="tab" aria-selected="${!reg}" data-m="login">دخول</button><button role="tab" aria-selected="${reg}" data-m="reg">حساب جديد</button></div>
+ <h3>${reg?'أنشئ حساب البطل':'أهلًا بعودتك'}</h3><p>${reg?'ليُحفظ تقدّم طفلك وتكبر غرسته، ويكمل من أي جهاز.':'ادخل بالإيميل وكلمة المرور لتكمل من حيث توقّفت.'}</p>
+ <form class="pf" novalidate>
+  ${reg?'<label for="fName">اسم البطل</label><input id="fName" autocomplete="nickname" maxlength="40" required>':''}
+  <label for="fEmail">الإيميل</label><input id="fEmail" type="email" dir="ltr" autocomplete="email" required>
+  <label for="fPass">كلمة المرور</label><input id="fPass" type="password" dir="ltr" autocomplete="${reg?'new-password':'current-password'}" minlength="8" required>
+  ${reg?`<small class="hint">٨ أحرف أو أرقام على الأقل</small>
+  <label class="chk"><input type="checkbox" id="fStu"> أنا طالب في غرس</label>
+  <div id="stuBox" hidden><label for="fL5">آخر ٥ أرقام من جوال وليّ الأمر المسجّل في غرس</label><input id="fL5" inputmode="numeric" dir="ltr" maxlength="5" autocomplete="off" class="l5"></div>
+  <div id="pubBox"><label for="fPhone">رقم الجوال</label><input id="fPhone" type="tel" inputmode="tel" dir="ltr" autocomplete="tel" placeholder="05xxxxxxxx">
+  <label class="chk"><input type="checkbox" id="fOk"> أوافق على تواصل غرس معي</label></div>`:''}
+  <div class="perr" role="alert"></div>
+  <div class="pbtns"><button class="pill y" type="submit">${reg?'إنشاء الحساب':'دخول'}</button></div>
+ </form>
+ <p class="pnote">${reg?'التسجيل اختياري، والألعاب متاحة للجميع بدونه.':'نسيت كلمة المرور؟ تواصل مع برنامج غرس.'}</p>`;
+ x();bx.querySelectorAll('.ptabs button').forEach(b=>b.onclick=()=>{m.remove();openAuth(b.dataset.m)});
+ const f=bx.querySelector('form'),err=bx.querySelector('.perr'),q=s=>bx.querySelector(s);
+ if(reg){const stu=q('#fStu');stu.onchange=()=>{q('#stuBox').hidden=!stu.checked;q('#pubBox').hidden=stu.checked}}
+ f.onsubmit=async e=>{e.preventDefault();err.textContent='';const btn=f.querySelector('[type=submit]');
+  const email=q('#fEmail').value.trim(),password=numN(q('#fPass').value);
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return err.textContent=ERRS.email;
+  if(password.length<8&&reg)return err.textContent=ERRS.weak;
+  let d={email,password,progress:store};
+  if(reg){const name=q('#fName').value.trim();if(!name)return err.textContent=ERRS.name;d.name=name;d.student=q('#fStu').checked;
+   if(d.student){d.last5=numN(q('#fL5').value).replace(/\D/g,'');if(d.last5.length!==5)return err.textContent='اكتب ٥ أرقام كاملة'}
+   else{d.phone=numN(q('#fPhone').value).replace(/\D/g,'');if(d.phone.length<8)return err.textContent=ERRS.phone;if(!q('#fOk').checked)return err.textContent=ERRS.consent;d.consent=true}}
+  busy(btn,true);const r=await api(reg?'acc.register':'acc.login',d);busy(btn,false);
+  if(!r.ok){err.textContent=errTx(r.error);sfx.no();return}
+  const keep=store;setAcc(r.acc,r.tok);for(const k in keep)if((keep[k]||0)>(store[k]||0)){store[k]=keep[k];syncSoon()}
+  m.remove();home();sfx.win();confetti();celebrate(false,(reg?'أهلًا بالبطل ':'أهلًا بعودتك يا ')+r.acc.name);say('pr5',false)};
+ setTimeout(()=>(q('#fName')||q('#fEmail')).focus(),100)}
+function openAccount(){const {m,bx,x}=modal();const I=stageInfo();const played=GAMES.filter(G=>store[G.id]).length;
+ bx.innerHTML=`<div class="aphoto">${AV(ACC,'pav')}<label class="pchg" for="fPic">تغيير الصورة</label><input type="file" id="fPic" accept="image/*" hidden></div>
+ <h3>${esc(ACC.name)}</h3><p dir="ltr" class="pmail">${esc(ACC.email)}</p>${ACC.student?`<p class="stu">طالب في غرس${ACC.teacher&&ACC.teacher!=='تجريبي'?' · '+esc(ACC.teacher):''}</p>`:''}
+ <div class="pstat"><div class="y"><b>${arN(I.tot)}</b><small>نجمة</small></div><div class="s"><b>${arN(played)}</b><small>لعبة أنجزها</small></div><div class="r"><b>${arN(I.s.n)}</b><small>${I.s.name}</small></div></div>
+ <details class="psec"><summary>تعديل الاسم</summary><form class="pf" id="fN"><label for="aName">الاسم</label><input id="aName" maxlength="40" value="${esc(ACC.name)}"><div class="perr" role="alert"></div><div class="pbtns"><button class="pill y" type="submit">حفظ الاسم</button></div></form></details>
+ ${ACC.student?'':`<details class="psec"><summary>رقم الجوال</summary><form class="pf" id="fP"><label for="aPhone">رقم الجوال</label><input id="aPhone" type="tel" dir="ltr" value="${esc(ACC.phone||'')}"><div class="perr" role="alert"></div><div class="pbtns"><button class="pill y" type="submit">حفظ الرقم</button></div></form></details>`}
+ <details class="psec"><summary>تغيير كلمة المرور</summary><form class="pf" id="fW"><label for="aOld">كلمة المرور الحالية</label><input id="aOld" type="password" dir="ltr" autocomplete="current-password"><label for="aNew">كلمة المرور الجديدة</label><input id="aNew" type="password" dir="ltr" autocomplete="new-password"><small class="hint">٨ أحرف أو أرقام على الأقل. ستخرج الأجهزة الأخرى.</small><div class="perr" role="alert"></div><div class="pbtns"><button class="pill y" type="submit">تغيير كلمة المرور</button></div></form></details>
+ <div class="pbtns" style="margin-top:14px"><button class="pill y" id="pgo">هيّا نلعب</button><button class="pill" id="pout">تسجيل خروج</button></div>
+ <div class="danger"><button class="rbtn" id="rst">إعادة التقدّم من البداية</button>
+  <form class="pf rconf" id="fR" hidden><p><b>هل أنت متأكد؟</b> ستُحذف كل النجوم والأوسمة، وتعود غرستك بذرة. لا يمكن التراجع عن هذا.</p>
+  <label for="rPass">اكتب كلمة المرور للتأكيد</label><input id="rPass" type="password" dir="ltr" autocomplete="current-password"><div class="perr" role="alert"></div>
+  <div class="pbtns"><button class="rbtn" type="submit">نعم، أعد التقدّم</button><button class="pill" type="button" id="rNo">إلغاء</button></div></form></div>`;
+ x();const q=s=>bx.querySelector(s);
+ const done=(r,f,msg)=>{const er=f.querySelector('.perr');if(!r.ok){er.textContent=r.error==='bad'?'كلمة المرور غير صحيحة':errTx(r.error);sfx.no();return false}setAcc(r.acc,r.tok||null);home();toast(msg);return true};
+ q('#fN').onsubmit=async e=>{e.preventDefault();const b=e.target.querySelector('button');busy(b,true);const r=await api('acc.update',{tok:ATOK,name:q('#aName').value});busy(b,false);if(done(r,e.target,'تم حفظ الاسم ✓')){m.remove();openAccount()}};
+ if(q('#fP'))q('#fP').onsubmit=async e=>{e.preventDefault();const b=e.target.querySelector('button');busy(b,true);const r=await api('acc.update',{tok:ATOK,phone:numN(q('#aPhone').value)});busy(b,false);done(r,e.target,'تم حفظ الرقم ✓')};
+ q('#fW').onsubmit=async e=>{e.preventDefault();const b=e.target.querySelector('button');const nw=numN(q('#aNew').value);if(nw.length<8){e.target.querySelector('.perr').textContent=ERRS.weak;return}busy(b,true);const r=await api('acc.update',{tok:ATOK,old:numN(q('#aOld').value),password:nw});busy(b,false);if(done(r,e.target,'تم تغيير كلمة المرور ✓'))e.target.reset()};
+ q('#fPic').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const url=await shrink(file);const r=await api('acc.update',{tok:ATOK,photo:url});if(r.ok){setAcc(r.acc);home();m.remove();openAccount();toast('تم تغيير الصورة ✓')}else toast(errTx(r.error))}catch(er){toast(ERRS.photo)}};
+ q('#pgo').onclick=()=>m.remove();q('#pout').onclick=()=>{logoutLocal();m.remove();home();toast('تم تسجيل الخروج')};
+ q('#rst').onclick=()=>{q('#rst').hidden=true;q('#fR').hidden=false;q('#rPass').focus();buddy('sad')};
+ q('#rNo').onclick=()=>{q('#rst').hidden=false;q('#fR').hidden=true};
+ q('#fR').onsubmit=async e=>{e.preventDefault();const b=e.target.querySelector('[type=submit]');busy(b,true);const r=await api('acc.reset',{tok:ATOK,password:numN(q('#rPass').value)});busy(b,false);
+  if(done(r,e.target,'تمت إعادة التقدّم، غرستك بذرة من جديد')){try{localStorage.removeItem('ghars_games_v1')}catch(er){}m.remove();lastStageSeen=null;home()}}}
+function shrink(file){return new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const S=160,c=document.createElement('canvas');c.width=c.height=S;const g=c.getContext('2d');const s=Math.min(im.width,im.height);
+  g.fillStyle='#fff';g.fillRect(0,0,S,S);g.drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,S,S);res(c.toDataURL('image/jpeg',.82))};im.onerror=rej;im.src=fr.result};fr.onerror=rej;fr.readAsDataURL(file)})}
 function home(){renderFocus();renderProf();renderLevel();
  const ch=$('#chips');ch.innerHTML='';CATS.forEach(([k,n])=>{const b=el('button','chip',n);b.setAttribute('aria-pressed',filter===k);b.onclick=()=>{filter=k;try{localStorage.setItem('ghars_cat',k)}catch(e){}home()};ch.appendChild(b)});
  const g=$('#grid');g.innerHTML='';
@@ -1173,7 +1249,7 @@ RUN.trace=function(){const p=$('#play');const NS='http://www.w3.org/2000/svg';
  round()};
 
 
-home();
+home();refreshAcc();
 const h=(location.hash||'').slice(1);if(GAMES.some(g=>g.id===h))start(h);
 addEventListener('hashchange',()=>{const k=(location.hash||'').slice(1);if(!k&&current)exit();else if(GAMES.some(g=>g.id===k)&&(!current||current.id!==k))start(k)});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&current)exit()});

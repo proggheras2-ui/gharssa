@@ -75,6 +75,9 @@ table.lt thead .nm{z-index:3;background:var(--navy)}
 .mk.busy{opacity:.5}.mk:disabled{cursor:default}
 td.sc{font-weight:700;color:var(--navy);white-space:nowrap;padding:0 10px}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+table.acct td{padding:6px 10px;white-space:nowrap}table.acct td.l{direction:ltr;text-align:right}
+.astats{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 14px}.astats div{background:var(--mist);border-radius:14px;padding:8px 16px;font-weight:700}.astats b{font-size:22px;margin-inline-start:6px}
+.arow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}.arow select,.arow input{border:2px solid var(--line);border-radius:12px;padding:8px 12px;font:inherit}
 </style>
 </head>
 <body>
@@ -160,7 +163,7 @@ async function maybeSendReport(d,s,r){if(!r||!r.notify||typeof drawGharsReport!=
  const cv=await drawGharsReport({name:s.name,teacher:d.sheet,letters:d.letters,marks:s.marks,gheras:gh,ghars:gs,font:'Ruqiaround'});
  const x=await api('report.send',{sheet:d.sheet,row:s.row,name:s.name,png:cv.toDataURL('image/png').split(',')[1]});if(x.sent)toast('📧 اكتمل التقييم وأُرسل التقرير لوليّ الأمر')}catch(e){}}
 /* ---------- tabs ---------- */
-const TABS=[['letters','إتقان الحروف',()=>can('letters')||can('kidsview')],['students','الطلاب',()=>can('students')],['general','عام',()=>can('content')],['home','الصفحة الرئيسية',()=>can('content')],['nav','القائمة العلوية',()=>can('content')],['levels','المستويات',()=>can('content')],['pages','الصفحات',()=>can('content')],['photos','الصور',()=>can('media')&&!can('content')],['games','الألعاب',()=>can('games')],['contact','التواصل',()=>can('content')],['users','المستخدمون والصلاحيات',()=>ME.role==='admin'],['settings','الإعدادات',()=>ME.role==='admin'],['account','حسابي',()=>true]];
+const TABS=[['letters','إتقان الحروف',()=>can('letters')||can('kidsview')],['students','الطلاب',()=>can('students')],['general','عام',()=>can('content')],['home','الصفحة الرئيسية',()=>can('content')],['nav','القائمة العلوية',()=>can('content')],['levels','المستويات',()=>can('content')],['pages','الصفحات',()=>can('content')],['photos','الصور',()=>can('media')&&!can('content')],['games','الألعاب',()=>can('games')],['contact','التواصل',()=>can('content')],['accounts','حسابات الألعاب',()=>can('students')],['users','المستخدمون والصلاحيات',()=>ME.role==='admin'],['settings','الإعدادات',()=>ME.role==='admin'],['account','حسابي',()=>true]];
 const CONTENT_TABS=['general','home','nav','levels','pages','photos','games','contact'];
 async function main(){const tabs=TABS.filter(t=>t[2]());if(!tab||!tabs.some(t=>t[0]===tab))tab=tabs[0][0];
  $('#app').innerHTML=`<div class="top"><h1>لوحة التحكم <small style="font-size:16px;opacity:.85">— ${esc(ME.name)} (${ME.role==='admin'?'مدير':'معلم'})</small></h1><a href="../index.html" target="_blank" rel="noopener">عرض الموقع ↗</a><button id="logout">خروج</button></div><div class="layout"><nav class="tabs" role="tablist"></nav><section class="panel" id="panel"><p class="help">جارٍ التحميل...</p></section></div>`;
@@ -171,6 +174,21 @@ async function main(){const tabs=TABS.filter(t=>t[2]());if(!tab||!tabs.some(t=>t
  P.innerHTML='';try{await VIEWS[tab](P)}catch(e){P.innerHTML=`<p class="help">${esc(e.msg||e.message)}</p>`}dirty()}
 const linkF=(k='href',l='الرابط')=>({k,label:l,type:'url',ph:'index.html أو https://...'});
 const VIEWS={
+
+ async accounts(P){P.innerHTML='<h2>حسابات الألعاب</h2><p class="help">الحسابات التي أنشأها الأطفال وأولياء الأمور في صفحة الألعاب. كلمات المرور مشفّرة ولا تظهر لأحد.</p><p class="help">جارٍ التحميل...</p>';
+  const r=await api('accounts.get');const A=r.accounts||[];const st=A.filter(a=>a.student).length;
+  const d=s=>s?new Date(s).toLocaleDateString('ar-SA-u-ca-gregory-nu-latn'):'';
+  P.innerHTML=`<h2>حسابات الألعاب</h2><p class="help">الحسابات التي أنشأها الأطفال وأولياء الأمور في صفحة الألعاب. كلمات المرور مشفّرة ولا تظهر لأحد.</p>
+  <div class="astats"><div>كل الحسابات<b>${A.length}</b></div><div>طلاب غرس<b>${st}</b></div><div>من خارج غرس<b>${A.length-st}</b></div></div>
+  <div class="arow"><select id="af"><option value="all">الكل</option><option value="out">من خارج غرس (للتواصل)</option><option value="stu">طلاب غرس</option></select><input id="aq" placeholder="بحث بالاسم أو الإيميل أو الجوال"><button class="btn" id="acsv">تنزيل ملف Excel</button></div>
+  <div class="tscroll"><table class="lt acct"><thead><tr><th class="nm">الاسم</th><th>الإيميل</th><th>الجوال</th><th>النوع</th><th>المعلم / اسم الطالب</th><th>النجوم</th><th>التسجيل</th><th>آخر دخول</th></tr></thead><tbody></tbody></table></div>`;
+  const rows=()=>{const f=$('#af').value,q=$('#aq').value.trim().toLowerCase();return A.filter(a=>(f==='all'||(f==='stu')===a.student)&&(!q||[a.name,a.email,a.phone,a.kid].join(' ').toLowerCase().includes(q)))};
+  const draw=()=>{const tb=P.querySelector('tbody');tb.innerHTML=rows().map(a=>`<tr><td class="nm">${esc(a.name)}</td><td class="l">${esc(a.email)}</td><td class="l">${esc(a.phone||'')}</td><td>${a.student?'طالب في غرس':'من خارج غرس'}</td><td>${a.student?esc(a.teacher+' / '+a.kid):(a.consent?'موافق على التواصل':'')}</td><td>${a.stars}</td><td>${d(a.created)}</td><td>${d(a.last)}</td></tr>`).join('')||'<tr><td colspan="8">لا توجد حسابات بعد</td></tr>'};
+  $('#af').onchange=draw;$('#aq').oninput=draw;draw();
+  $('#acsv').onclick=()=>{const H=['الاسم','الإيميل','الجوال','النوع','المعلم','اسم الطالب في الكشف','موافق على التواصل','النجوم','تاريخ التسجيل','آخر دخول'];
+   const L=[H].concat(rows().map(a=>[a.name,a.email,a.phone?'‎'+a.phone:'',a.student?'طالب في غرس':'من خارج غرس',a.teacher||'',a.kid||'',a.consent?'نعم':'لا',a.stars,d(a.created),d(a.last)]));
+   const csv='﻿'+L.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
+   const u=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download='ghars-accounts.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}},
 
  general(P){P.innerHTML='<h2>الإعدادات العامة</h2><p class="help">عنوان الواجهة والعبارات والروابط الأساسية.</p>';
   P.appendChild(fields(C.site,[{k:'titlePre',label:'بداية العنوان'},{k:'name',label:'الكلمة المميّزة (بالأصفر)'},{k:'slogan',label:'الشعار النصّي',full:1},{k:'intro',label:'الوصف المختصر',type:'textarea'},{k:'rights',label:'عبارة الحقوق (أسفل الموقع)',full:1}]));
