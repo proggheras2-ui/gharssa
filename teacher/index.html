@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>دخول المعلمين | برنامج غرس</title>
+<link rel="icon" href="../assets/img/icon.png">
+<style>
+@font-face{font-family:"Ruqiaround";src:url(../assets/fonts/Ruqiaround-Bold.otf) format("opentype");font-weight:700}
+@font-face{font-family:"Ruqiaround";src:url(../assets/fonts/Ruqiaround-Medium.otf) format("opentype");font-weight:500}
+:root{--navy:#283370;--sky:#0AA4AD;--red:#DE4A52;--yellow:#FDB515;--mist:#EEF3F8;--line:#D9E2EE;--soft:#4a5488;--grad:linear-gradient(135deg,#283370,#0AA4AD);--f:"Ruqiaround",Tahoma,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--mist);color:var(--navy);font:500 16px/1.6 var(--f);min-height:100vh}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer}
+.brand{background:var(--navy);display:flex;justify-content:center;align-items:center;gap:28px;padding:14px}.brand img{height:46px}.brand .sep{width:2px;height:40px;background:#fff}
+.hero{background:var(--grad);color:#fff;padding:20px 16px;text-align:center}.hero h1{margin:0;font-size:28px}.hero p{margin:4px 0 0;opacity:.9}
+.wrap{max-width:1100px;margin:0 auto;padding:18px 16px 60px}
+.card{background:#fff;border-radius:24px;padding:24px 18px;box-shadow:0 10px 30px -22px rgba(40,51,112,.6)}
+.login{max-width:460px;margin:20px auto;text-align:center}
+.login h2{margin:0 0 6px;font-size:26px}.login p{color:var(--soft);margin:0 0 16px}
+.pins{display:flex;gap:8px;justify-content:center;direction:ltr;margin:6px 0 10px}
+.pins input{width:48px;height:60px;border-radius:14px;border:3px solid var(--line);text-align:center;font:700 28px var(--f);color:var(--navy)}
+.pins input:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 4px rgba(10,164,173,.2)}
+.err{color:var(--red);font-weight:700;min-height:26px}
+.btn{border:0;border-radius:999px;padding:10px 26px;font-weight:700;background:var(--yellow);color:var(--navy);font-size:18px}
+.btn.g{background:#fff;border:2px solid var(--line);font-size:15px;padding:6px 16px}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.bar h2{margin:0;flex:1;font-size:24px}
+select,.search{border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:#fff}
+.legend{color:var(--soft);font-size:14px;margin:0 0 10px}
+.tscroll{overflow:auto;max-height:72vh;border:2px solid var(--line);border-radius:14px;background:#fff}
+table{border-collapse:separate;border-spacing:0}
+th,td{border-bottom:1px solid var(--line);padding:3px;text-align:center;background:#fff}
+thead th{position:sticky;top:0;background:var(--navy);color:#fff;z-index:2;min-width:42px;padding:8px 4px}
+.nm{position:sticky;right:0;z-index:1;text-align:right;white-space:nowrap;padding:6px 10px;min-width:160px;background:var(--mist)}thead .nm{z-index:3;background:var(--navy)}
+.mk{width:38px;height:38px;border-radius:10px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:19px;line-height:1}
+.mk.ok{background:var(--sky);border-color:var(--sky);color:#fff}.mk.no{background:var(--red);border-color:var(--red);color:#fff}.mk.busy{opacity:.5}
+td.sc{font-weight:700;white-space:nowrap;padding:0 10px}
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-160%);background:var(--navy);color:#fff;padding:10px 22px;border-radius:999px;font-weight:700;z-index:40;transition:transform .3s}.toast.on{transform:translateX(-50%)}.toast.err{background:var(--red)}
+</style>
+</head>
+<body>
+<header class="brand"><img src="../assets/img/gheras_w.png" alt="جمعية غراس لتنمية الطفل"><span class="sep"></span><img src="../assets/img/ghars_w.png" alt="برنامج غرس"></header>
+<div class="hero"><h1>بوابة المعلمين</h1><p>تقييم إتقان الحروف لطلاب فصلك</p></div>
+<main class="wrap" id="app"></main>
+<div class="toast" id="toast"></div>
+<script>
+const LIVE='https://script.google.com/macros/s/AKfycbyL3oIz9BJNkck2ctg85zEYBstz_dN_XJ8tgrmj4iORVQeVQWPtFhgyJYW9svZu9RHzPw/exec';
+const qp=new URLSearchParams(location.search);const API_URL=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)&&qp.get('api')?qp.get('api'):LIVE;
+const $=s=>document.querySelector(s);const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ERR={badpin:'الرمز غير صحيح',locked:'محاولات كثيرة.. انتظر ١٥ دقيقة ثم حاول',auth:'انتهت الجلسة، أدخل الرمز من جديد',forbidden:'ليست لديك صلاحية',moved:'تغيّر ترتيب الطلاب.. حدّث الصفحة'};
+let TOK='',ME=null,SHEETS=[];try{TOK=sessionStorage.getItem('ghars_ttok')||''}catch(e){}
+function toast(m,err){const t=$('#toast');t.textContent=m;t.className='toast on'+(err?' err':'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='toast',2800)}
+async function api(a,d={}){let r;try{r=await fetch(API_URL,{method:'POST',body:JSON.stringify({a,tok:TOK,...d})}).then(x=>x.json())}catch(e){throw Object.assign(new Error('net'),{msg:'تعذّر الاتصال، تحقّق من الإنترنت'})}
+ if(!r.ok){const e=new Error(r.error);e.msg=ERR[r.error]||'حدث خطأ';if(r.error==='auth'){TOK='';login(e.msg)}throw e}return r}
+function login(msg){$('#app').innerHTML=`<div class="card login"><h2>أدخل رمزك</h2><p>اكتب رمز الدخول الذي أعطاك إياه مدير البرنامج</p>
+<div class="pins">${[0,1,2,3,4,5].map(i=>`<input inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="الرقم ${i+1}" autocomplete="off">`).join('')}</div><div class="err" role="alert">${esc(msg||'')}</div><button class="btn" id="go">دخول</button></div>`;
+ const ins=[...document.querySelectorAll('.pins input')];const norm=v=>v.replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\D/g,'');
+ const go=async()=>{const pin=ins.map(i=>i.value).join('');if(pin.length<6){$('.err').textContent='اكتب الرمز كاملًا';return}$('.err').textContent='جارٍ الدخول...';
+  try{const r=await api('pinlogin',{pin});TOK=r.tok;try{sessionStorage.setItem('ghars_ttok',TOK)}catch(e){}ME=r.user;SHEETS=r.sheets;grid()}catch(e){$('.err').textContent=e.msg;ins.forEach(i=>i.value='');ins[0].focus()}};
+ ins.forEach((inp,i)=>{inp.addEventListener('input',()=>{const v=norm(inp.value);if(v.length>1){v.slice(0,6).split('').forEach((c,j)=>{if(ins[i+j])ins[i+j].value=c})}else inp.value=v;const n=ins.findIndex(x=>!x.value);if(n>=0)ins[n].focus();else go()});
+  inp.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!inp.value&&ins[i-1])ins[i-1].focus();if(e.key==='Enter')go()})});
+ $('#go').onclick=go;ins[0].focus()}
+async function grid(){if(!SHEETS.length){$('#app').innerHTML='<div class="card login"><h2>لا يوجد فصل مرتبط بحسابك</h2><p>اطلب من مدير البرنامج ربط فصلك بحسابك.</p></div>';return}
+ $('#app').innerHTML=`<div class="card"><div class="bar"><h2>أهلًا ${esc(ME.name)}</h2><button class="btn g" id="out">خروج</button></div>
+ <div class="bar">${SHEETS.length>1?'<select id="sh"></select>':''}<input class="search" id="q" placeholder="ابحث عن طالب"></div>
+ <p class="legend">اضغط على خانة الحرف: مرة = <b style="color:var(--sky)">أتقن ✓</b>، مرتين = <b style="color:var(--red)">لم يتقن ✗</b>، ثلاث = فارغ. يُحفظ فورًا ويراه وليّ الأمر.</p><div id="g">جارٍ التحميل...</div></div>`;
+ $('#out').onclick=async()=>{try{await api('logout')}catch(e){}TOK='';try{sessionStorage.removeItem('ghars_ttok')}catch(e){}login()};
+ const sel=$('#sh');if(sel){SHEETS.forEach(n=>{const o=el('option','',esc(n));o.value=n;sel.appendChild(o)});sel.onchange=()=>load(sel.value)}
+ const load=async name=>{const g=$('#g');g.textContent='جارٍ التحميل...';try{const d=await api('letters.get',{sheet:name});
+  g.innerHTML=`<div class="tscroll"><table><thead><tr><th class="nm">الطالب</th>${d.letters.map(L=>`<th>${esc(L)}</th>`).join('')}<th>المتقن</th></tr></thead><tbody></tbody></table></div>`;const tb=g.querySelector('tbody');
+  d.students.forEach(s=>{const tr=el('tr');tr.dataset.n=s.name;tr.appendChild(el('th','nm',esc(s.name)));const sc=el('td','sc');const upd=()=>sc.textContent=s.marks.filter(m=>m===1).length+'/'+d.letters.length;
+   s.marks.forEach((m,i)=>{const td=el('td'),b=el('button','mk');const paint=()=>{b.className='mk'+(s.marks[i]===1?' ok':s.marks[i]===0?' no':'');b.textContent=s.marks[i]===1?'✓':s.marks[i]===0?'✗':'';b.setAttribute('aria-label',s.name+' — '+d.letters[i])};paint();
+    b.onclick=async()=>{const p=s.marks[i];s.marks[i]=p===null?1:p===1?0:null;paint();upd();b.classList.add('busy');try{await api('letters.set',{sheet:d.sheet,row:s.row,col:i,name:s.name,value:s.marks[i]})}catch(e){s.marks[i]=p;paint();upd();toast(e.msg,1)}b.classList.remove('busy')};
+    td.appendChild(b);tr.appendChild(td)});upd();tr.appendChild(sc);tb.appendChild(tr)});
+  $('#q').oninput=e=>tb.querySelectorAll('tr').forEach(tr=>tr.hidden=e.target.value&&!tr.dataset.n.includes(e.target.value.trim()))}catch(e){g.textContent=e.msg}};
+ load(SHEETS[0])}
+(async()=>{if(TOK){try{const r=await api('me');ME=r.user;SHEETS=r.sheets;return grid()}catch(e){}}login()})();
+</script>
+</body>
+</html>
