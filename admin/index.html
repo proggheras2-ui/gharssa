@@ -19,13 +19,13 @@ button{cursor:pointer}
 .top{background:var(--grad);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .top h1{margin:0;font-size:24px;flex:1}
 .top a,.top button{background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 16px;font-weight:700;text-decoration:none}
-.layout{display:grid;grid-template-columns:220px 1fr;gap:18px;max-width:1200px;margin:18px auto;padding:0 16px 120px}
-@media(max-width:820px){.layout{grid-template-columns:1fr}}
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:18px;max-width:1200px;margin:18px auto;padding:0 16px 120px}
+@media(max-width:820px){.layout{grid-template-columns:minmax(0,1fr)}}
 .tabs{display:flex;flex-direction:column;gap:6px;position:sticky;top:12px;align-self:start}
 @media(max-width:820px){.tabs{flex-direction:row;overflow-x:auto;position:static}}
 .tabs button{background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 14px;text-align:right;font-weight:700;white-space:nowrap}
 .tabs button[aria-selected=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
-.panel{background:#fff;border-radius:22px;padding:20px;box-shadow:0 10px 30px -22px rgba(40,51,112,.6)}
+.panel{min-width:0;background:#fff;border-radius:22px;padding:20px;box-shadow:0 10px 30px -22px rgba(40,51,112,.6)}
 .panel h2{margin:0 0 6px;font-size:26px}.panel>p.help{margin:0 0 16px;color:var(--soft)}
 h3.sub{margin:22px 0 10px;font-size:20px;display:flex;align-items:center;gap:8px}
 h3.sub::before{content:"";width:8px;height:22px;border-radius:4px;background:var(--grad)}
@@ -64,6 +64,16 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sky)}
 .thumb .acts .ib{width:30px;height:30px;font-size:13px}
 .chk{display:flex;align-items:center;gap:8px;font-weight:700}
 .note{background:#FFF6E0;border-radius:14px;padding:10px 14px;font-size:14px;margin:10px 0}
+.tscroll{overflow:auto;max-height:70vh;border:2px solid var(--line);border-radius:14px}
+table.lt{border-collapse:separate;border-spacing:0;font-size:15px}
+table.lt th,table.lt td{border-bottom:1px solid var(--line);padding:3px;text-align:center;background:#fff}
+table.lt thead th{position:sticky;top:0;background:var(--navy);color:#fff;z-index:2;min-width:38px;padding:8px 4px}
+table.lt .nm{position:sticky;right:0;z-index:1;text-align:right;white-space:nowrap;padding:6px 10px;min-width:170px;background:var(--mist)}
+table.lt thead .nm{z-index:3;background:var(--navy)}
+.mk{width:34px;height:34px;border-radius:10px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:18px;line-height:1}
+.mk.ok{background:var(--sky);border-color:var(--sky);color:#fff}.mk.no{background:var(--red);border-color:var(--red);color:#fff}
+.mk.busy{opacity:.5}.mk:disabled{cursor:default}
+td.sc{font-weight:700;color:var(--navy);white-space:nowrap;padding:0 10px}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 </style>
 </head>
@@ -73,7 +83,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sky)}
 <div class="savebar" id="savebar"><span>لديك تعديلات غير منشورة</span><button class="btn g" id="discard">تجاهل</button><button class="btn y" id="save">حفظ ونشر على الموقع</button></div>
 <div class="toast" id="toast"></div>
 <script>
-const OWNER='proggheras2-ui',REPO='gharssa',BR='main',API=`https://api.github.com/repos/${OWNER}/${REPO}/contents/`;
+
+const LIVE='https://script.google.com/macros/s/AKfycbyL3oIz9BJNkck2ctg85zEYBstz_dN_XJ8tgrmj4iORVQeVQWPtFhgyJYW9svZu9RHzPw/exec';
+const qp=new URLSearchParams(location.search);const API_URL=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)&&qp.get('api')?qp.get('api'):LIVE;
+const RAW=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?'../':'https://raw.githubusercontent.com/proggheras2-ui/gharssa/main/';
 const GAMES=[['learn','بطاقات الحروف'],['listen','أين الحرف؟'],['pick','صورة وحرف'],['balloons','بالونات الحروف'],['memory','ذاكرة الحروف'],['train','قطار الحروف'],['odd','الحرف المختلف'],['dots','عُدّ النقاط'],['word3','قطار الكلمات الثلاثية'],['word4','قطار الكلمات الرباعية'],['harakat','صيّاد الحركات'],['hear','اسمع الحركة'],['sort','سلال القراءة'],['readpick','اسمع واقرأ'],['trace','اكتب الحرف'],['color','لوّن الشكل'],['pattern','ما الشكل التالي؟']];
 const ICONS=[['book','كتاب'],['letters','حروف أ ب'],['game','لعبة'],['tree','شجرة'],['form','نموذج'],['hand','يد'],['heart','قلب'],['bus','حافلة'],['store','متجر'],['play','تشغيل'],['pdf','ملف'],['mic','ميكروفون'],['phone','هاتف'],['mail','بريد'],['map','موقع']];
 const DOODLES=[['i_book_c','كتاب'],['i_star_c','نجمة'],['i_pencil_c','قلم'],['i_puzzle_c','أحجية'],['i_sun_c','شمس'],['i_leaf_c','ورقة'],['i_spiral_c','دوامة'],['i_tri_c','مثلث']];
@@ -84,25 +97,37 @@ const SEC_T={tiles:'بطاقات الأقسام',stats:'شريط الأرقام'
 const PAGE_T={gallery:'معرض صور',video:'فيديو يوتيوب',join:'بطاقات انضمام',text:'نص'};
 const $=s=>document.querySelector(s);const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let TOK='';try{TOK=localStorage.getItem('ghars_admin_tok')||''}catch(e){}
-let C=null,SHA=null,ORIG='',tab='general';
-function toast(m,err){const t=$('#toast');t.textContent=m;t.className='toast on'+(err?' err':'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='toast',2600)}
-const b64e=s=>{const b=new TextEncoder().encode(s);let r='';for(let i=0;i<b.length;i+=0x8000)r+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));return btoa(r)};
-const b64d=s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g,'')),c=>c.charCodeAt(0)));
-async function gh(path,opt={}){const r=await fetch(API+path+(opt.method?'':`?ref=${BR}&t=${Date.now()}`),{...opt,headers:{Authorization:'Bearer '+TOK,Accept:'application/vnd.github+json',...(opt.headers||{})}});if(!r.ok){const e=new Error(r.status);e.status=r.status;try{e.body=await r.json()}catch(x){}throw e}return r.json()}
-async function hashKid(code){const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('gharsKids:'+code));return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,16)}
-function dirty(){$('#savebar').classList.toggle('on',JSON.stringify(C)!==ORIG)}
 
-/* ---------- login ---------- */
-function loginView(msg){$('#app').innerHTML=`<div class="login"><div class="panel"><h2>لوحة تحكم موقع غرس</h2><p class="help">هذه اللوحة خاصة بك. للدخول تحتاج «مفتاح دخول» من حساب GitHub الذي يملك الموقع، وتُنشئه مرة واحدة فقط.</p>
-<ol class="steps"><li>افتح <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">صفحة إنشاء مفتاح في GitHub</a> وأنت مسجّل الدخول.</li>
-<li>اكتب اسمًا مثل «لوحة غرس»، واختر مدة الصلاحية.</li><li>في <b>Repository access</b> اختر <b>Only select repositories</b> ثم <b>gharssa</b>.</li>
+const PERM_L={letters:'إدخال إتقان الحروف لطلابه',kidsview:'عرض نتائج إتقان الحروف فقط',students:'إدارة أسماء الطلاب وأرقام أولياء الأمور',content:'تعديل محتوى الموقع وصفحاته',media:'رفع الصور في معارض الصور',games:'ترتيب الألعاب وإخفاؤها'};
+const ERR={auth:'انتهت الجلسة، سجّل الدخول من جديد',forbidden:'ليست لديك صلاحية لهذا الإجراء',bad:'الإيميل أو الرقم السري غير صحيح',locked:'محاولات كثيرة.. انتظر ١٥ دقيقة',weak:'الرقم السري قصير (٨ أحرف على الأقل)',email:'الإيميل غير صحيح',dup:'هذا الإيميل مسجّل مسبقًا',self:'لا يمكنك حذف حسابك أو إلغاء صلاحية المدير عن نفسك',token:'مفتاح GitHub غير صحيح',tokenperm:'المفتاح لا يملك صلاحية الكتابة على الموقع',notoken:'لم يُضبط مفتاح GitHub بعد',exists:'تم إعداد المدير مسبقًا',conflict:'عدّل شخص آخر المحتوى الآن.. حدّث الصفحة',moved:'تغيّر ترتيب الطلاب في الجدول.. حدّث الصفحة',empty:'لم أجد طلابًا في الملف',size:'الصورة كبيرة جدًا'};
+let TOK='',ME=null,SHEETS=[];try{TOK=sessionStorage.getItem('ghars_tok')||localStorage.getItem('ghars_tok')||''}catch(e){}
+let C=null,SHA=null,ORIG='',tab=null;
+function toast(m,err){const t=$('#toast');t.textContent=m;t.className='toast on'+(err?' err':'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='toast',3000)}
+async function api(a,data={}){let r;try{r=await fetch(API_URL,{method:'POST',body:JSON.stringify({a,tok:TOK,...data})}).then(x=>x.json())}catch(e){throw Object.assign(new Error('net'),{msg:'تعذّر الاتصال بالخادم، تحقّق من الإنترنت'})}
+ if(!r.ok){const e=new Error(r.error);e.code=r.error;e.msg=ERR[r.error]||('خطأ: '+r.error);if(r.error==='auth'&&ME){ME=null;loginView(e.msg)}throw e}return r}
+const can=p=>ME&&(ME.role==='admin'||ME.perms.includes(p));
+function dirty(){$('#savebar').classList.toggle('on',!!C&&JSON.stringify(C)!==ORIG)}
+const keepTok=(t,remember)=>{TOK=t;try{sessionStorage.setItem('ghars_tok',t);if(remember)localStorage.setItem('ghars_tok',t);else localStorage.removeItem('ghars_tok')}catch(e){}};
+
+/* ---------- login & first-time setup ---------- */
+async function boot(){if(TOK){try{const r=await api('me');ME=r.user;SHEETS=r.sheets;return main()}catch(e){TOK=''}}
+ $('#app').innerHTML='<div class="login"><div class="panel"><p class="help">جارٍ التحميل...</p></div></div>';
+ try{const s=await api('status');s.setup?setupView():loginView()}catch(e){$('#app').innerHTML=`<div class="login"><div class="panel"><h2>لوحة التحكم</h2><p class="help">${esc(e.msg)}</p><div class="note">إذا كانت هذه أول مرة، تأكّد أن كود لوحة التحكم (Api.gs) مضاف إلى سكربت «إتقان الحروف» وأن النشر مُحدَّث.</div></div></div>`}}
+function loginView(msg){$('#savebar').classList.remove('on');$('#app').innerHTML=`<div class="login"><div class="panel"><h2>تسجيل الدخول</h2><p class="help">لوحة تحكم موقع غرس — للمدير والمعلمين.</p>
+<form id="lf"><label class="f">الإيميل<input type="email" id="le" autocomplete="username" dir="ltr" required></label><br><label class="f">الرقم السري<input type="password" id="lp" autocomplete="current-password" required></label>
+<label class="chk" style="margin:12px 0"><input type="checkbox" id="lr"> تذكّرني على هذا الجهاز</label>
+<div class="row"><button class="btn y" type="submit">دخول</button><span id="lmsg" style="color:var(--red);font-weight:700">${esc(msg||'')}</span></div></form>
+<p class="help" style="margin-top:14px">نسيت الرقم السري؟ اطلب من مدير الموقع تعيين رقم جديد لك.</p></div></div>`;
+ $('#lf').onsubmit=async e=>{e.preventDefault();$('#lmsg').textContent='جارٍ الدخول...';try{const r=await api('login',{email:$('#le').value,password:$('#lp').value});keepTok(r.tok,$('#lr').checked);ME=r.user;SHEETS=r.sheets;tab=null;main()}catch(err){$('#lmsg').textContent=err.msg}}}
+function setupView(){$('#app').innerHTML=`<div class="login"><div class="panel"><h2>إعداد حساب المدير (مرة واحدة)</h2><p class="help">أنشئ حسابك كمدير للموقع. بعدها تدخل بالإيميل والرقم السري من أي جهاز، وتضيف المعلمين وتحدد صلاحياتهم.</p>
+<div class="grid2"><label class="f">اسمك<input id="sn" value="مدير الموقع"></label><label class="f">الإيميل<input type="email" id="se" dir="ltr"></label><label class="f">الرقم السري (٨ أحرف على الأقل)<input type="password" id="sp" autocomplete="new-password"></label><label class="f">أعد كتابة الرقم السري<input type="password" id="sp2" autocomplete="new-password"></label></div>
+<h3 class="sub">مفتاح GitHub (يُحفظ في الخادم فقط)</h3><ol class="steps"><li>افتح <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">صفحة إنشاء مفتاح في GitHub</a> وأنت مسجّل الدخول.</li>
+<li>اكتب اسمًا مثل «لوحة غرس»، وفي <b>Expiration</b> اختر مدة طويلة (سنة أو No expiration).</li><li>في <b>Repository access</b> اختر <b>Only select repositories</b> ثم <b>gharssa</b>.</li>
 <li>في <b>Permissions</b> → <b>Contents</b> اختر <b>Read and write</b>.</li><li>اضغط <b>Generate token</b> وانسخ المفتاح والصقه هنا.</li></ol>
-<label class="f">مفتاح الدخول<input type="password" id="tok" autocomplete="off" placeholder="github_pat_..."></label>
-<div class="note">يُحفظ المفتاح في هذا المتصفح فقط، ولا يُرسل إلا إلى GitHub. لا تشاركه مع أحد.</div>
-<div class="row"><button class="btn y" id="go">دخول</button><span id="lmsg" style="color:var(--red);font-weight:700">${msg||''}</span></div></div></div>`;
- $('#go').onclick=async()=>{TOK=$('#tok').value.trim();if(!TOK)return;$('#lmsg').textContent='جارٍ التحقق...';try{await load();try{localStorage.setItem('ghars_admin_tok',TOK)}catch(e){}}catch(e){TOK='';$('#lmsg').textContent=e.status===401?'المفتاح غير صحيح أو منتهي':e.status===404?'المفتاح لا يملك صلاحية على مستودع gharssa':'تعذّر الاتصال، حاول مرة أخرى'}}}
-async function load(){const d=await gh('content.json');SHA=d.sha;C=JSON.parse(b64d(d.content));C.games=C.games||{order:[],hidden:[]};C.kids=C.kids||{};ORIG=JSON.stringify(C);main()}
+<label class="f">مفتاح GitHub<input type="password" id="st" placeholder="github_pat_..." dir="ltr"></label>
+<div class="row" style="margin-top:12px"><button class="btn y" id="sgo">إنشاء الحساب</button><span id="smsg" style="color:var(--red);font-weight:700"></span></div></div></div>`;
+ $('#sgo').onclick=async()=>{const m=$('#smsg');if($('#sp').value!==$('#sp2').value){m.textContent='الرقمان السريّان غير متطابقين';return}m.textContent='جارٍ الإعداد...';
+  try{const r=await api('setup',{name:$('#sn').value,email:$('#se').value,password:$('#sp').value,ghToken:$('#st').value.trim()});keepTok(r.tok,true);ME=r.user;SHEETS=r.sheets;tab='students';main();toast('تم إنشاء حسابك ✓ الخطوة التالية: استورد ملف الطلاب')}catch(e){m.textContent=e.msg}}}
 
 /* ---------- generic editors ---------- */
 function field(obj,f){const w=el('label','f'+(f.full||f.type==='textarea'?' full':''),esc(f.label));let i;
@@ -127,20 +152,23 @@ function listEd(arr,o){const box=el('div');
   if(o.blank){const a=el('button','add','+ إضافة '+(o.noun||''));a.onclick=()=>{const n=o.blank();arr.push(n);dirty();draw();box.querySelectorAll('.item')[arr.length-1]?.classList.remove('closed')};box.appendChild(a)}};
  draw();return box}
 
-/* ---------- image upload ---------- */
 function resize(file,max){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{const k=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.84).split(',')[1])};img.onerror=rej;img.src=URL.createObjectURL(file)})}
-async function upload(path,b64){await gh(path,{method:'PUT',body:JSON.stringify({message:'لوحة التحكم: رفع صورة',content:b64,branch:BR})})}
 
 /* ---------- tabs ---------- */
-const TABS=[['general','عام'],['home','الصفحة الرئيسية'],['nav','القائمة العلوية'],['levels','المستويات'],['pages','الصفحات'],['games','الألعاب'],['kids','الأطفال'],['contact','التواصل']];
-function main(){$('#app').innerHTML=`<div class="top"><h1>لوحة التحكم</h1><a href="../index.html" target="_blank" rel="noopener">عرض الموقع ↗</a><button id="logout">خروج</button></div><div class="layout"><nav class="tabs" role="tablist"></nav><section class="panel" id="panel"></section></div>`;
- $('#logout').onclick=()=>{if(JSON.stringify(C)!==ORIG&&!confirm('لديك تعديلات غير محفوظة، هل تريد الخروج؟'))return;try{localStorage.removeItem('ghars_admin_tok')}catch(e){}TOK='';$('#savebar').classList.remove('on');loginView()};
- const tb=$('.tabs');TABS.forEach(([k,n])=>{const b=el('button','',n);b.setAttribute('role','tab');b.setAttribute('aria-selected',k===tab);b.onclick=()=>{tab=k;main()};tb.appendChild(b)});
- const P=$('#panel');VIEWS[tab](P);dirty()}
+const TABS=[['letters','إتقان الحروف',()=>can('letters')||can('kidsview')],['students','الطلاب',()=>can('students')],['general','عام',()=>can('content')],['home','الصفحة الرئيسية',()=>can('content')],['nav','القائمة العلوية',()=>can('content')],['levels','المستويات',()=>can('content')],['pages','الصفحات',()=>can('content')],['photos','الصور',()=>can('media')&&!can('content')],['games','الألعاب',()=>can('games')],['contact','التواصل',()=>can('content')],['users','المستخدمون والصلاحيات',()=>ME.role==='admin'],['settings','الإعدادات',()=>ME.role==='admin'],['account','حسابي',()=>true]];
+const CONTENT_TABS=['general','home','nav','levels','pages','photos','games','contact'];
+async function main(){const tabs=TABS.filter(t=>t[2]());if(!tab||!tabs.some(t=>t[0]===tab))tab=tabs[0][0];
+ $('#app').innerHTML=`<div class="top"><h1>لوحة التحكم <small style="font-size:16px;opacity:.85">— ${esc(ME.name)} (${ME.role==='admin'?'مدير':'معلم'})</small></h1><a href="../index.html" target="_blank" rel="noopener">عرض الموقع ↗</a><button id="logout">خروج</button></div><div class="layout"><nav class="tabs" role="tablist"></nav><section class="panel" id="panel"><p class="help">جارٍ التحميل...</p></section></div>`;
+ $('#logout').onclick=async()=>{if(C&&JSON.stringify(C)!==ORIG&&!confirm('لديك تعديلات غير محفوظة، هل تريد الخروج؟'))return;try{await api('logout')}catch(e){}try{sessionStorage.removeItem('ghars_tok');localStorage.removeItem('ghars_tok')}catch(e){}TOK='';ME=null;C=null;loginView()};
+ const tb=$('.tabs');tabs.forEach(([k,n])=>{const b=el('button','',n);b.setAttribute('role','tab');b.setAttribute('aria-selected',k===tab);b.onclick=()=>{if(CONTENT_TABS.includes(tab)&&!CONTENT_TABS.includes(k)&&C&&JSON.stringify(C)!==ORIG&&!confirm('لديك تعديلات غير منشورة في المحتوى، هل تريد تركها؟'))return;tab=k;main()};tb.appendChild(b)});
+ const P=$('#panel');
+ if(CONTENT_TABS.includes(tab)&&!C){try{const r=await api('content.get');C=r.content;SHA=r.sha;C.games=C.games||{order:[],hidden:[]};ORIG=JSON.stringify(C)}catch(e){P.innerHTML=`<p class="help">${esc(e.msg)}</p>`;return}}
+ P.innerHTML='';try{await VIEWS[tab](P)}catch(e){P.innerHTML=`<p class="help">${esc(e.msg||e.message)}</p>`}dirty()}
 const linkF=(k='href',l='الرابط')=>({k,label:l,type:'url',ph:'index.html أو https://...'});
 const VIEWS={
+
  general(P){P.innerHTML='<h2>الإعدادات العامة</h2><p class="help">عنوان الواجهة والعبارات والروابط الأساسية.</p>';
-  P.appendChild(fields(C.site,[{k:'titlePre',label:'بداية العنوان'},{k:'name',label:'الكلمة المميّزة (بالأصفر)'},{k:'slogan',label:'الشعار النصّي',full:1},{k:'intro',label:'الوصف المختصر',type:'textarea'}]));
+  P.appendChild(fields(C.site,[{k:'titlePre',label:'بداية العنوان'},{k:'name',label:'الكلمة المميّزة (بالأصفر)'},{k:'slogan',label:'الشعار النصّي',full:1},{k:'intro',label:'الوصف المختصر',type:'textarea'},{k:'rights',label:'عبارة الحقوق (أسفل الموقع)',full:1}]));
   P.appendChild(el('h3','sub','أزرار الواجهة'));P.appendChild(listEd(C.site.cta,{fields:[{k:'label',label:'نص الزر'},linkF(),{k:'style',label:'اللون',type:'select',opts:[['y','أصفر'],['w','أبيض'],['n','كحلي'],['r','أحمر']]}],blank:()=>({label:'زر جديد',href:'',style:'y'}),noun:'زر'}));
   P.appendChild(el('h3','sub','روابط عامة'));P.appendChild(fields(C,[{k:'letters',label:'رابط موقع إتقان الحروف',type:'url',full:1}]));P.appendChild(fields(C.tuhfa,[{k:'pdf',label:'ملف متن تحفة الأطفال',type:'url'},{k:'video',label:'فيديو منظومة التحفة',type:'url'}]));
   P.appendChild(el('h3','sub','صفحة المستويات'));P.appendChild(fields(C.levelsPage,[{k:'title',label:'العنوان'},{k:'sub',label:'الوصف'}]))},
@@ -172,37 +200,78 @@ const VIEWS={
   const arr=ord.map(id=>({id,t:GAMES.find(g=>g[0]===id)[1],show:!G.hidden.includes(id)}));
   const sync=()=>{G.order=arr.map(x=>x.id);G.hidden=arr.filter(x=>x.show===false).map(x=>x.id)};
   const box=listEd(arr,{toggle:1,del:false,title:x=>x.t,fields:[]});box.addEventListener('click',()=>setTimeout(()=>{sync();dirty()}));P.appendChild(box)},
- kids(P){const n=Object.values(C.kids).reduce((a,v)=>a+v.length,0);P.innerHTML=`<h2>الأطفال</h2><p class="help">عند إدخال وليّ الأمر آخر ٥ أرقام من جواله في صفحة الألعاب، يظهر اسم طفله ويُرحَّب به. المسجّلون الآن: <b>${n}</b> طفلًا.</p>
-  <div class="note">للخصوصية لا تُحفظ أرقام الجوالات في الموقع أبدًا؛ يُحفظ الاسم الأول فقط مع رمز مشفّر من آخر ٥ أرقام.</div>
-  <h3 class="sub">إضافة طفل</h3><div class="grid2"><label class="f">آخر ٥ أرقام من جوال وليّ الأمر<input id="kc" inputmode="numeric" maxlength="5" dir="ltr"></label><label class="f">الاسم الأول للطفل<input id="kn" maxlength="20"></label></div><div class="row" style="margin-top:10px"><button class="btn" id="kadd">إضافة</button></div>
-  <h3 class="sub">استيراد من ملف Excel</h3><p class="help">العمود الأول: اسم الطالب، العمود الثاني: الجوال. يُقرأ الملف في جهازك فقط ولا يُرفع.</p><div class="row"><input type="file" id="kx" accept=".xlsx,.xls,.csv"><label class="chk"><input type="checkbox" id="krep"> استبدال القائمة الحالية</label></div>
-  <h3 class="sub">بحث وحذف</h3><div class="grid2"><label class="f">ابحث بآخر ٥ أرقام<input id="ks" inputmode="numeric" maxlength="5" dir="ltr"></label></div><div id="kres" style="margin-top:8px"></div>
-  <h3 class="sub">كل الأسماء</h3><div id="kall"></div>`;
-  const all=$('#kall');const drawAll=()=>{all.innerHTML='';Object.entries(C.kids).forEach(([h,ns])=>ns.forEach((nm,i)=>{const k=el('span','kid',esc(nm));const d=el('button','','×');d.title='حذف';d.onclick=()=>{if(!confirm('حذف «'+nm+'»؟'))return;ns.splice(i,1);if(!ns.length)delete C.kids[h];dirty();VIEWS.kids(P)};k.appendChild(d);all.appendChild(k)}))};drawAll();
-  $('#kadd').onclick=async()=>{const c=$('#kc').value.replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\D/g,''),nm=$('#kn').value.trim();if(c.length!==5||!nm)return toast('اكتب ٥ أرقام والاسم',1);const h=await hashKid(c);(C.kids[h]=C.kids[h]||[]);if(!C.kids[h].includes(nm))C.kids[h].push(nm);dirty();toast('تمت إضافة '+nm);VIEWS.kids(P)};
-  $('#ks').oninput=async e=>{const c=e.target.value.replace(/\D/g,'');const r=$('#kres');if(c.length!==5){r.innerHTML='';return}const ns=C.kids[await hashKid(c)]||[];r.innerHTML=ns.length?'مسجّل: '+ns.map(esc).join('، '):'لا يوجد أطفال بهذا الرقم'};
-  $('#kx').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{if(!window.XLSX)await new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';s.onload=ok;s.onerror=no;document.head.appendChild(s)});
-   const wb=XLSX.read(await f.arrayBuffer());const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1});const map=$('#krep').checked?{}:C.kids;let n=0;
-   for(const r of rows.slice(1)){const nm=String(r[0]||'').trim(),ph=String(r[1]||'').replace(/\D/g,'');if(!nm||ph.length<5)continue;let t=nm.replace('عبد ال','عبدال').split(/\s+/);const first=['عبد','ابو','أبو'].includes(t[0])&&t[1]?t[0]+' '+t[1]:t[0];const h=await hashKid(ph.slice(-5));(map[h]=map[h]||[]);if(!map[h].includes(first)){map[h].push(first);n++}}
-   C.kids=map;dirty();toast('تم استيراد '+n+' طفلًا');VIEWS.kids(P)}catch(err){toast('تعذّرت قراءة الملف',1)}}},
- contact(P){P.innerHTML='<h2>التواصل</h2><p class="help">تظهر في أسفل كل الصفحات.</p>';P.appendChild(fields(C.contact,[{k:'phone',label:'رقم الجوال (للعرض)'},{k:'phone_int',label:'الرقم الدولي للواتساب (مثل 9665...)'},{k:'mail',label:'البريد الإلكتروني'},{k:'wa',label:'رابط واتساب',type:'url'},{k:'wach',label:'قناة واتساب',type:'url'},{k:'tg',label:'تيليجرام',type:'url'},{k:'yt',label:'يوتيوب',type:'url'},{k:'map',label:'الموقع على الخريطة',type:'url'}]))}
+ contact(P){P.innerHTML='<h2>التواصل</h2><p class="help">تظهر في أسفل كل الصفحات.</p>';P.appendChild(fields(C.contact,[{k:'phone',label:'رقم الجوال (للعرض)'},{k:'phone_int',label:'الرقم الدولي للواتساب (مثل 9665...)'},{k:'mail',label:'البريد الإلكتروني'},{k:'wa',label:'رابط واتساب',type:'url'},{k:'wach',label:'قناة واتساب',type:'url'},{k:'tg',label:'تيليجرام',type:'url'},{k:'yt',label:'يوتيوب',type:'url'},{k:'map',label:'الموقع على الخريطة',type:'url'}]))},
+ photos(P){P.innerHTML='<h2>الصور</h2><p class="help">أضف الصور إلى معارض الصور أو احذفها، ثم اضغط «حفظ ونشر».</p>';C.pages.filter(p=>p.type==='gallery').forEach(p=>{const b=el('div','item');b.style.padding='12px';b.appendChild(el('h3','sub',esc(p.title)));galleryEd(p,b);P.appendChild(b)})},
+ async letters(P){P.innerHTML='<h2>إتقان الحروف</h2><p class="help">اضغط على خانة الحرف: مرة = <b style="color:var(--sky)">أتقن ✓</b>، مرتين = <b style="color:var(--red)">لم يتقن ✗</b>، ثلاث = فارغ. يُحفظ كل تغيير فورًا ويراه وليّ الأمر في صفحة إتقان الحروف.</p>';
+  if(!SHEETS.length){P.innerHTML+='<div class="note">لم يُحدَّد لك فصل بعد. اطلب من مدير الموقع إضافة فصلك.</div>';return}
+  const r0=el('div','row');const sel=el('select');sel.style.width='auto';SHEETS.forEach(n=>{const o=el('option','',esc(n));o.value=n;sel.appendChild(o)});sel.value=window._sheet||SHEETS[0];const q=el('input');q.type='text';q.placeholder='ابحث عن طالب';q.style.width='220px';r0.append(sel,q);P.appendChild(r0);
+  const box=el('div','lgrid');P.appendChild(box);
+  const load=async()=>{window._sheet=sel.value;box.innerHTML='<p class="help">جارٍ التحميل...</p>';const d=await api('letters.get',{sheet:sel.value});
+   const done=s=>s.marks.filter(m=>m===1).length;
+   box.innerHTML=`<div class="tscroll"><table class="lt"><thead><tr><th class="nm">الطالب</th>${d.letters.map(L=>`<th>${esc(L)}</th>`).join('')}<th>المتقن</th></tr></thead><tbody></tbody></table></div><p class="help" style="margin-top:8px">${d.students.length} طالبًا · ${d.letters.length} حرفًا</p>`;
+   const tb=box.querySelector('tbody');
+   d.students.forEach(s=>{const tr=el('tr');tr.dataset.n=s.name;tr.appendChild(el('th','nm',esc(s.name)));const sc=el('td','sc');
+    const upd=()=>{sc.textContent=done(s)+'/'+d.letters.length};
+    s.marks.forEach((m,i)=>{const td=el('td');const b=el('button','mk');const paint=()=>{b.className='mk'+(s.marks[i]===1?' ok':s.marks[i]===0?' no':'');b.textContent=s.marks[i]===1?'✓':s.marks[i]===0?'✗':'';b.title=d.letters[i]+': '+(s.marks[i]===1?'أتقن':s.marks[i]===0?'لم يتقن':'لم يُقيَّم')};paint();
+     if(d.edit)b.onclick=async()=>{const prev=s.marks[i];s.marks[i]=prev===null?1:prev===1?0:null;paint();upd();b.classList.add('busy');
+      try{await api('letters.set',{sheet:d.sheet,row:s.row,col:i,name:s.name,value:s.marks[i]})}catch(e){s.marks[i]=prev;paint();upd();toast(e.msg,1)}b.classList.remove('busy')};else b.disabled=true;
+     td.appendChild(b);tr.appendChild(td)});upd();tr.appendChild(sc);tb.appendChild(tr)});
+   q.oninput=()=>tb.querySelectorAll('tr').forEach(tr=>tr.hidden=q.value&&!tr.dataset.n.includes(q.value.trim()))};
+  sel.onchange=()=>load().catch(e=>box.innerHTML=`<p class="help">${esc(e.msg)}</p>`);await load()},
+ async students(P){P.innerHTML='<h2>الطلاب</h2><p class="help">أسماء الطلاب وأرقام جوالات أولياء الأمور. تُستخدم لدخول وليّ الأمر إلى صفحة إتقان الحروف، وللترحيب باسم الطفل في الألعاب. الأرقام محفوظة في جدولك فقط ولا تظهر في الموقع العام.</p>';
+  const d=await api('students.get');const sel=el('select');sel.style.width='auto';d.sheets.forEach(n=>{const o=el('option','',esc(n));o.value=n;sel.appendChild(o)});if(window._st&&d.sheets.includes(window._st))sel.value=window._st;
+  const r0=el('div','row');r0.append(el('b','','الفصل / المعلم:'),sel);P.appendChild(r0);const box=el('div');box.style.marginTop='12px';P.appendChild(box);let list=[];
+  const draw=()=>{window._st=sel.value;list=d.students.filter(s=>s.teacher===sel.value).map(s=>({name:s.name,phone:s.phone}));box.innerHTML='';
+   const ed=listEd(list,{fields:[{k:'name',label:'اسم الطالب'},{k:'phone',label:'جوال وليّ الأمر',ph:'05xxxxxxxx'}],blank:()=>({name:'',phone:''}),noun:'طالب'});box.appendChild(ed);
+   const sv=el('button','btn y','حفظ طلاب هذا الفصل');sv.style.marginTop='12px';box.appendChild(sv);
+   sv.onclick=async()=>{sv.disabled=true;sv.textContent='جارٍ الحفظ...';try{const r=await api('students.save',{teacher:sel.value,students:list});d.students=r.students;toast('تم الحفظ ✓'+(r.kidsSynced?' وتحدّثت قائمة الترحيب في الألعاب':''));draw()}catch(e){toast(e.msg,1)}sv.disabled=false;sv.textContent='حفظ طلاب هذا الفصل'}};
+  sel.onchange=draw;draw();
+  if(ME.role==='admin'){P.appendChild(el('h3','sub','استيراد كل الطلاب من ملف Excel'));P.appendChild(el('p','help','أعمدة الملف: اسم الطالب، الجوال، القاعة، اسم المعلم (كالملف الذي أرسلته). يستبدل القائمة كاملة، ويضيف الطلاب الجدد إلى جداول إتقان الحروف.'));
+   const inp=el('input');inp.type='file';inp.accept='.xlsx,.xls,.csv';P.appendChild(inp);
+   inp.onchange=async()=>{const f=inp.files[0];if(!f)return;try{if(!window.XLSX)await new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+    const wb=XLSX.read(await f.arrayBuffer());const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1});const H=rows[0].map(x=>String(x||''));
+    const ci=k=>H.findIndex(h=>h.includes(k));const cN=Math.max(0,ci('اسم الطالب')),cP=ci('جوال')<0?1:ci('جوال'),cH=ci('القاعة'),cT=ci('المعلم');
+    const hall={};rows.slice(1).forEach(r=>{if(cT>=0&&r[cT]&&cH>=0)hall[r[cH]]=String(r[cT])});
+    const st=rows.slice(1).filter(r=>r[cN]).map(r=>({name:String(r[cN]),phone:String(r[cP]||''),teacher:hall[r[cH]]||(cT>=0?String(r[cT]||''):'')}));
+    if(!confirm(`سيتم استبدال قائمة الطلاب بـ ${st.length} طالبًا من الملف. متابعة؟`))return;toast('جارٍ الاستيراد...');
+    const r=await api('students.import',{students:st});toast('تم استيراد '+r.count+' طالبًا ✓');tab='students';main()}catch(e){toast(e.msg||'تعذّرت قراءة الملف',1)}}}},
+ async users(P){P.innerHTML='<h2>المستخدمون والصلاحيات</h2><p class="help">أضف المعلمين، وحدّد لكل واحد ما يستطيع فعله والفصول التي تخصّه. المعلم يدخل بإيميله ورقمه السري على هذه الصفحة نفسها.</p>';
+  let d=await api('users.get');const box=el('div');P.appendChild(box);
+  const draw=()=>{box.innerHTML='';d.users.forEach(u=>box.appendChild(card(u,false)));const a=el('button','add','+ إضافة معلم');a.onclick=()=>{box.insertBefore(card({email:'',name:'',role:'teacher',perms:['letters'],sheets:[],active:true},true),a)};box.appendChild(a)};
+  const card=(u,isNew)=>{const c=el('div','item'+(isNew?'':' closed')+(u.active===false?' off':''));const h=el('div','ihead');const t=el('span','t',esc(u.name||'معلم جديد')+` <small style="opacity:.7">${esc(u.email)} · ${u.role==='admin'?'مدير':'معلم'}${u.active===false?' · موقوف':''}</small>`);t.onclick=()=>c.classList.toggle('closed');h.appendChild(t);c.appendChild(h);
+   const b=el('div','ibody');const x={...u,password:''};
+   b.appendChild(fields(x,[{k:'name',label:'الاسم'},{k:'email',label:'الإيميل'},{k:'password',label:isNew?'الرقم السري (٨ أحرف على الأقل)':'رقم سري جديد (اتركه فارغًا للإبقاء)'},{k:'role',label:'الدور',type:'select',opts:[['teacher','معلم'],['admin','مدير (كل الصلاحيات)']]}]));
+   const pw=b.querySelectorAll('input')[2];pw.type='password';pw.autocomplete='new-password';
+   b.appendChild(el('h3','sub','الصلاحيات'));const pg=el('div','grid2');d.perms.forEach(p=>{const l=el('label','chk');const i=el('input');i.type='checkbox';i.checked=x.perms.includes(p);i.onchange=()=>{x.perms=i.checked?[...new Set([...x.perms,p])]:x.perms.filter(y=>y!==p)};l.append(i,document.createTextNode(PERM_L[p]||p));pg.appendChild(l)});b.appendChild(pg);
+   b.appendChild(el('h3','sub','الفصول'));const sg=el('div','grid2');[['*','كل الفصول']].concat(d.sheets.map(n=>[n,n])).forEach(([v,n])=>{const l=el('label','chk');const i=el('input');i.type='checkbox';i.checked=x.sheets.includes(v);i.onchange=()=>{x.sheets=i.checked?[...new Set([...x.sheets,v])]:x.sheets.filter(y=>y!==v)};l.append(i,document.createTextNode(n));sg.appendChild(l)});b.appendChild(sg);
+   const act=el('label','chk');const ai=el('input');ai.type='checkbox';ai.checked=x.active!==false;ai.onchange=()=>x.active=ai.checked;act.append(ai,document.createTextNode('الحساب مفعّل'));act.style.marginTop='12px';b.appendChild(act);
+   const r=el('div','row');r.style.marginTop='12px';const sv=el('button','btn y','حفظ');sv.onclick=async()=>{try{d=await api('users.save',{orig:isNew?'':u.email,user:x});toast('تم الحفظ ✓');draw()}catch(e){toast(e.msg,1)}};r.appendChild(sv);
+   if(!isNew&&u.email!==ME.email){const dl=el('button','btn r','حذف الحساب');dl.onclick=async()=>{if(!confirm('حذف حساب '+u.name+'؟'))return;try{d=await api('users.save',{orig:u.email,user:u,remove:true});toast('تم الحذف');draw()}catch(e){toast(e.msg,1)}};r.appendChild(dl)}
+   if(isNew){const cn=el('button','btn g','إلغاء');cn.onclick=()=>c.remove();r.appendChild(cn)}
+   b.appendChild(r);c.appendChild(b);return c};draw()},
+ settings(P){P.innerHTML=`<h2>الإعدادات</h2><h3 class="sub">مفتاح GitHub</h3><p class="help">إذا انتهت صلاحية المفتاح ألصق مفتاحًا جديدًا هنا. يُحفظ في الخادم فقط.</p><div class="row"><input type="password" id="gt" dir="ltr" placeholder="github_pat_..." style="max-width:360px"><button class="btn" id="gts">حفظ المفتاح</button></div>
+  <h3 class="sub">فصل جديد في إتقان الحروف</h3><p class="help">يُنشئ جدولًا جديدًا بنفس أعمدة الحروف، ثم تضيف له الطلاب من تبويب «الطلاب» وتربطه بالمعلم من «المستخدمون».</p><div class="row"><input type="text" id="sn" placeholder="مثال: أ. محمد أحمد" style="max-width:300px"><button class="btn" id="sns">إنشاء</button></div>`;
+  $('#gts').onclick=async()=>{try{await api('settings.token',{ghToken:$('#gt').value.trim()});toast('تم حفظ المفتاح ✓');$('#gt').value=''}catch(e){toast(e.msg,1)}};
+  $('#sns').onclick=async()=>{try{await api('sheets.create',{name:$('#sn').value});const r=await api('me');SHEETS=r.sheets;toast('تم إنشاء الفصل ✓')}catch(e){toast(e.msg,1)}}},
+ account(P){P.innerHTML=`<h2>حسابي</h2><p class="help">${esc(ME.name)} — <span dir="ltr">${esc(ME.email)}</span></p><h3 class="sub">تغيير الرقم السري</h3><div class="grid2"><label class="f">الرقم السري الحالي<input type="password" id="po"></label><label class="f">الرقم السري الجديد<input type="password" id="pn" autocomplete="new-password"></label></div><div class="row" style="margin-top:12px"><button class="btn y" id="ps">تغيير</button></div>
+  <h3 class="sub">صلاحياتك</h3><ul>${(ME.role==='admin'?['كل الصلاحيات (مدير)']:ME.perms.map(p=>PERM_L[p]||p)).map(x=>`<li>${esc(x)}</li>`).join('')||'<li>لا توجد</li>'}</ul>`;
+  $('#ps').onclick=async()=>{try{await api('password',{old:$('#po').value,password:$('#pn').value});toast('تم تغيير الرقم السري ✓');$('#po').value=$('#pn').value=''}catch(e){toast(e.msg,1)}}}
 };
 function galleryEd(p,body){p.images=p.images||[];const w=el('div');body.appendChild(el('h3','sub','الصور'));body.appendChild(w);
- const draw=()=>{w.innerHTML='';const g=el('div','thumbs');p.images.forEach((im,i)=>{const t=el('div','thumb');const src=/^https?:/.test(im.thumb||im.full)?(im.thumb||im.full):'../'+(im.thumb||im.full);t.innerHTML=`<img src="${esc(src)}" alt="">`;const a=el('div','acts');
+ const draw=()=>{w.innerHTML='';const g=el('div','thumbs');p.images.forEach((im,i)=>{const t=el('div','thumb');const src=/^https?:/.test(im.thumb||im.full)?(im.thumb||im.full):RAW+(im.thumb||im.full);t.innerHTML=`<img src="${esc(src)}" alt="">`;const a=el('div','acts');
    const r=el('button','ib','▶');r.title='قبل';r.disabled=i===0;r.onclick=()=>{[p.images[i-1],p.images[i]]=[p.images[i],p.images[i-1]];dirty();draw()};
    const l=el('button','ib','◀');l.title='بعد';l.disabled=i===p.images.length-1;l.onclick=()=>{[p.images[i+1],p.images[i]]=[p.images[i],p.images[i+1]];dirty();draw()};
    const d=el('button','ib del','🗑');d.onclick=()=>{if(confirm('حذف الصورة من الصفحة؟')){p.images.splice(i,1);dirty();draw()}};a.append(r,l,d);t.appendChild(a);g.appendChild(t)});w.appendChild(g);
   const up=el('label','add');up.style.display='inline-block';up.style.marginTop='10px';up.textContent='+ رفع صور';const inp=el('input');inp.type='file';inp.accept='image/*';inp.multiple=true;inp.hidden=true;up.appendChild(inp);w.appendChild(up);
-  inp.onchange=async()=>{const fs=[...inp.files];if(!fs.length)return;toast('جارٍ رفع '+fs.length+' صورة...');try{for(const f of fs){const id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);const full=`assets/uploads/${id}.jpg`,thumb=`assets/uploads/${id}_s.jpg`;
-     await upload(full,await resize(f,1400));await upload(thumb,await resize(f,520));p.images.push({full,thumb,alt:p.title});dirty();draw()}toast('تم رفع الصور ✓ اضغط «حفظ ونشر»')}catch(e){toast('تعذّر رفع الصورة',1)}}};draw()}
+  inp.onchange=async()=>{const fs=[...inp.files];if(!fs.length)return;toast('جارٍ رفع '+fs.length+' صورة...');try{for(const f of fs){const r=await api('media.upload',{full:await resize(f,1400),thumb:await resize(f,520)});p.images.push({full:r.full,thumb:r.thumb,alt:p.title});dirty();draw()}toast('تم رفع الصور ✓ اضغط «حفظ ونشر»')}catch(e){toast('تعذّر رفع الصورة',1)}}};draw()}
 const ytId=v=>{v=String(v||'');const m=v.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/);return m?m[1]:v.trim()};
 function clean(){C.home.forEach(s=>{if(s.type==='videos')s.items.forEach(v=>v.yt=ytId(v.yt))});C.pages.forEach(p=>{if(p.type==='video')p.yt=ytId(p.yt)});C.v=(C.v||1)+1}
-$('#save').onclick=async()=>{const b=$('#save');b.disabled=true;b.textContent='جارٍ النشر...';try{clean();const body=JSON.stringify(C,null,1);
-  const r=await gh('content.json',{method:'PUT',body:JSON.stringify({message:'لوحة التحكم: تحديث محتوى الموقع',content:b64e(body),sha:SHA,branch:BR})});SHA=r.content.sha;ORIG=JSON.stringify(C);dirty();toast('تم النشر ✓ يظهر على الموقع خلال دقيقة تقريبًا')}
- catch(e){toast(e.status===409?'تغيّر المحتوى من مكان آخر، حدّث الصفحة':'تعذّر الحفظ ('+e.status+')',1)}b.disabled=false;b.textContent='حفظ ونشر على الموقع'};
+
+$('#save').onclick=async()=>{const b=$('#save');b.disabled=true;b.textContent='جارٍ النشر...';try{clean();const r=await api('content.save',{content:C,sha:SHA});SHA=r.sha;C=r.content;ORIG=JSON.stringify(C);dirty();toast('تم النشر ✓ يظهر على الموقع خلال دقيقة تقريبًا')}
+ catch(e){toast(e.msg,1)}b.disabled=false;b.textContent='حفظ ونشر على الموقع'};
 $('#discard').onclick=()=>{if(confirm('تجاهل كل التعديلات غير المنشورة؟')){C=JSON.parse(ORIG);main()}};
 addEventListener('beforeunload',e=>{if(C&&JSON.stringify(C)!==ORIG){e.preventDefault();e.returnValue=''}});
-if(TOK)load().catch(()=>loginView('انتهت صلاحية المفتاح، أدخله من جديد'));else loginView();
+boot();
 </script>
 </body>
 </html>

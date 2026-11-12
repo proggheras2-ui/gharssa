@@ -326,3 +326,4 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--yellow);outline-off
 .boot i:nth-child(2){background:var(--white);animation-delay:.15s}.boot i:nth-child(3){background:var(--red);animation-delay:.3s}
 @keyframes bootp{50%{transform:translateY(-16px)}}
 .txt p{font-size:20px;line-height:1.9;margin:0 0 14px}
+.contact .rights{text-align:center;margin:22px 0 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.25);font-size:15px;opacity:.9}
