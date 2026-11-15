@@ -121,6 +121,7 @@ table.acct td{padding:6px 10px;white-space:nowrap}table.acct td.l{direction:ltr;
 .gm-b[data-pos=side-right]{left:auto;right:4%}.gm-b[data-pos=bottom-left]{top:auto;bottom:4%;transform:none}.gm-b[data-pos=bottom-right]{top:auto;bottom:4%;left:auto;right:4%;transform:none}
 .gm-m .gm-b,.gm-m .gm-b[data-pos]{top:7%;bottom:auto;left:50%;right:auto;transform:translateX(-50%)}.gm-m .gm-c{inset:30% 10% 8%}
 .gmock{margin-top:28px}
+.vrow{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:12px;align-items:center;border:2px solid var(--line);border-radius:14px;padding:8px;margin-bottom:8px}.vrow video{width:100%;border-radius:10px;background:#000;max-height:170px}.vmeta{display:grid;gap:8px}@media(max-width:640px){.vrow{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -339,7 +340,7 @@ const VIEWS={
   P.appendChild(el('h3','sub','الوسائل التعليمية (تظهر في كل المستويات)'));P.appendChild(listEd(C.media,{fields:[{k:'title',label:'العنوان'},{k:'url',label:'الرابط',type:'url'},{k:'yt',label:'رمز يوتيوب للصورة (اختياري)'}],blank:()=>({title:'وسيلة جديدة',url:'',yt:''}),noun:'وسيلة'}))},
  pages(P){P.innerHTML='<h2>الصفحات</h2><p class="help">الصفحات الداخلية. أي صفحة جديدة تفتح على الرابط: page.html?id=المعرّف — ويمكنك إضافتها للقائمة العلوية.</p>';
   P.appendChild(listEd(C.pages,{toggle:1,title:p=>p.title+' ('+(PAGE_T[p.type]||p.type)+')',fields:p=>[{k:'title',label:'العنوان'},{k:'sub',label:'الوصف'},{k:'id',label:'المعرّف (حروف إنجليزية)'}].concat(p.type==='video'?[{k:'yt',label:'رابط أو رمز يوتيوب'}]:p.type==='text'?[{k:'text',label:'النص',type:'textarea'}]:p.type==='join'?[{k:'cards',label:'البطاقات',type:'list',fields:[{k:'title',label:'العنوان'},{k:'text',label:'النص',type:'textarea'},{k:'btn',label:'نص الزر'},linkF(),{k:'icon',label:'الأيقونة',type:'select',opts:ICONS}],blank:()=>({title:'',text:'',btn:'',href:'',icon:'hand'}),noun:'بطاقة'}]:[]),
-   extra:(p,body)=>{const ln=el('p','help','رابط الصفحة: ');const a=el('a','',['tarbawiyat','fruits','feelings','transport','join'].includes(p.id)?p.id+'.html':'page.html?id='+esc(p.id));a.href='../'+a.textContent;a.target='_blank';ln.appendChild(a);body.prepend(ln);if(p.type==='gallery')galleryEd(p,body)}}));
+   extra:(p,body)=>{const ln=el('p','help','رابط الصفحة: ');const a=el('a','',['tarbawiyat','fruits','feelings','transport','join'].includes(p.id)?p.id+'.html':'page.html?id='+esc(p.id));a.href='../'+a.textContent;a.target='_blank';ln.appendChild(a);body.prepend(ln);if(p.type==='gallery')galleryEd(p,body);if(p.type==='video')videoEd(p,body)}}));
   const r=el('div','row');r.style.marginTop='12px';const sel=el('select');sel.style.width='auto';Object.entries(PAGE_T).forEach(([k,n])=>{const o=el('option','',n);o.value=k;sel.appendChild(o)});const a=el('button','add','+ صفحة جديدة');
   a.onclick=()=>{const id='p'+Date.now().toString(36);C.pages.push({id,type:sel.value,title:'صفحة جديدة',sub:'',show:true,images:[],cards:[],text:'',yt:''});dirty();main()};r.append(sel,a);P.appendChild(r)},
  games(P){P.innerHTML='';const G=C.games;G.order=G.order||[];G.hidden=G.hidden||[];G.meta=G.meta||{};G.data=G.data||{};G.custom=G.custom||[];G.gros=G.gros||{};
@@ -480,6 +481,26 @@ const VIEWS={
   <h3 class="sub">صلاحياتك</h3><ul>${(ME.role==='admin'?['كل الصلاحيات (مدير)']:ME.perms.map(p=>PERM_L[p]||p)).map(x=>`<li>${esc(x)}</li>`).join('')||'<li>لا توجد</li>'}</ul>`;
   $('#ps').onclick=async()=>{try{await api('password',{old:$('#po').value,password:$('#pn').value});toast('تم تغيير الرقم السري ✓');$('#po').value=$('#pn').value=''}catch(e){toast(e.msg,1)}}}
 };
+function videoEd(p,body){p.videos=p.videos||[];const w=el('div');body.appendChild(el('h3','sub','مقاطع مرفوعة من الكمبيوتر'));body.appendChild(el('p','help','ارفع مقطعًا من جهازك ليبقى في الصفحة بشكل دائم. الحد الأقصى ٢٥ ميجابايت للمقطع؛ للمقاطع الأطول استخدم رابط يوتيوب في الأعلى.'));body.appendChild(w);
+ const src=v=>/^https?:/.test(v)?v:RAW+v;
+ const draw=()=>{w.innerHTML='';p.videos.forEach((v,i)=>{const c=el('div','vrow');c.innerHTML=`<video controls preload="metadata" ${v.poster?`poster="${esc(src(v.poster))}"`:''} src="${esc(src(v.src))}"></video>`;const m=el('div','vmeta');
+   const t=el('input');t.type='text';t.value=v.title||'';t.placeholder='عنوان المقطع (اختياري)';t.oninput=()=>{v.title=t.value;dirty()};
+   const a=el('div','row');const up=el('button','ib','▲');up.title='أعلى';up.disabled=i===0;up.onclick=()=>{[p.videos[i-1],p.videos[i]]=[p.videos[i],p.videos[i-1]];dirty();draw()};
+   const dn=el('button','ib','▼');dn.title='أسفل';dn.disabled=i===p.videos.length-1;dn.onclick=()=>{[p.videos[i+1],p.videos[i]]=[p.videos[i],p.videos[i+1]];dirty();draw()};
+   const d=el('button','ib del','🗑');d.title='حذف المقطع';d.onclick=()=>{if(d.dataset.sure){p.videos.splice(i,1);dirty();draw()}else{d.dataset.sure=1;d.textContent='حذف؟';d.style.width='auto';d.style.padding='0 8px'}};a.append(up,dn,d);m.append(t,a);c.appendChild(m);w.appendChild(c)});
+  const lab=el('label','add','+ رفع مقطع من الكمبيوتر');lab.style.display='inline-block';lab.style.marginTop='10px';const inp=el('input');inp.type='file';inp.accept='video/mp4,video/webm,video/quicktime,video/*';inp.hidden=true;lab.appendChild(inp);w.appendChild(lab);
+  const st=el('p','help');w.appendChild(st);
+  inp.onchange=async()=>{const f=inp.files[0];inp.value='';if(!f)return;const ext=(f.name.split('.').pop()||'mp4').toLowerCase().replace('qt','mov');
+   if(!/^(mp4|webm|mov|m4v)$/.test(ext)){toast('صيغة غير مدعومة. استخدم ملف MP4',1);return}
+   if(f.size>25*1024*1024){toast('المقطع أكبر من ٢٥ ميجابايت ('+ar((f.size/1048576).toFixed(1))+'). اضغطه أو ارفعه على يوتيوب وضع رابطه.',1);return}
+   lab.style.pointerEvents='none';lab.style.opacity='.5';st.textContent='جارٍ تجهيز المقطع...';
+   try{const poster=await vposter(f);const data=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=rej;r.readAsDataURL(f)});
+    st.textContent='جارٍ رفع المقطع ('+ar((f.size/1048576).toFixed(1))+' ميجابايت).. قد يستغرق دقيقة، لا تغلق الصفحة';
+    const r=await api('media.video',{data,ext,poster});if(!r.ok)throw {msg:r.error==='size'?'المقطع كبير جدًا':'تعذّر رفع المقطع'};
+    p.videos.push({title:f.name.replace(/\.[^.]+$/,''),src:r.src,poster:r.poster});dirty();draw();toast('تم رفع المقطع ✓ اضغط «حفظ ونشر»')}
+   catch(e){st.textContent='';toast((e&&e.msg)||'تعذّر رفع المقطع. تأكد من الإنترنت وحاول مرة أخرى',1);lab.style.pointerEvents='';lab.style.opacity=''}}};draw()}
+function vposter(f){return new Promise(res=>{try{const v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='metadata';const u=URL.createObjectURL(f);v.src=u;let done=false;const fin=x=>{if(!done){done=true;URL.revokeObjectURL(u);res(x)}};
+ v.onloadeddata=()=>{try{v.currentTime=Math.min(1,(v.duration||2)/3)}catch(e){fin('')}};v.onseeked=()=>{try{const k=Math.min(1,960/Math.max(v.videoWidth,v.videoHeight));const c=document.createElement('canvas');c.width=Math.round(v.videoWidth*k);c.height=Math.round(v.videoHeight*k);c.getContext('2d').drawImage(v,0,0,c.width,c.height);fin(c.toDataURL('image/jpeg',.8).split(',')[1])}catch(e){fin('')}};v.onerror=()=>fin('');setTimeout(()=>fin(''),8000)}catch(e){res('')}})}
 function galleryEd(p,body){p.images=p.images||[];const w=el('div');body.appendChild(el('h3','sub','الصور'));body.appendChild(w);
  const draw=()=>{w.innerHTML='';const g=el('div','thumbs');p.images.forEach((im,i)=>{const t=el('div','thumb');const src=/^https?:/.test(im.thumb||im.full)?(im.thumb||im.full):RAW+(im.thumb||im.full);t.innerHTML=`<img src="${esc(src)}" alt="">`;const a=el('div','acts');
    const r=el('button','ib','▶');r.title='قبل';r.disabled=i===0;r.onclick=()=>{[p.images[i-1],p.images[i]]=[p.images[i],p.images[i-1]];dirty();draw()};

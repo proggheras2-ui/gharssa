@@ -73,7 +73,7 @@ function render(C){
  if(PG==='page'){const id=B.dataset.id||new URLSearchParams(location.search).get('id');const P=C.pages.find(x=>x.id===id);if(!P||P.show===false)return notFound(C);
   let body='';
   if(P.type==='gallery')body=`<section class="sec"><div class="wrap"><div class="gallery">${P.images.map(g=>`<a href="${esc(href(g.full))}" data-lb><img src="${esc(href(g.thumb||g.full))}" alt="${esc(g.alt||'')}" loading="lazy"></a>`).join('')}</div></div></section>`;
-  else if(P.type==='video')body=`<section class="sec"><div class="wrap narrow">${yt(P.yt,P.title)}</div></section>`;
+  else if(P.type==='video'){const vs=(P.videos||[]).filter(v=>v&&v.src);body=`<section class="sec"><div class="wrap${vs.length?'':' narrow'}">${P.yt?`<div class="narrow0">${yt(P.yt,P.title)}</div>`:''}${vs.length?`<div class="uvids">${vs.map(v=>`<figure class="uvid"><video controls playsinline preload="metadata"${v.poster?` poster="${esc(href(v.poster))}"`:''} src="${esc(href(v.src))}"></video>${v.title?`<figcaption>${esc(v.title)}</figcaption>`:''}</figure>`).join('')}</div>`:''}</div></section>`}
   else if(P.type==='join')body=`<section class="sec"><div class="wrap"><div class="joins">${P.cards.map(c=>`<div class="jcard"><div class="jic">${svg(c.icon)}</div><h3>${esc(c.title)}</h3><p>${esc(c.text)}</p><a class="btn y" href="${esc(href(c.href))}"${ext(c.href)}>${esc(c.btn)}</a></div>`).join('')}</div></div></section>`;
   else if(P.type==='text')body=`<section class="sec"><div class="wrap narrow"><div class="txt">${(P.text||'').split('\n').map(p=>`<p>${esc(p)}</p>`).join('')}</div></div></section>`;
   shell(C,P.title,hero(esc(P.title),esc(P.sub),true)+body);return}

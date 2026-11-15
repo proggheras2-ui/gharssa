@@ -341,3 +341,9 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--yellow);outline-off
 @media (min-width:1000px){.hero[data-gros="right"] .gh{left:auto!important;right:max(3vw,24px)}}
 
 .sec+.tiles-sec,.contact+.tiles-sec{margin-top:0;padding-top:clamp(36px,6vw,64px)}
+
+.narrow0{max-width:860px;margin:0 auto 28px}
+.uvids{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:18px}
+.uvid{margin:0;background:var(--white);border-radius:22px;overflow:hidden;box-shadow:0 14px 30px -18px rgba(40,51,112,.5)}
+.uvid video{display:block;width:100%;aspect-ratio:16/9;background:var(--navy);object-fit:contain}
+.uvid figcaption{padding:10px 16px 14px;font-weight:700;color:var(--navy)}
