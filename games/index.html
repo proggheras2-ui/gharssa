@@ -301,7 +301,7 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--yellow);outline-off
 .hgros svg{width:100%;height:auto}
 .buddy{position:fixed;left:max(10px,calc(50% - 480px),env(safe-area-inset-left,0px));top:50%;transform:translateY(-50%);width:clamp(120px,13vw,170px);pointer-events:none;z-index:56}
 .buddy svg{width:100%;height:auto}
-@media (max-width:760px){.buddy{left:calc(128px + env(safe-area-inset-left,0px));top:calc(0px + env(safe-area-inset-top,0px));transform:none;width:62px}}
+@media (max-width:760px){.buddy{left:max(10px,env(safe-area-inset-left,0px));top:calc(62px + env(safe-area-inset-top,0px));transform:none;width:50px}}
 .end .egros{width:150px;margin:-10px auto -8px}.end .egros svg{width:100%;height:auto}
 .end .grew{background:#E6F6F7;border-radius:18px;padding:8px 14px;font-weight:700;color:var(--navy)}
 .gbig{width:min(230px,70%);margin:0 auto;background:#E6F6F7;border-radius:24px;padding:8px}
@@ -1177,7 +1177,7 @@ const RUN={
 const TJ=['M48 46 C78 38 122 36 150 42','M110 47 C84 66 58 95 55 118 C53 142 68 153 92 154 L140 152'];
 const TS='M168 62 C168 82 160 88 146 86 C132 84 122 80 118 72 C116 84 108 90 96 90 C94 115 82 128 62 128 C42 128 32 112 32 88';
 const TSAD=['M108 104 C118 78 150 52 166 70 C178 86 150 102 108 104','M106 104 C98 104 94 98 92 92 C94 115 82 132 60 132 C40 132 28 118 28 104'];
-const TTA=['M80 48 L80 150','M80 116 C128 102 162 104 166 122 C170 138 150 148 120 150 L42 152'];
+const TTA=['M80 116 C128 102 162 104 166 122 C170 138 150 148 120 150 L42 152','M80 48 L80 150'];
 const TRACE={
  'ا':{s:['M100 30 L100 170']},
  'ب':{s:['M164 54 C166 80 158 92 130 96 C100 100 70 99 50 92 C38 87 35 72 35 56'],d:[[99,148]]},
