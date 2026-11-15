@@ -122,6 +122,15 @@ table.acct td{padding:6px 10px;white-space:nowrap}table.acct td.l{direction:ltr;
 .gm-m .gm-b,.gm-m .gm-b[data-pos]{top:7%;bottom:auto;left:50%;right:auto;transform:translateX(-50%)}.gm-m .gm-c{inset:30% 10% 8%}
 .gmock{margin-top:28px}
 .vrow{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:12px;align-items:center;border:2px solid var(--line);border-radius:14px;padding:8px;margin-bottom:8px}.vrow video{width:100%;border-radius:10px;background:#000;max-height:170px}.vmeta{display:grid;gap:8px}.vprog{background:var(--mist);border-radius:14px;padding:12px 14px;margin-top:10px;display:grid;gap:8px;max-width:520px}.vpt{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.vpt span{font-variant-numeric:tabular-nums;color:var(--soft);font-weight:700}.vpb{height:14px;border-radius:7px;background:#fff;overflow:hidden;box-shadow:inset 0 0 0 2px var(--line)}.vpb i{display:block;height:100%;width:0;background:var(--grad);border-radius:7px;transition:width .35s}.vprog.fin .vpb i{background-image:repeating-linear-gradient(-45deg,rgba(255,255,255,.35) 0 10px,transparent 10px 20px),var(--grad);background-size:28px 28px,auto;animation:vstripe .8s linear infinite}@keyframes vstripe{to{background-position:28px 0,0 0}}.vprog small{color:var(--soft)}@media(max-width:640px){.vrow{grid-template-columns:1fr}}
+.sthead{display:flex;align-items:center;justify-content:space-between;gap:10px}.sthead h2{margin:0}
+.stcard{border:2px solid var(--line);border-radius:20px;padding:18px;margin:14px 0;display:grid;gap:12px;background:#fff}
+.stnums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.stnums div{background:var(--mist);border-radius:14px;padding:10px 14px}.stnums small{display:block;color:var(--soft);font-weight:700}.stnums b{font-size:clamp(18px,2.6vw,24px);font-variant-numeric:tabular-nums}
+.stbar{height:22px;border-radius:11px;background:var(--mist);overflow:hidden;display:flex;box-shadow:inset 0 0 0 2px var(--line)}.stbar i{display:block;height:100%;min-width:0}
+.stcard.y{border-color:#FDB515}.stcard.r{border-color:#DE4A52}.stpct{margin:0;font-weight:700}.stcard.r .stpct{color:#DE4A52}
+.stleg{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.stl{border-inline-start:6px solid var(--c);background:var(--mist);border-radius:10px;padding:8px 12px;display:grid;gap:2px}.stl span{font-weight:700;font-size:14px}.stl b{font-size:18px;font-variant-numeric:tabular-nums}.stl small{color:var(--soft)}.sttab{width:100%}
+.stfil{display:flex;gap:6px;margin-bottom:10px}.seg1{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font-weight:700}.seg1[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.sttab td.l{direction:ltr;text-align:right;font-size:13px}.pill{border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700}.pill.ok{background:#E6F6F7;color:#0A7F86}.pill.no{background:#FDECEE;color:#B8333B}
+@media(max-width:600px){.stnums{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -210,7 +219,7 @@ async function maybeSendReport(d,s,r){if(!r||!r.notify||typeof drawGharsReport!=
  const cv=await drawGharsReport({name:s.name,teacher:d.sheet,letters:d.letters,marks:s.marks,gheras:gh,ghars:gs,font:'Ruqiaround'});
  const x=await api('report.send',{sheet:d.sheet,row:s.row,name:s.name,png:cv.toDataURL('image/png').split(',')[1]});if(x.sent)toast('📧 اكتمل التقييم وأُرسل التقرير لوليّ الأمر')}catch(e){}}
 /* ---------- tabs ---------- */
-const TABS=[['letters','إتقان الحروف',()=>can('letters')||can('kidsview')],['students','الطلاب',()=>can('students')],['design','تخصيص الواجهة',()=>can('content')],['general','عام',()=>can('content')],['home','الصفحة الرئيسية',()=>can('content')],['nav','القائمة العلوية',()=>can('content')],['levels','المستويات',()=>can('content')],['pages','الصفحات',()=>can('content')],['photos','الصور',()=>can('media')&&!can('content')],['games','الألعاب',()=>can('games')],['contact','التواصل',()=>can('content')],['accounts','حسابات الألعاب',()=>can('students')],['users','المستخدمون والصلاحيات',()=>ME.role==='admin'],['settings','الإعدادات',()=>ME.role==='admin'],['account','حسابي',()=>true]];
+const TABS=[['letters','إتقان الحروف',()=>can('letters')||can('kidsview')],['students','الطلاب',()=>can('students')],['design','تخصيص الواجهة',()=>can('content')],['general','عام',()=>can('content')],['home','الصفحة الرئيسية',()=>can('content')],['nav','القائمة العلوية',()=>can('content')],['levels','المستويات',()=>can('content')],['pages','الصفحات',()=>can('content')],['photos','الصور',()=>can('media')&&!can('content')],['games','الألعاب',()=>can('games')],['contact','التواصل',()=>can('content')],['accounts','حسابات الألعاب',()=>can('students')],['storage','المساحة',()=>ME.role==='admin'],['users','المستخدمون والصلاحيات',()=>ME.role==='admin'],['settings','الإعدادات',()=>ME.role==='admin'],['account','حسابي',()=>true]];
 const CONTENT_TABS=['design','general','home','nav','levels','pages','photos','games','contact'];
 async function main(){const tabs=TABS.filter(t=>t[2]());if(!tab||!tabs.some(t=>t[0]===tab))tab=tabs[0][0];
  $('#app').innerHTML=`<div class="top"><h1>لوحة التحكم <small style="font-size:16px;opacity:.85">— ${esc(ME.name)} (${ME.role==='admin'?'مدير':'معلم'})</small></h1><a href="../index.html" target="_blank" rel="noopener">عرض الموقع ↗</a><button id="logout">خروج</button></div><div class="layout"><nav class="tabs" role="tablist"></nav><section class="panel" id="panel"><p class="help">جارٍ التحميل...</p></section></div>`;
@@ -221,6 +230,29 @@ async function main(){const tabs=TABS.filter(t=>t[2]());if(!tab||!tabs.some(t=>t
  $('.layout').classList.remove('wide');window.__czMsg=null;P.innerHTML='';try{await VIEWS[tab](P)}catch(e){P.innerHTML=`<p class="help">${esc(e.msg||e.message)}</p>`}dirty()}
 const linkF=(k='href',l='الرابط')=>({k,label:l,type:'url',ph:'index.html أو https://...'});
 const VIEWS={
+
+ async storage(P){P.innerHTML='<h2>المساحة</h2><p class="help">جارٍ حساب المساحة...</p>';let r;try{r=await api('storage.get')}catch(e){P.innerHTML='<h2>المساحة</h2><p class="help">تعذّر حساب المساحة. تأكد من تحديث ملف Api.gs في Apps Script.</p>';return}
+  const MB=b=>b/1048576,fmt=b=>{if(!b)return '٠';const m=MB(b);return m>=1024?ar((m/1024).toFixed(2))+' جيجابايت':m>=1?ar(m.toFixed(1))+' ميجابايت':ar(Math.max(1,Math.round(b/1024)))+' كيلوبايت'};
+  const pct=Math.min(100,r.total/r.limit*100),lvl=pct>=90?'r':pct>=70?'y':'s';
+  const C4=[['videos','المقاطع المرفوعة','#DE4A52'],['images','الصور المرفوعة','#FDB515'],['games','صفحة الألعاب','#0AA4AD'],['site','ملفات الموقع','#283370']];
+  P.innerHTML=`<div class="sthead"><h2>المساحة</h2><button class="btn" id="stR">تحديث</button></div>
+  <div class="stcard ${lvl}"><div class="stnums"><div><small>المستخدم</small><b>${fmt(r.total)}</b></div><div><small>المتبقي</small><b>${fmt(Math.max(0,r.limit-r.total))}</b></div><div><small>الحد الأقصى</small><b>${fmt(r.limit)}</b></div></div>
+   <div class="stbar" role="img" aria-label="المستخدم ${ar(pct.toFixed(1))}٪">${C4.map(([k,,c])=>`<i style="width:${(r.cat[k][0]/r.limit*100).toFixed(3)}%;background:${c}"></i>`).join('')}</div>
+   <p class="stpct">${ar(pct.toFixed(1))}٪ مستخدم${pct>=90?' — المساحة توشك على الامتلاء، احذف ما لا تحتاجه أو انقل المقاطع إلى يوتيوب':pct>=70?' — راقب المساحة، ويُفضّل رفع المقاطع الطويلة على يوتيوب':' — المساحة جيدة'}</p>
+   <div class="stleg">${C4.map(([k,n,c])=>`<div class="stl" style="--c:${c}"><span>${n}</span><b>${fmt(r.cat[k][0])}</b><small>${ar(r.cat[k][1])} ملف</small></div>`).join('')}</div></div>
+  <p class="help">الحد هو مساحة الموقع المنشور على GitHub Pages (نحو ١ جيجابايت). حجم المستودع مع السجل الكامل للتعديلات: ${fmt(r.repo)}.</p>
+  <h3 class="sub">الملفات المرفوعة</h3><p class="help">الملفات «غير المستخدمة» لم تعد تظهر في أي صفحة (حُذفت من لوحة التحكم)، ويمكن حذفها لتوفير المساحة. الحذف نهائي.</p>
+  <div class="stfil"><button class="seg1" data-f="all" aria-pressed="true">الكل</button><button class="seg1" data-f="unused" aria-pressed="false">غير المستخدمة (${ar(r.files.filter(f=>!f.used).length)})</button></div>
+  <div class="tscroll"><table class="lt sttab"><thead><tr><th>الملف</th><th>النوع</th><th>الحجم</th><th>الحالة</th><th></th></tr></thead><tbody></tbody></table></div>`;
+  let F='all';const tb=P.querySelector('tbody');
+  const draw=()=>{const L=r.files.filter(f=>F==='all'||!f.used);tb.innerHTML=L.length?'':'<tr><td colspan="5">لا توجد ملفات</td></tr>';
+   L.forEach(f=>{const tr=el('tr');const nm=f.path.split('/').pop();const typ=/^v_.*\.(mp4|webm|mov|m4v)$/.test(nm)?'مقطع':/_p\.jpg$/.test(nm)?'غلاف مقطع':/_s\.jpg$/.test(nm)?'صورة مصغّرة':'صورة';
+    tr.innerHTML=`<td class="l"><a href="${esc(RAW+f.path)}" target="_blank" rel="noopener">${esc(nm)}</a></td><td>${typ}</td><td>${fmt(f.size)}</td><td>${f.used?'<span class="pill ok">مستخدم</span>':'<span class="pill no">غير مستخدم</span>'}</td><td></td>`;
+    if(!f.used){const d=el('button','ib del','🗑');d.title='حذف نهائي';d.onclick=async()=>{if(!d.dataset.sure){d.dataset.sure=1;d.textContent='حذف نهائي؟';d.style.width='auto';d.style.padding='0 10px';return}
+      d.disabled=true;try{const x=await api('storage.delete',{path:f.path});if(!x.ok)throw{msg:x.error==='inuse'?'الملف مستخدم في صفحة':'تعذّر الحذف'};r.files.splice(r.files.indexOf(f),1);r.total-=f.size;toast('حُذف الملف ✓');VIEWS.storage(P)}catch(e){toast(e.msg||'تعذّر الحذف',1);d.disabled=false}};tr.lastChild.appendChild(d)}
+    tb.appendChild(tr)})};
+  P.querySelectorAll('.stfil button').forEach(b=>b.onclick=()=>{F=b.dataset.f;P.querySelectorAll('.stfil button').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()});draw();
+  $('#stR').onclick=()=>VIEWS.storage(P)},
  design(P){P.innerHTML='';const W=$('.layout');W.classList.add('wide');
   const SW={cta:[['y','أصفر','#FDB515'],['w','أبيض','#fff'],['n','كحلي','#283370'],['r','أحمر','#DE4A52']],tiles:TILE_C.map(([k,n])=>[k,n,{'t-navy':'#283370','t-navy2':'linear-gradient(135deg,#0AA4AD,#283370)','t-grad':'linear-gradient(135deg,#283370,#0AA4AD)','t-sky':'#0AA4AD','t-red':'#DE4A52','t-yel':'#FDB515'}[k]]),
    stats:ST_C.map(([k,n])=>[k,n,{n:'#283370',s:'#0AA4AD',y:'#FDB515',r:'#DE4A52'}[k]]),stores:[['s1','تدرّج الهوية','linear-gradient(135deg,#283370,#0AA4AD)'],['s2','أصفر','#FDB515']]};
