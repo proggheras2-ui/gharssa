@@ -1,5 +1,5 @@
 {
- "v": 9,
+ "v": 10,
  "site": {
   "titlePre": "برنامج",
   "name": "غرس",
@@ -17,7 +17,8 @@
     "style": "w"
    }
   ],
-  "rights": "الحقوق محفوظة لجمعية غراس لتنمية الطفل"
+  "rights": "الحقوق محفوظة لجمعية غراس لتنمية الطفل",
+  "grosSize": 303
  },
  "contact": {
   "phone": "055 252 1152",
@@ -773,7 +774,35 @@
  ],
  "games": {
   "order": [],
-  "hidden": []
+  "hidden": [],
+  "meta": {
+   "learn": {},
+   "listen": {},
+   "pick": {},
+   "balloons": {},
+   "memory": {},
+   "train": {},
+   "odd": {},
+   "dots": {},
+   "word3": {},
+   "word4": {},
+   "harakat": {},
+   "hear": {},
+   "sort": {},
+   "readpick": {},
+   "trace": {},
+   "color": {},
+   "pattern": {}
+  },
+  "data": {
+   "cards": []
+  },
+  "custom": [],
+  "gros": {
+   "msize": 110,
+   "size": 209,
+   "heroSize": 173
+  }
  },
  "kids": {
   "d52a83e0f0ee4a01": [
