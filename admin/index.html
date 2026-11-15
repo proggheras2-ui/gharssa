@@ -121,7 +121,7 @@ table.acct td{padding:6px 10px;white-space:nowrap}table.acct td.l{direction:ltr;
 .gm-b[data-pos=side-right]{left:auto;right:4%}.gm-b[data-pos=bottom-left]{top:auto;bottom:4%;transform:none}.gm-b[data-pos=bottom-right]{top:auto;bottom:4%;left:auto;right:4%;transform:none}
 .gm-m .gm-b,.gm-m .gm-b[data-pos]{top:7%;bottom:auto;left:50%;right:auto;transform:translateX(-50%)}.gm-m .gm-c{inset:30% 10% 8%}
 .gmock{margin-top:28px}
-.vrow{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:12px;align-items:center;border:2px solid var(--line);border-radius:14px;padding:8px;margin-bottom:8px}.vrow video{width:100%;border-radius:10px;background:#000;max-height:170px}.vmeta{display:grid;gap:8px}@media(max-width:640px){.vrow{grid-template-columns:1fr}}
+.vrow{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:12px;align-items:center;border:2px solid var(--line);border-radius:14px;padding:8px;margin-bottom:8px}.vrow video{width:100%;border-radius:10px;background:#000;max-height:170px}.vmeta{display:grid;gap:8px}.vprog{background:var(--mist);border-radius:14px;padding:12px 14px;margin-top:10px;display:grid;gap:8px;max-width:520px}.vpt{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.vpt span{font-variant-numeric:tabular-nums;color:var(--soft);font-weight:700}.vpb{height:14px;border-radius:7px;background:#fff;overflow:hidden;box-shadow:inset 0 0 0 2px var(--line)}.vpb i{display:block;height:100%;width:0;background:var(--grad);border-radius:7px;transition:width .35s}.vprog.fin .vpb i{background-image:repeating-linear-gradient(-45deg,rgba(255,255,255,.35) 0 10px,transparent 10px 20px),var(--grad);background-size:28px 28px,auto;animation:vstripe .8s linear infinite}@keyframes vstripe{to{background-position:28px 0,0 0}}.vprog small{color:var(--soft)}@media(max-width:640px){.vrow{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -495,8 +495,12 @@ function videoEd(p,body){p.videos=p.videos||[];const w=el('div');body.appendChil
    if(f.size>25*1024*1024){toast('المقطع أكبر من ٢٥ ميجابايت ('+ar((f.size/1048576).toFixed(1))+'). اضغطه أو ارفعه على يوتيوب وضع رابطه.',1);return}
    lab.style.pointerEvents='none';lab.style.opacity='.5';st.textContent='جارٍ تجهيز المقطع...';
    try{const poster=await vposter(f);const data=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=rej;r.readAsDataURL(f)});
-    st.textContent='جارٍ رفع المقطع ('+ar((f.size/1048576).toFixed(1))+' ميجابايت).. قد يستغرق دقيقة، لا تغلق الصفحة';
-    const r=await api('media.video',{data,ext,poster});if(!r.ok)throw {msg:r.error==='size'?'المقطع كبير جدًا':'تعذّر رفع المقطع'};
+    const up=(Date.now().toString(36)+Math.random().toString(36).slice(2,10)).replace(/[^a-z0-9]/g,'');const CH=2400000,n=Math.ceil(data.length/CH),mb=(f.size/1048576);
+    st.innerHTML='';const pb=el('div','vprog');pb.innerHTML='<div class="vpt"><b>جارٍ رفع المقطع</b><span></span></div><div class="vpb"><i></i></div><small>لا تغلق الصفحة حتى يكتمل الرفع</small>';st.appendChild(pb);pb.scrollIntoView({block:'center',behavior:'smooth'});
+    const setP=(x,txt)=>{pb.querySelector('.vpb i').style.width=(x*100).toFixed(1)+'%';pb.querySelector('.vpt span').textContent=txt||(ar(Math.round(x*100))+'٪ · '+ar((mb*x).toFixed(1))+' من '+ar(mb.toFixed(1))+' ميجابايت')};setP(0);
+    for(let i=0;i<n;i++){let tries=0;for(;;){try{const r=await api('media.vpart',{up,i,n,data:data.slice(i*CH,(i+1)*CH)});if(!r.ok)throw {msg:'تعذّر رفع جزء من المقطع'};break}catch(e){if(++tries>=3)throw e;await new Promise(z=>setTimeout(z,1500*tries))}}setP((i+1)/n*.92)}
+    pb.querySelector('.vpt b').textContent='جارٍ نشر المقطع على الموقع';pb.classList.add('fin');setP(.96,'اللمسات الأخيرة...');
+    const r=await api('media.vdone',{up,n,ext,poster});if(!r.ok)throw {msg:r.error==='size'?'المقطع كبير جدًا':'تعذّر نشر المقطع، حاول مرة أخرى'};setP(1,'اكتمل ✓');
     p.videos.push({title:f.name.replace(/\.[^.]+$/,''),src:r.src,poster:r.poster});dirty();draw();toast('تم رفع المقطع ✓ اضغط «حفظ ونشر»')}
    catch(e){st.textContent='';toast((e&&e.msg)||'تعذّر رفع المقطع. تأكد من الإنترنت وحاول مرة أخرى',1);lab.style.pointerEvents='';lab.style.opacity=''}}};draw()}
 function vposter(f){return new Promise(res=>{try{const v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='metadata';const u=URL.createObjectURL(f);v.src=u;let done=false;const fin=x=>{if(!done){done=true;URL.revokeObjectURL(u);res(x)}};
