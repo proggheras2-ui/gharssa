@@ -35,7 +35,7 @@ function shell(C,title,body){
  try{const A=JSON.parse(localStorage.getItem('ghars_acc')||'null');const ab=D.getElementById('accbtn');if(A&&A.name&&localStorage.getItem('ghars_acc_tok')&&ab){ab.innerHTML=(A.photo?'<img src="'+A.photo+'" alt="">':'<i>'+esc(A.name.trim()[0]||'★')+'</i>')+'<span>'+esc(A.name)+'</span>';ab.setAttribute('aria-label','حسابي: '+A.name)}}catch(e){}
  D.querySelectorAll('[data-lb]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const d=D.createElement('div');d.className='lb';d.innerHTML='<img src="'+a.href+'" alt="">';d.onclick=()=>d.remove();D.addEventListener('keydown',function k(ev){if(ev.key==='Escape'){d.remove();D.removeEventListener('keydown',k)}});B.appendChild(d)}));
  if(PV){D.querySelectorAll('[data-count]').forEach(b=>b.textContent=ar(b.dataset.count));pvMark(C)}else{const m=D.createElement('script');m.src=R+'assets/motion.js?v='+C.v;B.appendChild(m)}
- if(window.grosHomeMount)window.grosHomeMount();else if(PG==='home'||PG==='gros'){const g=D.createElement('script');g.src=R+'assets/gros.js?v=2';g.onload=()=>{const h=D.createElement('script');h.src=R+'assets/gros-home.js?v=3';B.appendChild(h)};B.appendChild(g)}}
+ if(window.grosHomeMount)window.grosHomeMount();else if(PG==='home'||PG==='gros'){const g=D.createElement('script');g.src=R+'assets/gros.js?v=2';g.onload=()=>{const h=D.createElement('script');h.src=R+'assets/gros-home.js?v=4';B.appendChild(h)};B.appendChild(g)}}
 const lvCards=(C,big)=>C.levels.filter(L=>L.show!==false).map(L=>`<a class="lv c-${esc(L.color)}" href="${R}level-${L.n}.html"><span class="num">${ar(L.n)}</span><b>${esc(L.name)}</b><span>${esc(L.stage)}</span></a>`).join('');
 const SEC={
  tiles:s=>`<section class="sec tiles-sec"><div class="wrap"><div class="tiles">${s.items.map(t=>`<a class="tile ${esc(t.color)}" href="${esc(href(t.href))}"${ext(t.href)}>${svg(t.icon)}<b>${esc(t.title)}</b><span>${esc(t.desc)}</span></a>`).join('')}</div></div></section>`,
@@ -54,7 +54,7 @@ function secOpt(h,s,i){const bg=s.bg==='alt'?' alt':'';if(s.bg==='alt'||s.bg==='
 function render(C){
  const S=C.site;
  if(PG==='home'){const cta=`<div class="cta">${S.cta.map(b=>`<a class="btn ${esc(b.style)}" href="${esc(href(b.href))}"${ext(b.href)}>${esc(b.label)}</a>`).join('')}</div>`;
-  shell(C,'الرئيسية',hero(`${esc(S.titlePre)} <span>${esc(S.name)}</span>`,`${esc(S.slogan)}<br><small>${esc(S.intro)}</small>`,false,cta,` data-gros="${esc(S.gros||'left')}"`)+C.home.map((s,i)=>s.show!==false&&SEC[s.type]?secOpt(SEC[s.type](s,C),s,i):'').join(''));return}
+  shell(C,'الرئيسية',hero(`${esc(S.titlePre)} <span>${esc(S.name)}</span>`,`${esc(S.slogan)}<br><small>${esc(S.intro)}</small>`,false,cta,` data-gros="${esc(S.gros||'left')}"${S.grosSize?` style="--gw:${+S.grosSize}px"`:''}`)+C.home.map((s,i)=>s.show!==false&&SEC[s.type]?secOpt(SEC[s.type](s,C),s,i):'').join(''));return}
  if(PG==='gros'){shell(C,'تعرّف على غروس',hero('تعرّف على غروس','الغرسة التي تكبر مع كل نجمة',true)+'<section class="sec"><div class="wrap" id="grosPage"></div></section>');return}
  if(PG==='levels'){shell(C,'المستويات',hero(esc(C.levelsPage.title),esc(C.levelsPage.sub),true)+`<section class="sec"><div class="wrap"><div class="lvs big">${lvCards(C)}</div></div></section>`);return}
  if(PG==='level'){const L=C.levels.find(x=>x.n==B.dataset.n);if(!L)return notFound(C);

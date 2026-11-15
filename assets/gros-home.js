@@ -11,7 +11,8 @@
     '.gh .glink{display:inline-block;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.45);color:#FFFFFF;border-radius:999px;padding:5px 16px;font-weight:700;font-size:15px;text-decoration:none;transition:background .2s,transform .2s}' +
     '.gh .glink:hover{background:rgba(255,255,255,.28);transform:translateY(-2px)}' +
     '.gh .glink:focus-visible{outline:3px solid #FDB515;outline-offset:3px}' +
-    '@media (min-width:1000px){.hero .gh{position:absolute;left:max(3vw,24px);top:50%;margin:0;width:clamp(200px,17vw,250px);transform:translateY(-46%)}}' +
+    '.hero[style*="--gw"] .gh{width:min(calc(var(--gw) * .8),56vw)}' +
+    '@media (min-width:1000px){.hero .gh{position:absolute;left:max(3vw,24px);top:50%;margin:0;width:var(--gw,clamp(200px,17vw,250px));transform:translateY(-46%)}}' +
     /* صفحة غروس */
     '.gp{display:grid;gap:clamp(36px,6vw,60px)}' +
     '.gp .intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:28px;align-items:center}' +
