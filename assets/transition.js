@@ -2,6 +2,7 @@
 (function () {
   var D = document, H = D.documentElement, K = 'ghars_pt';
   if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (/[?&]preview/.test(location.search)) return;
   var me = D.currentScript && D.currentScript.src, LOGO = me ? new URL('img/ghars_w.png', me).href : '';
   var G = 'linear-gradient(135deg,#283370,#0AA4AD)', E = 'cubic-bezier(.7,0,.25,1)';
   var css =

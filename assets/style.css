@@ -335,3 +335,9 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--yellow);outline-off
 .accbtn span{max-width:12ch;overflow:hidden;text-overflow:ellipsis}
 .nav .links{flex:1;min-width:0}
 @media (max-width:860px){.nav .wrap{position:relative}.accbtn{position:absolute;left:max(16px,env(safe-area-inset-left,0px));top:8px;margin:0;font-size:15px;padding:5px 12px}}
+
+.fixcols{grid-template-columns:repeat(var(--cols),minmax(0,1fr))!important}
+@media (max-width:760px){.fixcols{grid-template-columns:repeat(var(--colsm),minmax(0,1fr))!important}}
+@media (min-width:1000px){.hero[data-gros="right"] .gh{left:auto!important;right:max(3vw,24px)}}
+
+.sec+.tiles-sec,.contact+.tiles-sec{margin-top:0;padding-top:clamp(36px,6vw,64px)}

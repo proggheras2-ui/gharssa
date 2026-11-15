@@ -2,13 +2,14 @@
 (function(){
 const I={"user":"<path d=\"M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.4-8 5.3V21h16v-1.7C20 16.4 16.4 14 12 14z\"/>","book": "<path d=\"M4 5.5C4 4.7 4.7 4 5.5 4H11v15H5.5A1.5 1.5 0 0 1 4 17.5zM20 5.5c0-.8-.7-1.5-1.5-1.5H13v15h5.5c.8 0 1.5-.7 1.5-1.5z\"/>", "play": "<path d=\"M8 5v14l11-7z\"/>", "pdf": "<path d=\"M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V9h5.5z\"/>", "mic": "<path d=\"M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11z\"/>", "phone": "<path d=\"M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z\"/>", "mail": "<path d=\"M3 5h18v14H3zm9 7L4.5 6.9V8l7.5 5 7.5-5V6.9z\"/>", "wa": "<path d=\"M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.2.1.8-.1 1.4z\"/>", "tg": "<path d=\"M21.5 4.3 18.4 19c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-1 .5l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2L6.6 13 2 11.6c-1-.3-1-1 .2-1.5L20.2 3c.8-.3 1.6.2 1.3 1.3z\"/>", "yt": "<path d=\"M22 8.2a3 3 0 0 0-2.1-2.1C18 5.6 12 5.6 12 5.6s-6 0-7.9.5A3 3 0 0 0 2 8.2 31 31 0 0 0 1.6 12c0 1.3.1 2.6.4 3.8a3 3 0 0 0 2.1 2.1c1.9.5 7.9.5 7.9.5s6 0 7.9-.5a3 3 0 0 0 2.1-2.1c.3-1.2.4-2.5.4-3.8s-.1-2.6-.4-3.8zM10 15.3V8.7l5.2 3.3z\"/>", "map": "<path d=\"M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z\"/>", "menu": "<path d=\"M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z\"/>", "arrow": "<path d=\"M15 5l-7 7 7 7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "game": "<path d=\"M7 7h10a5 5 0 0 1 4.8 6.4l-1 3.4a2.5 2.5 0 0 1-4.3.8L14.6 15H9.4l-1.9 2.6a2.5 2.5 0 0 1-4.3-.8l-1-3.4A5 5 0 0 1 7 7zm0 3v1.5H5.5v2H7V15h2v-1.5h1.5v-2H9V10zm9.5.2a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zm2 2.6a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z\"/>", "letters": "<text x=\"12\" y=\"19\" text-anchor=\"middle\" font-family=\"Ruqiaround\" font-weight=\"700\" font-size=\"19\">أب</text>", "heart": "<path d=\"M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z\"/>", "bus": "<path d=\"M5 3h14a2 2 0 0 1 2 2v12a2 2 0 0 1-1 1.7V20a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-1H7v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1.3A2 2 0 0 1 3 17V5a2 2 0 0 1 2-2zm0 3v5h14V6zm2 8.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm10 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z\"/>", "tree": "<path d=\"M12 2a6 6 0 0 1 5.9 7A5 5 0 0 1 16 18h-3v4h-2v-4H8a5 5 0 0 1-1.9-9.6A6 6 0 0 1 12 2z\"/>", "store": "<path d=\"M4 4h16l1 5a3 3 0 0 1-5 2.2A3 3 0 0 1 12 12a3 3 0 0 1-4-.8A3 3 0 0 1 3 9zm1 9.5a4.9 4.9 0 0 0 3-.2 5 5 0 0 0 4 .7 5 5 0 0 0 4-.7 4.9 4.9 0 0 0 3 .2V20H5z\"/>", "form": "<path d=\"M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm2 5v2h8V7zm0 4v2h8v-2zm0 4v2h5v-2z\"/>", "hand": "<path d=\"M12 2.5c.8 0 1.5.7 1.5 1.5v7h1V5a1.5 1.5 0 0 1 3 0v6h1V7.5a1.5 1.5 0 0 1 3 0V15a7 7 0 0 1-7 7h-1.6a7 7 0 0 1-5.4-2.6L2.8 14.6a1.6 1.6 0 0 1 2.4-2.1L7.5 15V5a1.5 1.5 0 0 1 3 0v6h1V4c0-.8.7-1.5 1.5-1.5z\"/>"};
 const D=document,B=D.body,PG=B.dataset.page,R=B.dataset.root||'';
+const PV=/[?&]preview(=|&|$)/.test(location.search)&&window.parent!==window;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ar=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
 const svg=(k,cls='ic')=>`<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">${I[k]||I.book}</svg>`;
 const href=h=>{h=String(h||'#');return /^(https?:|mailto:|tel:|#)/.test(h)?h:R+h};
 const ext=h=>/^https?:/.test(String(h||''))?' target="_blank" rel="noopener"':'';
 const yt=(id,t)=>`<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${esc(id)}" title="${esc(t)}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
-function hero(title,sub,small,extra=''){
+function hero(title,sub,small,extra='',attr=''){
  let spots=[['i_star','hs','top:14%;right:5%;--s:58px','spin'],['i_book','','bottom:20%;right:10%;--s:62px;--d:-2s',''],['i_pencil','hs','top:12%;left:6%;--s:58px;--d:-3s','wig'],['i_spiral','','bottom:22%;left:11%;--s:46px;--d:-1s','spin'],
   ['i_sun','hs','top:48%;right:20%;--s:40px;--d:-4s','spin'],['i_puzzle','hs','top:44%;left:21%;--s:42px;--d:-5s','wig'],['i_tri','','top:8%;right:34%;--s:30px;--d:-2.5s','spin'],['i_leaf','hs','top:9%;left:33%;--s:34px;--d:-1.5s','wig']];
  if(small)spots=spots.slice(0,4);
@@ -16,14 +17,14 @@ function hero(title,sub,small,extra=''){
  const bub=[[8,14,13,2],[19,9,10,6],[31,18,15,1],[46,10,11,8],[58,16,14,4],[71,8,9,3],[83,20,16,9],[93,12,12,5]].map(([x,z,t,d])=>`<i class="bub" style="--x:${x}%;--z:${z}px;--t:${t}s;--d:-${d}s"></i>`).join('');
  let n=0;const pop=h=>h.split(/(<[^>]+>)/).map(p=>p.startsWith('<')?p:p.split(/(\s+)/).map(w=>!w||/^\s+$/.test(w)?w:`<span class="w" style="--i:${n++}">${w}</span>`).join('')).join('');
  const wave='<svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path class="w1" d="M0 50 C 240 10 480 90 720 50 S 1200 10 1440 50 V90 H0Z"/><path class="w2" d="M0 62 C 260 30 500 96 760 60 S 1220 34 1440 64 V90 H0Z"/></svg>';
- return `<section class="hero${small?' sm':''}"><div class="bubs" aria-hidden="true">${bub}</div>${dood}<div class="wrap"><h1 class="pop">${pop(title)}</h1>${sub?`<p class="rv-h">${sub}</p>`:''}${extra}</div>${wave}</section>`}
+ return `<section class="hero${small?' sm':''}"${attr}><div class="bubs" aria-hidden="true">${bub}</div>${dood}<div class="wrap"><h1 class="pop">${pop(title)}</h1>${sub?`<p class="rv-h">${sub}</p>`:''}${extra}</div>${wave}</section>`}
 function shell(C,title,body){
  const file=(location.pathname.split('/').pop()||'index.html');
  const nav=C.nav.filter(x=>x.show!==false).map(x=>`<a href="${href(x.href)}"${ext(x.href)}${x.href.split('?')[0]===file?' aria-current="page"':''}>${esc(x.label)}</a>`).join('');
  const c=C.contact;D.title=title+' | برنامج غرس';
  B.innerHTML=`<div class="sprog" aria-hidden="true"></div>
 <header class="brand"><div class="wrap"><a href="${R}index.html" class="logos" aria-label="الصفحة الرئيسية"><img src="${R}assets/img/gheras_w.png" alt="جمعية غراس لتنمية الطفل" width="179" height="60"><span class="sep" aria-hidden="true"></span><img src="${R}assets/img/ghars_w.png" alt="برنامج غرس" width="128" height="60"></a></div></header>
-<nav class="nav" aria-label="القائمة الرئيسية"><div class="wrap"><button class="menu" aria-expanded="false" aria-controls="navlinks">${svg('menu')}<span>القائمة</span></button><div class="links" id="navlinks">${nav}</div><a class="accbtn" id="accbtn" href="${R}games/index.html?acc=1">${svg('user')}<span>احفظ تقدّمي</span></a></div></nav>
+<nav class="nav" aria-label="القائمة الرئيسية"><div class="wrap"><button class="menu" aria-expanded="false" aria-controls="navlinks">${svg('menu')}<span>القائمة</span></button><div class="links" id="navlinks">${nav}</div>${C.site.accBtn===false?'':`<a class="accbtn" id="accbtn" href="${R}games/index.html?acc=1">${svg('user')}<span>احفظ تقدّمي</span></a>`}</div></nav>
 <main>${body}</main>
 <section class="contact" id="contact" aria-label="تواصل معنا"><div class="wrap"><h2>تواصل معنا</h2><div class="cgrid">
 <a class="cbtn" href="https://wa.me/${esc(c.phone_int)}">${svg('phone')}<span><b dir="ltr">${esc(c.phone)}</b><small>اتصال أو واتساب</small></span></a>
@@ -33,8 +34,8 @@ function shell(C,title,body){
  D.querySelector('.menu').addEventListener('click',e=>{const b=e.currentTarget,o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',!o);D.getElementById('navlinks').classList.toggle('open',!o)});
  try{const A=JSON.parse(localStorage.getItem('ghars_acc')||'null');const ab=D.getElementById('accbtn');if(A&&A.name&&localStorage.getItem('ghars_acc_tok')&&ab){ab.innerHTML=(A.photo?'<img src="'+A.photo+'" alt="">':'<i>'+esc(A.name.trim()[0]||'★')+'</i>')+'<span>'+esc(A.name)+'</span>';ab.setAttribute('aria-label','حسابي: '+A.name)}}catch(e){}
  D.querySelectorAll('[data-lb]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const d=D.createElement('div');d.className='lb';d.innerHTML='<img src="'+a.href+'" alt="">';d.onclick=()=>d.remove();D.addEventListener('keydown',function k(ev){if(ev.key==='Escape'){d.remove();D.removeEventListener('keydown',k)}});B.appendChild(d)}));
- const m=D.createElement('script');m.src=R+'assets/motion.js?v='+C.v;B.appendChild(m);
- if(PG==='home'||PG==='gros'){const g=D.createElement('script');g.src=R+'assets/gros.js?v=2';g.onload=()=>{const h=D.createElement('script');h.src=R+'assets/gros-home.js?v=2';B.appendChild(h)};B.appendChild(g)}}
+ if(PV){D.querySelectorAll('[data-count]').forEach(b=>b.textContent=ar(b.dataset.count));pvMark(C)}else{const m=D.createElement('script');m.src=R+'assets/motion.js?v='+C.v;B.appendChild(m)}
+ if(window.grosHomeMount)window.grosHomeMount();else if(PG==='home'||PG==='gros'){const g=D.createElement('script');g.src=R+'assets/gros.js?v=2';g.onload=()=>{const h=D.createElement('script');h.src=R+'assets/gros-home.js?v=3';B.appendChild(h)};B.appendChild(g)}}
 const lvCards=(C,big)=>C.levels.filter(L=>L.show!==false).map(L=>`<a class="lv c-${esc(L.color)}" href="${R}level-${L.n}.html"><span class="num">${ar(L.n)}</span><b>${esc(L.name)}</b><span>${esc(L.stage)}</span></a>`).join('');
 const SEC={
  tiles:s=>`<section class="sec tiles-sec"><div class="wrap"><div class="tiles">${s.items.map(t=>`<a class="tile ${esc(t.color)}" href="${esc(href(t.href))}"${ext(t.href)}>${svg(t.icon)}<b>${esc(t.title)}</b><span>${esc(t.desc)}</span></a>`).join('')}</div></div></section>`,
@@ -46,10 +47,14 @@ const SEC={
  stores:s=>`<section class="sec"><div class="wrap"><div class="stores">${s.items.map(t=>`<a class="store ${esc(t.style||'s1')}" href="${esc(href(t.href))}"${ext(t.href)}>${svg(t.icon)}<span><b>${esc(t.title)}</b><small>${esc(t.desc)}</small></span></a>`).join('')}</div></div></section>`,
  text:s=>`<section class="sec"><div class="wrap narrow"><h2 class="ttl">${esc(s.title)}</h2><div class="txt">${(s.text||'').split('\n').map(p=>`<p>${esc(p)}</p>`).join('')}</div></div></section>`
 };
+const GRID=/class="(tiles|stats|comps|cards3|vids|stores)"/,MOBC={tiles:2,stats:2,comps:2};
+function secOpt(h,s,i){const bg=s.bg==='alt'?' alt':'';if(s.bg==='alt'||s.bg==='plain')h=h.replace(/^<section class="sec( alt)?/,'<section class="sec'+bg);
+ const n=+s.cols;if(n>0)h=h.replace(GRID,(m,k)=>`class="${k} fixcols" style="--cols:${n};--colsm:${Math.min(n,MOBC[k]||1)}"`);
+ return h.replace(/^<section /,`<section data-si="${i}" `)}
 function render(C){
  const S=C.site;
  if(PG==='home'){const cta=`<div class="cta">${S.cta.map(b=>`<a class="btn ${esc(b.style)}" href="${esc(href(b.href))}"${ext(b.href)}>${esc(b.label)}</a>`).join('')}</div>`;
-  shell(C,'الرئيسية',hero(`${esc(S.titlePre)} <span>${esc(S.name)}</span>`,`${esc(S.slogan)}<br><small>${esc(S.intro)}</small>`,false,cta)+C.home.filter(s=>s.show!==false&&SEC[s.type]).map(s=>SEC[s.type](s,C)).join(''));return}
+  shell(C,'الرئيسية',hero(`${esc(S.titlePre)} <span>${esc(S.name)}</span>`,`${esc(S.slogan)}<br><small>${esc(S.intro)}</small>`,false,cta,` data-gros="${esc(S.gros||'left')}"`)+C.home.map((s,i)=>s.show!==false&&SEC[s.type]?secOpt(SEC[s.type](s,C),s,i):'').join(''));return}
  if(PG==='gros'){shell(C,'تعرّف على غروس',hero('تعرّف على غروس','الغرسة التي تكبر مع كل نجمة',true)+'<section class="sec"><div class="wrap" id="grosPage"></div></section>');return}
  if(PG==='levels'){shell(C,'المستويات',hero(esc(C.levelsPage.title),esc(C.levelsPage.sub),true)+`<section class="sec"><div class="wrap"><div class="lvs big">${lvCards(C)}</div></div></section>`);return}
  if(PG==='level'){const L=C.levels.find(x=>x.n==B.dataset.n);if(!L)return notFound(C);
@@ -74,5 +79,18 @@ function render(C){
   shell(C,P.title,hero(esc(P.title),esc(P.sub),true)+body);return}
  notFound(C)}
 function notFound(C){shell(C,'الصفحة غير موجودة',hero('الصفحة غير موجودة','ربما تغيّر الرابط.. ابدأ من الصفحة الرئيسية',true,`<div class="cta"><a class="btn y" href="${R}index.html">الصفحة الرئيسية</a></div>`))}
-fetch(R+'content.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(render).catch(()=>{B.innerHTML='<p style="padding:40px;text-align:center;font-family:sans-serif">تعذّر تحميل الصفحة، حدّث الصفحة من فضلك.</p>'});
+function pvMark(C){
+ const m=(sel,k,f)=>D.querySelectorAll(sel).forEach((e,i)=>e.dataset.pv=f?f(i):k+':'+i);
+ D.querySelectorAll('[data-si]').forEach(sec=>{const g=sec.querySelector('.tiles,.stats,.comps,.cards3,.vids,.stores,.lvs');if(g&&!g.classList.contains('lvs'))[...g.children].forEach((c,j)=>c.dataset.pv='item:'+sec.dataset.si+':'+j);sec.dataset.pv=sec.dataset.pv||'sec:'+sec.dataset.si});
+ D.querySelectorAll('.hero .cta a').forEach((a,i)=>a.dataset.pv='cta:'+i);const h=D.querySelector('.hero h1');if(h)h.dataset.pv='hero';const hp=D.querySelector('.hero p');if(hp)hp.dataset.pv='hero';
+ const vis=C.nav.map((x,i)=>x.show!==false?i:-1).filter(i=>i>=0);D.querySelectorAll('#navlinks a').forEach((a,i)=>a.dataset.pv='nav:'+vis[i]);const ab=D.getElementById('accbtn');if(ab)ab.dataset.pv='acc';
+ if(!D.getElementById('pvcss')){const st=D.createElement('style');st.id='pvcss';st.textContent='.hero h1.pop .w,.rv-h,.doodle,.bub{animation:none!important}[data-pv]{cursor:pointer}[data-pv]:hover{outline:3px dashed #FDB515;outline-offset:2px}[data-pv^="sec"]:hover{outline-offset:-6px}.pv-hi{outline:4px solid #DE4A52!important;outline-offset:2px}';D.head.appendChild(st)}}
+if(PV){
+ D.addEventListener('click',e=>{const t=e.target.closest('[data-pv]');const a=e.target.closest('a,button');if(a||t){e.preventDefault();e.stopPropagation()}
+  if(t)parent.postMessage({type:'ghars-pv-pick',pick:t.dataset.pv},location.origin)},true);
+ addEventListener('message',e=>{if(e.origin!==location.origin||!e.data)return;
+  if(e.data.type==='ghars-preview'){const y=scrollY;try{render(e.data.content)}catch(er){}scrollTo(0,y)}
+  if(e.data.type==='ghars-pv-hi'){D.querySelectorAll('.pv-hi').forEach(x=>x.classList.remove('pv-hi'));const x=D.querySelector('[data-pv="'+e.data.pick+'"]');if(x){x.classList.add('pv-hi');x.scrollIntoView({block:'center',behavior:'smooth'});setTimeout(()=>x.classList.remove('pv-hi'),1600)}}});
+}
+fetch(R+'content.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(c=>{render(c);if(PV)parent.postMessage({type:'ghars-pv-ready'},location.origin)}).catch(()=>{B.innerHTML='<p style="padding:40px;text-align:center;font-family:sans-serif">تعذّر تحميل الصفحة، حدّث الصفحة من فضلك.</p>'});
 })();

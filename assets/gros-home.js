@@ -3,7 +3,8 @@
   if (!window.Gros) return;
   Gros.injectCSS();
   var D = document, PG = D.body.dataset.page, R = D.body.dataset.root || '';
-  var css = D.createElement('style');
+  if (D.getElementById('gh-css')) return;
+  var css = D.createElement('style'); css.id = 'gh-css';
   css.textContent =
     '.gh{position:relative;width:clamp(170px,46vw,210px);margin:-10px auto 6px;z-index:3;display:flex;flex-direction:column;align-items:center;gap:2px}' +
     '.gh svg{width:100%;height:auto;display:block;filter:drop-shadow(0 14px 18px rgba(20,26,60,.25))}' +
@@ -30,13 +31,15 @@
   D.head.appendChild(css);
   var ar = function (n) { return String(n).replace(/\d/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'[d]; }); };
 
-  if (PG === 'home') {
-    var wrap = D.querySelector('.hero .wrap'); if (!wrap) return;
+  function mountHome() {
+    var hero = D.querySelector('.hero'), wrap = hero && hero.querySelector('.wrap'); if (!wrap || wrap.querySelector('.gh')) return;
+    if (hero.dataset.gros === 'off') return;
     var box = D.createElement('div'); box.className = 'gh';
     box.innerHTML = Gros.svg({ stage: 7, mood: 'welcome', title: 'غروس' }) + '<a class="glink" href="' + R + 'gros.html">تعرّف على غروس</a>';
     wrap.insertBefore(box, wrap.firstChild);
-    return;
   }
+  window.grosHomeMount = function () { if (D.body.dataset.page === 'home') mountHome(); };
+  if (PG === 'home') { mountHome(); return; }
 
   if (PG === 'gros') {
     var el = D.getElementById('grosPage'); if (!el) return;
