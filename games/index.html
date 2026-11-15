@@ -306,7 +306,7 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--yellow);outline-off
 .mcols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:min(640px,100%);margin:0 auto}.mcol{display:grid;gap:12px;align-content:start}
 .mopt{width:100%;min-height:74px;font-size:clamp(20px,4.6vw,30px)}.mopt img{max-height:80px;max-width:100%;object-fit:contain}.opt.sel{outline:4px solid var(--yellow);outline-offset:3px}
 .buddy svg{width:100%;height:auto}
-@media (max-width:760px){.buddy{left:max(10px,env(safe-area-inset-left,0px));top:calc(62px + env(safe-area-inset-top,0px));transform:none;width:var(--bms,50px)}.buddy[data-pos$=right]{left:auto;right:max(10px,env(safe-area-inset-right,0px))}.buddy[data-pos^=bottom]{top:auto;bottom:calc(10px + env(safe-area-inset-bottom,0px))}}
+.bslot{display:none}@media (max-width:760px){.bslot{display:flex;justify-content:center}.bslot .buddy{position:static;transform:none;width:var(--bms,80px);margin:2px auto -10px}}
 .end .egros{width:150px;margin:-10px auto -8px}.end .egros svg{width:100%;height:auto}
 .end .grew{background:#E6F6F7;border-radius:18px;padding:8px 14px;font-weight:700;color:var(--navy)}
 .gbig{width:min(230px,70%);margin:0 auto;background:#E6F6F7;border-radius:24px;padding:8px}
@@ -423,6 +423,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:70}
     <button class="iconbtn" id="snd" aria-label="تشغيل الصوت أو إيقافه"><svg viewBox="0 0 24 24" id="sndIc"></svg></button>
   </div>
   <div class="prog"><i id="progI"></i></div>
+  <div class="bslot" id="bslot"></div>
   <div class="play" id="play"></div>
   <div class="buddy" id="buddy" aria-hidden="true"></div>
 </div>
@@ -732,7 +733,7 @@ function applyCfg(g){
  for(let i=GAMES.length-1;i>=0;i--)if(GAMES[i].custom){delete RUN[GAMES[i].id];GAMES.splice(i,1)}
  (g.custom||[]).forEach(cg=>{if(!cg||!cg.id||!ENG[cg.type]||!(cg.items||[]).length)return;const G={id:cg.id,custom:1,type:cg.type,cat:cg.cat||'let',tag:CATN(cg.cat||'let'),t:CLEAN(cg.t)||'لعبة جديدة',d:CLEAN(cg.d),cls:cg.cls||'c-sky',big:CLEAN(cg.big)||'؟',ic:['i_star','i_spiral'],items:cg.items};
   GAMES.push(G);RUN[G.id]=()=>ENG[G.type](G)});
- const B=g.gros||{},bd=$('#buddy');if(bd){bd.hidden=B.show===false;bd.dataset.pos=B.pos||'side-left';bd.style.setProperty('--bs',(+B.size||150)+'px');bd.style.setProperty('--bms',(+B.msize||50)+'px')}
+ const B=g.gros||{},bd=$('#buddy');if(bd){bd.hidden=B.show===false;bd.dataset.pos=B.pos||'side-left';bd.style.setProperty('--bs',(+B.size||150)+'px');bd.style.setProperty('--bms',(+B.msize||80)+'px')}
  const hg=$('#hgros');if(hg){hg.hidden=B.hero===false;if(B.heroSize)hg.style.width=(+B.heroSize)+'px'}
 }
 const ENG={
@@ -976,6 +977,7 @@ function buddy(m,ms){const b=$('#buddy');if(!b)return;clearTimeout(buddyT);if(m!
  if(ms)buddyT=setTimeout(()=>buddy('idle'),ms);clearTimeout(idleT);idleT=setTimeout(()=>{if(!$('#stage').hidden)buddy('sleep')},45000)}
 function buddySeq(q){let t=0;clearTimeout(buddyT);const go=i=>{if(i>=q.length){buddy('idle');return}buddy(q[i][0]);buddyT=setTimeout(()=>go(i+1),q[i][1])};go(0)}
 document.addEventListener('pointerdown',()=>{if(buddyM==='sleep')buddy('idle')},true);
+const bmq=matchMedia('(max-width:760px)');function placeBuddy(){const b=$('#buddy'),sl=$('#bslot');if(!b||!sl)return;if(bmq.matches){if(b.parentElement!==sl)sl.appendChild(b)}else if(b.parentElement!==$('#stage'))$('#stage').appendChild(b)}placeBuddy();bmq.addEventListener?bmq.addEventListener('change',placeBuddy):bmq.addListener(placeBuddy);
 function stageInfo(){const tot=totalStars(),mx=MAXS(),p=tot/mx,s=Gros.stageFor(p),nx=Gros.STAGES[s.n]||null;
  const lo=s.at,hi=nx?nx.at:1;return{tot,mx,s,nx,pct:nx?Math.max(0,Math.min(100,Math.round((p-lo)/(hi-lo)*100))):100,need:nx?Math.max(1,Math.ceil(nx.at*mx-tot)):0}}
 let lastStageSeen=null;

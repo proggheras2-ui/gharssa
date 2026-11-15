@@ -119,7 +119,7 @@ table.acct td{padding:6px 10px;white-space:nowrap}table.acct td.l{direction:ltr;
 .gm-d .gm-l,.gm-m .gm-l{position:absolute;top:-20px;right:0;margin:0}
 .gm-b{position:absolute;left:4%;top:50%;transform:translateY(-50%)}.gm-b svg{width:100%;height:auto;display:block}
 .gm-b[data-pos=side-right]{left:auto;right:4%}.gm-b[data-pos=bottom-left]{top:auto;bottom:4%;transform:none}.gm-b[data-pos=bottom-right]{top:auto;bottom:4%;left:auto;right:4%;transform:none}
-.gm-m .gm-b{top:12%;transform:none}.gm-m .gm-b[data-pos$=right]{left:auto;right:6%}.gm-m .gm-b[data-pos^=bottom]{top:auto;bottom:4%}
+.gm-m .gm-b,.gm-m .gm-b[data-pos]{top:7%;bottom:auto;left:50%;right:auto;transform:translateX(-50%)}.gm-m .gm-c{inset:30% 10% 8%}
 .gmock{margin-top:28px}
 </style>
 </head>
@@ -411,11 +411,11 @@ const VIEWS={
    P.appendChild(group('gros','غروس: المكان والحجم',b=>{const S=C.site,R=G.gros;
     b.appendChild(el('h4','','في الصفحة الرئيسية'));b.appendChild(row('المكان',seg(S.gros||'left',[['left','يسار'],['right','يمين'],['off','إخفاء']],v=>{S.gros=v;mock()})));b.appendChild(row('الحجم',slider(S.grosSize||225,140,340,v=>{S.grosSize=v;mock()})));
     b.appendChild(el('h4','','داخل الألعاب'));b.appendChild(row('الظهور',seg(R.show!==false,[[true,'ظاهر'],[false,'مخفي']],v=>{R.show=v;mock()})));
-    b.appendChild(row('المكان',seg(R.pos||'side-left',[['side-left','يسار الوسط'],['side-right','يمين الوسط'],['bottom-left','أسفل اليسار'],['bottom-right','أسفل اليمين']],v=>{R.pos=v;mock()})));
-    b.appendChild(row('الحجم في الكمبيوتر',slider(R.size||150,80,280,v=>{R.size=v;mock()})));b.appendChild(row('الحجم في الجوال',slider(R.msize||50,36,120,v=>{R.msize=v;mock()})));
+    b.appendChild(row('المكان في الكمبيوتر',seg(R.pos||'side-left',[['side-left','يسار الوسط'],['side-right','يمين الوسط'],['bottom-left','أسفل اليسار'],['bottom-right','أسفل اليمين']],v=>{R.pos=v;mock()})));
+    b.appendChild(el('p','help','في الجوال يظهر غروس فوق السؤال مباشرة حتى لا يغطي شيئًا.'));b.appendChild(row('الحجم في الكمبيوتر',slider(R.size||150,80,280,v=>{R.size=v;mock()})));b.appendChild(row('الحجم في الجوال',slider(R.msize||80,50,140,v=>{R.msize=v;mock()})));
     b.appendChild(el('h4','','أعلى صفحة الألعاب (غرسة الطفل)'));b.appendChild(row('الظهور',seg(R.hero!==false,[[true,'ظاهر'],[false,'مخفي']],v=>{R.hero=v})));b.appendChild(row('الحجم',slider(R.heroSize||130,80,220,v=>{R.heroSize=v})));
     const mk=el('div','gmock');mk.innerHTML='<div class="gm-d"><span class="gm-l">معاينة تقريبية: شاشة كمبيوتر</span><div class="gm-c"></div><div class="gm-b"></div></div><div class="gm-m"><span class="gm-l">جوال</span><div class="gm-c"></div><div class="gm-b"></div></div>';b.appendChild(mk);
-    function mock(){const sv=window.Gros?Gros.svg({stage:7,mood:'clap'}):'';mk.querySelectorAll('.gm-b').forEach((x,i)=>{x.innerHTML=R.show===false?'':sv;x.dataset.pos=R.pos||'side-left';x.style.width=(i?(R.msize||50)*.62:(R.size||150)*.36)+'px'})}window.__gmock=mock;mock()}));
+    function mock(){const sv=window.Gros?Gros.svg({stage:7,mood:'clap'}):'';mk.querySelectorAll('.gm-b').forEach((x,i)=>{x.innerHTML=R.show===false?'':sv;x.dataset.pos=R.pos||'side-left';x.style.width=(i?(R.msize||80)*.3:(R.size||150)*.36)+'px'})}window.__gmock=mock;mock()}));
    scrollTo(0,y)}
   if(!window.Gros){const s=document.createElement('script');s.src='../assets/gros.js';s.onload=()=>{Gros.injectCSS();window.__gmock&&__gmock()};document.head.appendChild(s)}
   draw()},
