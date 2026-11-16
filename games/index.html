@@ -331,6 +331,7 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--yellow);outline-off
 .gstep i{width:28px;height:28px;border-radius:50%;border:2px solid var(--navy);display:grid;place-items:center;font-style:normal;font-size:14px;font-weight:700;flex:none;color:var(--navy)}
 .gstep.done i{background:var(--sky);border-color:var(--sky);color:var(--white)}
 .gstep.now{font-weight:700;color:var(--navy)}.gstep.now i{background:var(--yellow);border-color:var(--yellow)}
+.plink{background:none;border:0;color:var(--sky);font:700 16px var(--f);text-decoration:underline;cursor:pointer;padding:4px}
 .ptabs{display:flex;gap:6px;background:#EEF3F8;border-radius:999px;padding:5px;margin:4px auto 10px;width:max-content}
 .ptabs button{border:0;background:transparent;font:700 17px var(--f);color:var(--navy);padding:8px 20px;border-radius:999px;cursor:pointer}
 .ptabs button[aria-selected="true"]{background:var(--navy);color:var(--white)}
@@ -924,10 +925,11 @@ function openAuth(mode){const {m,bx,x}=modal();
   <div class="perr" role="alert"></div>
   <div class="pbtns"><button class="pill y" type="submit">${reg?'إنشاء الحساب':'دخول'}</button></div>
  </form>
- <p class="pnote">${reg?'التسجيل اختياري، والألعاب متاحة للجميع بدونه.':'نسيت كلمة المرور؟ تواصل مع برنامج غرس.'}</p>`;
+ <p class="pnote">${reg?'التسجيل اختياري، والألعاب متاحة للجميع بدونه.':'<button type="button" class="plink" id="fForgot">نسيت كلمة المرور؟</button>'}</p>`;
  x();bx.querySelectorAll('.ptabs button').forEach(b=>b.onclick=()=>{m.remove();openAuth(b.dataset.m)});
  const f=bx.querySelector('form'),err=bx.querySelector('.perr'),q=s=>bx.querySelector(s);
  if(reg){const stu=q('#fStu');stu.onchange=()=>{q('#stuBox').hidden=!stu.checked;q('#pubBox').hidden=stu.checked}}
+ if(!reg)q('#fForgot').onclick=()=>{const em=q('#fEmail').value.trim();m.remove();openForgot(em)};
  f.onsubmit=async e=>{e.preventDefault();err.textContent='';const btn=f.querySelector('[type=submit]');
   const email=q('#fEmail').value.trim(),password=numN(q('#fPass').value);
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return err.textContent=ERRS.email;
@@ -941,6 +943,19 @@ function openAuth(mode){const {m,bx,x}=modal();
   const keep=store;setAcc(r.acc,r.tok);for(const k in keep)if((keep[k]||0)>(store[k]||0)){store[k]=keep[k];syncSoon()}
   m.remove();home();sfx.win();confetti();celebrate(false,(reg?'أهلًا بالبطل ':'أهلًا بعودتك يا ')+r.acc.name);say('pr5',false)};
  setTimeout(()=>(q('#fName')||q('#fEmail')).focus(),100)}
+function openForgot(email){const {m,bx,x}=modal();let step=1;
+ const draw=()=>{bx.innerHTML=`<div class="gmini">${Gros.svg({stage:7,mood:step===1?'think':'cheer'})}</div><h3>استعادة كلمة المرور</h3>
+  ${step===1?`<p>اكتب إيميل الحساب، وسنرسل إليه رمزًا من ٦ أرقام.</p><form class="pf" novalidate><label for="rEm">الإيميل</label><input id="rEm" type="email" dir="ltr" autocomplete="email" value="${esc(email||'')}"><div class="perr" role="alert"></div><div class="pbtns"><button class="pill y" type="submit">إرسال الرمز</button></div></form>`
+  :`<p>أرسلنا رمزًا إلى <b dir="ltr">${esc(email)}</b>. إن لم تجده فابحث في البريد غير المرغوب (Spam).</p><form class="pf" novalidate><label for="rCode">الرمز</label><input id="rCode" class="l5" inputmode="numeric" dir="ltr" maxlength="6" autocomplete="one-time-code"><label for="rPw">كلمة المرور الجديدة</label><input id="rPw" type="password" dir="ltr" autocomplete="new-password"><small class="hint">٨ أحرف أو أرقام على الأقل</small><div class="perr" role="alert"></div><div class="pbtns"><button class="pill y" type="submit">حفظ وتسجيل الدخول</button></div></form><p class="pnote"><button type="button" class="plink" id="rAgain">إرسال رمز جديد</button></p>`}
+  <p class="pnote"><button type="button" class="plink" id="rBack">رجوع لتسجيل الدخول</button></p>`;x();
+  const f=bx.querySelector('form'),er=bx.querySelector('.perr'),b=f.querySelector('[type=submit]');bx.querySelector('#rBack').onclick=()=>{m.remove();openAuth('login')};
+  if(step===1){f.onsubmit=async e=>{e.preventDefault();er.textContent='';const em=bx.querySelector('#rEm').value.trim();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em))return er.textContent=ERRS.email;busy(b,true);const r=await api('acc.forgot',{email:em});busy(b,false);
+    if(!r.ok){er.textContent=r.error==='mail'?'تعذّر إرسال الإيميل الآن. تواصل مع برنامج غرس لاستعادة كلمة المرور.':errTx(r.error);return}email=em;step=2;draw()};setTimeout(()=>bx.querySelector('#rEm').focus(),80)}
+  else{bx.querySelector('#rAgain').onclick=()=>{step=1;draw()};f.onsubmit=async e=>{e.preventDefault();er.textContent='';const code=numN(bx.querySelector('#rCode').value).replace(/\D/g,''),pw=numN(bx.querySelector('#rPw').value);
+    if(code.length!==6)return er.textContent='اكتب الرمز كاملًا (٦ أرقام)';if(pw.length<8)return er.textContent=ERRS.weak;busy(b,true);const r=await api('acc.resetpw',{email,code,password:pw});busy(b,false);
+    if(!r.ok){er.textContent=r.error==='code'?'الرمز غير صحيح أو انتهت صلاحيته':errTx(r.error);sfx.no();return}
+    const keep=store;setAcc(r.acc,r.tok);for(const k in keep)if((keep[k]||0)>(store[k]||0)){store[k]=keep[k];syncSoon()}m.remove();home();sfx.win();toast('تم تغيير كلمة المرور ✓ أهلًا بعودتك يا '+r.acc.name)};setTimeout(()=>bx.querySelector('#rCode').focus(),80)}};
+ draw()}
 function openAccount(){const {m,bx,x}=modal();const I=stageInfo();const played=GAMES.filter(G=>store[G.id]).length;
  bx.innerHTML=`<div class="aphoto">${AV(ACC,'pav')}<label class="pchg" for="fPic">تغيير الصورة</label><input type="file" id="fPic" accept="image/*" hidden></div>
  <h3>${esc(ACC.name)}</h3><p dir="ltr" class="pmail">${esc(ACC.email)}</p>${ACC.student?`<p class="stu">طالب في غرس${ACC.teacher&&ACC.teacher!=='تجريبي'?' · '+esc(ACC.teacher):''}</p>`:''}

@@ -131,6 +131,7 @@ table.acct td{padding:6px 10px;white-space:nowrap}table.acct td.l{direction:ltr;
 .stfil{display:flex;gap:6px;margin-bottom:10px}.seg1{border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font-weight:700}.seg1[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
 .sttab td.l{direction:ltr;text-align:right;font-size:13px}.pill{border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700}.pill.ok{background:#E6F6F7;color:#0A7F86}.pill.no{background:#FDECEE;color:#B8333B}
 @media(max-width:600px){.stnums{grid-template-columns:1fr}}
+.btn.sm{padding:5px 10px;font-size:13px}.tpwv{font-weight:700;font-size:18px;letter-spacing:2px;background:#FFF6DF;border:2px solid #FDB515;border-radius:10px;padding:2px 10px;user-select:all}
 </style>
 </head>
 <body>
@@ -338,9 +339,10 @@ const VIEWS={
   P.innerHTML=`<h2>حسابات الألعاب</h2><p class="help">الحسابات التي أنشأها الأطفال وأولياء الأمور في صفحة الألعاب. كلمات المرور مشفّرة ولا تظهر لأحد.</p>
   <div class="astats"><div>كل الحسابات<b>${A.length}</b></div><div>طلاب غرس<b>${st}</b></div><div>من خارج غرس<b>${A.length-st}</b></div></div>
   <div class="arow"><select id="af"><option value="all">الكل</option><option value="out">من خارج غرس (للتواصل)</option><option value="stu">طلاب غرس</option></select><input id="aq" placeholder="بحث بالاسم أو الإيميل أو الجوال"><button class="btn" id="acsv">تنزيل ملف Excel</button></div>
-  <div class="tscroll"><table class="lt acct"><thead><tr><th class="nm">الاسم</th><th>الإيميل</th><th>الجوال</th><th>النوع</th><th>المعلم / اسم الطالب</th><th>النجوم</th><th>التسجيل</th><th>آخر دخول</th></tr></thead><tbody></tbody></table></div>`;
+  <div class="tscroll"><table class="lt acct"><thead><tr><th class="nm">الاسم</th><th>الإيميل</th><th>الجوال</th><th>النوع</th><th>المعلم / اسم الطالب</th><th>النجوم</th><th>التسجيل</th><th>آخر دخول</th>${ME.role==='admin'?'<th>كلمة المرور</th>':''}</tr></thead><tbody></tbody></table></div>`;
   const rows=()=>{const f=$('#af').value,q=$('#aq').value.trim().toLowerCase();return A.filter(a=>(f==='all'||(f==='stu')===a.student)&&(!q||[a.name,a.email,a.phone,a.kid].join(' ').toLowerCase().includes(q)))};
-  const draw=()=>{const tb=P.querySelector('tbody');tb.innerHTML=rows().map(a=>`<tr><td class="nm">${esc(a.name)}</td><td class="l">${esc(a.email)}</td><td class="l">${esc(a.phone||'')}</td><td>${a.student?'طالب في غرس':'من خارج غرس'}</td><td>${a.student?esc(a.teacher+' / '+a.kid):(a.consent?'موافق على التواصل':'')}</td><td>${a.stars}</td><td>${d(a.created)}</td><td>${d(a.last)}</td></tr>`).join('')||'<tr><td colspan="8">لا توجد حسابات بعد</td></tr>'};
+  const draw=()=>{const tb=P.querySelector('tbody');tb.innerHTML=rows().map(a=>`<tr><td class="nm">${esc(a.name)}</td><td class="l">${esc(a.email)}</td><td class="l">${esc(a.phone||'')}</td><td>${a.student?'طالب في غرس':'من خارج غرس'}</td><td>${a.student?esc(a.teacher+' / '+a.kid):(a.consent?'موافق على التواصل':'')}</td><td>${a.stars}</td><td>${d(a.created)}</td><td>${d(a.last)}</td>${ME.role==='admin'?`<td><button class="btn sm tpw" data-em="${esc(a.email)}">كلمة مرور مؤقتة</button></td>`:''}</tr>`).join('')||'<tr><td colspan="9">لا توجد حسابات بعد</td></tr>';
+   tb.querySelectorAll('.tpw').forEach(b=>b.onclick=async()=>{if(!b.dataset.sure){b.dataset.sure=1;b.textContent='تأكيد؟ ستتغير كلمة المرور';return}b.disabled=true;try{const r=await api('accounts.resetpw',{email:b.dataset.em});if(!r.ok)throw 0;const td=b.parentElement;td.innerHTML=`<span class="tpwv" dir="ltr">${r.password}</span><small class="help" style="display:block">أعطها لولي الأمر ليدخل بها ثم يغيّرها</small>`}catch(e){toast('تعذّر إنشاء كلمة مرور مؤقتة',1);b.disabled=false}})};
   $('#af').onchange=draw;$('#aq').oninput=draw;draw();
   $('#acsv').onclick=()=>{const H=['الاسم','الإيميل','الجوال','النوع','المعلم','اسم الطالب في الكشف','موافق على التواصل','النجوم','تاريخ التسجيل','آخر دخول'];
    const L=[H].concat(rows().map(a=>[a.name,a.email,a.phone?'‎'+a.phone:'',a.student?'طالب في غرس':'من خارج غرس',a.teacher||'',a.kid||'',a.consent?'نعم':'لا',a.stars,d(a.created),d(a.last)]));
